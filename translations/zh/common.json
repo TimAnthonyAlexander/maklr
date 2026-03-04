@@ -1,0 +1,12 @@
+{
+    "common.welcome": "欢迎使用我们的应用程序！",
+    "estate.contacts_tab": "链接联系人",
+    "estate.link_contact": "链接 联系方式",
+    "estate.no_linked_contacts": "没有与该遗产相关的联系人",
+    "estate.role": "角色",
+    "estate.unlink_contact": "解除联系",
+    "__meta": {
+        "last_sync": "2026-03-04T20:27:25+00:00",
+        "needs_review": true
+    }
+}

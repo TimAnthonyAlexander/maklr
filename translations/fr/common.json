@@ -1,0 +1,12 @@
+{
+    "common.welcome": "Bienvenue dans notre application !",
+    "estate.contacts_tab": "Contacts liés",
+    "estate.link_contact": "Lien Contact",
+    "estate.no_linked_contacts": "Aucun contact lié à cette succession",
+    "estate.role": "Rôle",
+    "estate.unlink_contact": "Détacher le contact",
+    "__meta": {
+        "last_sync": "2025-09-13T10:26:27+00:00",
+        "needs_review": true
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "common.welcome": "¡Bienvenido a nuestra aplicación!",
+    "estate.contacts_tab": "Contactos vinculados",
+    "estate.link_contact": "Enlace Contacto",
+    "estate.no_linked_contacts": "No hay contactos vinculados a esta finca",
+    "estate.role": "Papel",
+    "estate.unlink_contact": "Desvincular contacto",
+    "__meta": {
+        "last_sync": "2025-09-13T10:26:59+00:00",
+        "needs_review": true
+    }
+}

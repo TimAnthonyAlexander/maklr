@@ -1,0 +1,12 @@
+{
+    "common.welcome": "Willkommen bei unserer Bewerbung!",
+    "estate.contacts_tab": "Verknüpfte Kontakte",
+    "estate.link_contact": "Kontakt verknüpfen",
+    "estate.no_linked_contacts": "Keine Kontakte mit dieser Immobilie verknüpft",
+    "estate.role": "Rolle",
+    "estate.unlink_contact": "Kontakt trennen",
+    "__meta": {
+        "last_sync": "2025-09-13T10:26:26+00:00",
+        "needs_review": true
+    }
+}

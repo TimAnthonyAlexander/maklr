@@ -1,0 +1,22 @@
+{
+    "__meta": {
+        "last_sync": "2026-03-05T21:34:40+00:00",
+        "needs_review": true
+    },
+    "sidebar.brand": "Maklr",
+    "sidebar.collapse": "收起",
+    "sidebar.logout": "退出登录",
+    "sidebar.nav.activity_log": "活动日志",
+    "sidebar.nav.audit_log": "审计日志",
+    "sidebar.nav.calendar": "日历",
+    "sidebar.nav.contacts": "联系人",
+    "sidebar.nav.dashboard": "仪表板",
+    "sidebar.nav.documents": "文档",
+    "sidebar.nav.email": "邮件",
+    "sidebar.nav.email_templates": "模板",
+    "sidebar.nav.estates": "房产",
+    "sidebar.nav.tasks": "任务",
+    "sidebar.nav.users": "用户",
+    "sidebar.section.admin": "系统管理",
+    "sidebar.section.organize": "管理"
+}

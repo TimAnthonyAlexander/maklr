@@ -1,0 +1,22 @@
+{
+    "__meta": {
+        "needs_review": true,
+        "last_sync": "2026-03-05T22:19:15+00:00"
+    },
+    "sidebar.brand": "Maklr",
+    "sidebar.collapse": "Réduire",
+    "sidebar.logout": "Déconnexion",
+    "sidebar.nav.activity_log": "Journal d'activité",
+    "sidebar.nav.audit_log": "Journal d'audit",
+    "sidebar.nav.calendar": "Calendrier",
+    "sidebar.nav.contacts": "Contacts",
+    "sidebar.nav.dashboard": "Tableau de bord",
+    "sidebar.nav.documents": "Documents",
+    "sidebar.nav.email": "E-mail",
+    "sidebar.nav.email_templates": "Modèles",
+    "sidebar.nav.estates": "Biens",
+    "sidebar.nav.tasks": "Tâches",
+    "sidebar.nav.users": "Utilisateurs",
+    "sidebar.section.admin": "Administration",
+    "sidebar.section.organize": "Organiser"
+}

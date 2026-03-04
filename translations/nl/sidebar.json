@@ -1,0 +1,22 @@
+{
+    "__meta": {
+        "last_sync": "2026-03-05T21:34:39+00:00",
+        "needs_review": true
+    },
+    "sidebar.brand": "Maklr",
+    "sidebar.collapse": "Inklappen",
+    "sidebar.logout": "Uitloggen",
+    "sidebar.nav.activity_log": "Activiteitenlog",
+    "sidebar.nav.audit_log": "Controlelogboek",
+    "sidebar.nav.calendar": "Kalender",
+    "sidebar.nav.contacts": "Contacten",
+    "sidebar.nav.dashboard": "Dashboard",
+    "sidebar.nav.documents": "Documenten",
+    "sidebar.nav.email": "E-mail",
+    "sidebar.nav.email_templates": "Sjablonen",
+    "sidebar.nav.estates": "Objecten",
+    "sidebar.nav.tasks": "Taken",
+    "sidebar.nav.users": "Gebruikers",
+    "sidebar.section.admin": "Beheer",
+    "sidebar.section.organize": "Organiseren"
+}

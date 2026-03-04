@@ -1,0 +1,1760 @@
+{
+    "version": "1.0",
+    "migrations": [
+        {
+            "id": "mig_7a4e5616cf06",
+            "sql": "CREATE TABLE `appointment` (\n  `title` VARCHAR(255) NOT NULL DEFAULT '',\n  `description` TEXT,\n  `type` VARCHAR(30) NOT NULL DEFAULT 'other',\n  `starts_at` DATETIME,\n  `ends_at` DATETIME,\n  `location` VARCHAR(255),\n  `estate_id` VARCHAR(36),\n  `created_by_user_id` VARCHAR(36),\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "appointment",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_fdc51a49d273",
+            "sql": "CREATE TABLE `appointment_contact` (\n  `appointment_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `contact_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "appointment_contact",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_fb4389cfe633",
+            "sql": "CREATE TABLE `appointment_user` (\n  `appointment_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `user_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `role` VARCHAR(20) NOT NULL DEFAULT 'attendee',\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "appointment_user",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_0fb84089aa67",
+            "sql": "CREATE TABLE `audit_log` (\n  `user_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `action` VARCHAR(20) NOT NULL DEFAULT '',\n  `entity_type` VARCHAR(100) NOT NULL DEFAULT '',\n  `entity_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `field_name` VARCHAR(255),\n  `old_value` TEXT,\n  `new_value` TEXT,\n  `ip_address` VARCHAR(45),\n  `changes` JSON NOT NULL,\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "audit_log",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_a8dc3215555d",
+            "sql": "CREATE TABLE `contact` (\n  `type` VARCHAR(50) NOT NULL DEFAULT 'misc',\n  `entity_type` VARCHAR(20) NOT NULL DEFAULT 'person',\n  `company_name` VARCHAR(255),\n  `salutation` VARCHAR(255),\n  `first_name` VARCHAR(255),\n  `last_name` VARCHAR(255),\n  `email` VARCHAR(255),\n  `phone` VARCHAR(255),\n  `mobile` VARCHAR(255),\n  `street` VARCHAR(255),\n  `zip` VARCHAR(255),\n  `city` VARCHAR(255),\n  `country` VARCHAR(255),\n  `stage` VARCHAR(20) NOT NULL DEFAULT 'cold',\n  `assigned_user_id` VARCHAR(36),\n  `office_id` VARCHAR(36),\n  `custom_fields` JSON NOT NULL,\n  `search_profiles` JSON NOT NULL,\n  `gdpr_consent` TINYINT(1) NOT NULL DEFAULT 0,\n  `gdpr_consent_date` DATETIME,\n  `gdpr_deletion_requested` TINYINT(1) NOT NULL DEFAULT 0,\n  `gdpr_deletion_requested_at` DATETIME,\n  `notes` TEXT,\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "contact",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_9330331f94eb",
+            "sql": "CREATE TABLE `contact_relationship` (\n  `contact_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `related_contact_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `type` VARCHAR(50) NOT NULL DEFAULT '',\n  `notes` TEXT,\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "contact_relationship",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_eeead063e42a",
+            "sql": "CREATE TABLE `document` (\n  `file_path` VARCHAR(500) NOT NULL DEFAULT '',\n  `file_name` VARCHAR(255) NOT NULL DEFAULT '',\n  `mime_type` VARCHAR(255) NOT NULL DEFAULT '',\n  `file_size` INT NOT NULL DEFAULT 0,\n  `category` VARCHAR(30),\n  `estate_id` VARCHAR(36),\n  `contact_id` VARCHAR(36),\n  `appointment_id` VARCHAR(36),\n  `email_id` VARCHAR(36),\n  `uploaded_by_user_id` VARCHAR(36),\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "document",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_dcd50d59b674",
+            "sql": "CREATE TABLE `email` (\n  `email_account_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `direction` VARCHAR(20) NOT NULL DEFAULT 'incoming',\n  `status` VARCHAR(20) NOT NULL DEFAULT 'received',\n  `message_id` VARCHAR(500),\n  `in_reply_to` VARCHAR(500),\n  `from_address` VARCHAR(255) NOT NULL DEFAULT '',\n  `to_addresses` TEXT NOT NULL,\n  `cc_addresses` TEXT,\n  `bcc_addresses` TEXT,\n  `subject` VARCHAR(255) NOT NULL DEFAULT '',\n  `body_html` MEDIUMTEXT,\n  `body_text` MEDIUMTEXT,\n  `sent_at` DATETIME,\n  `received_at` DATETIME,\n  `contact_id` VARCHAR(36),\n  `estate_id` VARCHAR(36),\n  `email_template_id` VARCHAR(36),\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_a1701a5b9520",
+            "sql": "CREATE TABLE `email_account` (\n  `user_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `name` VARCHAR(100) NOT NULL DEFAULT '',\n  `email_address` VARCHAR(255) NOT NULL DEFAULT '',\n  `imap_host` VARCHAR(255) NOT NULL DEFAULT '',\n  `imap_port` INT NOT NULL DEFAULT 993,\n  `imap_encryption` VARCHAR(10) NOT NULL DEFAULT 'ssl',\n  `smtp_host` VARCHAR(255) NOT NULL DEFAULT '',\n  `smtp_port` INT NOT NULL DEFAULT 465,\n  `smtp_encryption` VARCHAR(10) NOT NULL DEFAULT 'ssl',\n  `username` VARCHAR(255) NOT NULL DEFAULT '',\n  `password_encrypted` TEXT,\n  `active` TINYINT(1) NOT NULL DEFAULT 1,\n  `last_sync_at` DATETIME,\n  `last_error` TEXT,\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email_account",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_cfb7bb727526",
+            "sql": "CREATE TABLE `email_template` (\n  `name` VARCHAR(100) NOT NULL DEFAULT '',\n  `subject` VARCHAR(255) NOT NULL DEFAULT '',\n  `body_html` MEDIUMTEXT,\n  `body_text` MEDIUMTEXT,\n  `category` VARCHAR(50),\n  `active` TINYINT(1) NOT NULL DEFAULT 1,\n  `created_by_user_id` VARCHAR(36),\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email_template",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_1adc89628888",
+            "sql": "CREATE TABLE `estate` (\n  `property_type` VARCHAR(50) NOT NULL DEFAULT 'apartment',\n  `marketing_type` VARCHAR(20) NOT NULL DEFAULT 'sale',\n  `status` VARCHAR(20) NOT NULL DEFAULT 'draft',\n  `title` VARCHAR(255) NOT NULL DEFAULT '',\n  `description` TEXT,\n  `external_id` VARCHAR(100),\n  `street` VARCHAR(255),\n  `house_number` VARCHAR(255),\n  `zip` VARCHAR(255),\n  `city` VARCHAR(255),\n  `country` VARCHAR(255),\n  `latitude` DOUBLE,\n  `longitude` DOUBLE,\n  `price` DOUBLE,\n  `area_total` DOUBLE,\n  `area_living` DOUBLE,\n  `area_plot` DOUBLE,\n  `rooms` INT,\n  `bedrooms` INT,\n  `bathrooms` INT,\n  `floor` INT,\n  `floors_total` INT,\n  `year_built` INT,\n  `parking_spaces` INT,\n  `heating_type` VARCHAR(255),\n  `energy_rating` VARCHAR(255),\n  `condition` VARCHAR(255),\n  `furnished` TINYINT(1) NOT NULL DEFAULT 0,\n  `balcony` TINYINT(1) NOT NULL DEFAULT 0,\n  `garden` TINYINT(1) NOT NULL DEFAULT 0,\n  `elevator` TINYINT(1) NOT NULL DEFAULT 0,\n  `cellar` TINYINT(1) NOT NULL DEFAULT 0,\n  `virtual_tour_url` VARCHAR(2048),\n  `owner_contact_id` VARCHAR(36),\n  `assigned_user_id` VARCHAR(36),\n  `office_id` VARCHAR(36),\n  `custom_fields` JSON NOT NULL,\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_0f5e28b3c7dc",
+            "sql": "CREATE TABLE `estate_contact` (\n  `estate_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `contact_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `role` VARCHAR(30) NOT NULL DEFAULT 'interested',\n  `notes` TEXT,\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate_contact",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_e636dcbc17ab",
+            "sql": "CREATE TABLE `estate_image` (\n  `estate_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `file_path` VARCHAR(500) NOT NULL DEFAULT '',\n  `file_name` VARCHAR(255) NOT NULL DEFAULT '',\n  `mime_type` VARCHAR(255) NOT NULL DEFAULT '',\n  `file_size` INT NOT NULL DEFAULT 0,\n  `category` VARCHAR(20) NOT NULL DEFAULT 'photo',\n  `sort_order` INT NOT NULL DEFAULT 0,\n  `title` VARCHAR(255),\n  `alt_text` VARCHAR(255),\n  `is_primary` TINYINT(1) NOT NULL DEFAULT 0,\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate_image",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_e2fc38f67b57",
+            "sql": "CREATE TABLE `office` (\n  `name` VARCHAR(255) NOT NULL DEFAULT '',\n  `address` VARCHAR(255),\n  `city` VARCHAR(255),\n  `zip` VARCHAR(255),\n  `country` VARCHAR(255),\n  `phone` VARCHAR(255),\n  `email` VARCHAR(255),\n  `active` TINYINT(1) NOT NULL DEFAULT 1,\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "office",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_818798928d59",
+            "sql": "CREATE TABLE `task` (\n  `title` VARCHAR(255) NOT NULL DEFAULT '',\n  `description` TEXT,\n  `status` VARCHAR(20) NOT NULL DEFAULT 'open',\n  `priority` VARCHAR(20) NOT NULL DEFAULT 'medium',\n  `due_date` DATETIME,\n  `estate_id` VARCHAR(36),\n  `contact_id` VARCHAR(36),\n  `created_by_user_id` VARCHAR(36),\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "task",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_67ffaf616456",
+            "sql": "CREATE TABLE `task_user` (\n  `task_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `user_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "task_user",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_500dc4a7df40",
+            "sql": "CREATE TABLE `user` (\n  `name` VARCHAR(255) NOT NULL DEFAULT '',\n  `password` VARCHAR(255) NOT NULL DEFAULT '',\n  `email` VARCHAR(255) NOT NULL DEFAULT '',\n  `active` TINYINT(1) NOT NULL DEFAULT 1,\n  `role` VARCHAR(255) NOT NULL DEFAULT 'guest',\n  `office_id` VARCHAR(36),\n  `phone` VARCHAR(255),\n  `avatar_url` VARCHAR(255),\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "user",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_ca27a94b9720",
+            "sql": "ALTER TABLE `activity` MODIFY COLUMN `metadata` JSON NOT NULL",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "activity",
+            "operation": "modify_column",
+            "warning": null
+        },
+        {
+            "id": "mig_25b13698093f",
+            "sql": "ALTER TABLE `appointment` ADD INDEX `idx_appointment_estate_id` (`estate_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "appointment",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_7e9dbdd60f77",
+            "sql": "ALTER TABLE `appointment` ADD INDEX `idx_appointment_starts_at` (`starts_at`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "appointment",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_5f175d4a1df9",
+            "sql": "ALTER TABLE `appointment` ADD INDEX `idx_appointment_type` (`type`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "appointment",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_78ef4dcafbb4",
+            "sql": "ALTER TABLE `appointment_contact` ADD UNIQUE KEY `uniq_appointment_contact_appointment_id_contact_id` (`appointment_id`, `contact_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "appointment_contact",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_dfbe2e8cb791",
+            "sql": "ALTER TABLE `appointment_user` ADD UNIQUE KEY `uniq_appointment_user_appointment_id_user_id` (`appointment_id`, `user_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "appointment_user",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_5f3bd14dbae2",
+            "sql": "ALTER TABLE `audit_log` ADD INDEX `idx_audit_log_user_id` (`user_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "audit_log",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_67ef365a0cc6",
+            "sql": "ALTER TABLE `audit_log` ADD INDEX `idx_audit_log_action` (`action`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "audit_log",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_38de8e0b42fe",
+            "sql": "ALTER TABLE `audit_log` ADD INDEX `idx_audit_log_entity_type_entity_id_created_at` (`entity_type`, `entity_id`, `created_at`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "audit_log",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_344e592b3cf0",
+            "sql": "ALTER TABLE `audit_log` ADD INDEX `idx_audit_log_user_id_created_at` (`user_id`, `created_at`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "audit_log",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_a047efa6b94c",
+            "sql": "ALTER TABLE `contact` ADD INDEX `idx_contact_type` (`type`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "contact",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_b83555510ff6",
+            "sql": "ALTER TABLE `contact` ADD INDEX `idx_contact_entity_type` (`entity_type`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "contact",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_a1e886887298",
+            "sql": "ALTER TABLE `contact` ADD INDEX `idx_contact_stage` (`stage`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "contact",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_c96cfef78c8f",
+            "sql": "ALTER TABLE `contact` ADD INDEX `idx_contact_email` (`email`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "contact",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_897cfccb1742",
+            "sql": "ALTER TABLE `contact` ADD INDEX `idx_contact_assigned_user_id` (`assigned_user_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "contact",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_4a1845102cd8",
+            "sql": "ALTER TABLE `contact` ADD INDEX `idx_contact_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "contact",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_73c14078cb0b",
+            "sql": "ALTER TABLE `contact` ADD INDEX `idx_contact_last_name` (`last_name`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "contact",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_cc5207942506",
+            "sql": "ALTER TABLE `contact` ADD INDEX `idx_contact_type_stage` (`type`, `stage`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "contact",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_7a7bd42b6247",
+            "sql": "ALTER TABLE `contact` ADD INDEX `idx_contact_last_name_first_name` (`last_name`, `first_name`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "contact",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_b22d3e9053cd",
+            "sql": "ALTER TABLE `contact_relationship` ADD INDEX `idx_contact_relationship_contact_id` (`contact_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "contact_relationship",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_1e9e1b09bd57",
+            "sql": "ALTER TABLE `contact_relationship` ADD UNIQUE KEY `uniq_contact_relationship_contact_id_related_contact_id` (`contact_id`, `related_contact_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "contact_relationship",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_0eba55249563",
+            "sql": "ALTER TABLE `document` ADD INDEX `idx_document_estate_id` (`estate_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "document",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_7839d2030dd0",
+            "sql": "ALTER TABLE `document` ADD INDEX `idx_document_contact_id` (`contact_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "document",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_04d7cac4c8d2",
+            "sql": "ALTER TABLE `document` ADD INDEX `idx_document_appointment_id` (`appointment_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "document",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_74549f7bf8f0",
+            "sql": "ALTER TABLE `document` ADD INDEX `idx_document_category` (`category`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "document",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_5601fcec92dd",
+            "sql": "ALTER TABLE `email` ADD INDEX `idx_email_email_account_id` (`email_account_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_542644b78d48",
+            "sql": "ALTER TABLE `email` ADD INDEX `idx_email_direction` (`direction`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_3be85344708a",
+            "sql": "ALTER TABLE `email` ADD INDEX `idx_email_status` (`status`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_2c94aa2d7811",
+            "sql": "ALTER TABLE `email` ADD INDEX `idx_email_contact_id` (`contact_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_c70559b384ad",
+            "sql": "ALTER TABLE `email` ADD INDEX `idx_email_estate_id` (`estate_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_8476706fd42e",
+            "sql": "ALTER TABLE `email` ADD INDEX `idx_email_message_id` (`message_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_877736a8d4ab",
+            "sql": "ALTER TABLE `email_account` ADD INDEX `idx_email_account_user_id` (`user_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email_account",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_55eb5938c7bb",
+            "sql": "ALTER TABLE `email_account` ADD INDEX `idx_email_account_active` (`active`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email_account",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_22b9885ca6df",
+            "sql": "ALTER TABLE `email_template` ADD INDEX `idx_email_template_name` (`name`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email_template",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_0b418626a3cb",
+            "sql": "ALTER TABLE `email_template` ADD INDEX `idx_email_template_active` (`active`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email_template",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_323b5664f619",
+            "sql": "ALTER TABLE `email_template` ADD INDEX `idx_email_template_category` (`category`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email_template",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_b6cb73be77c8",
+            "sql": "ALTER TABLE `estate` ADD INDEX `idx_estate_property_type` (`property_type`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_1bffc7eab3f7",
+            "sql": "ALTER TABLE `estate` ADD INDEX `idx_estate_marketing_type` (`marketing_type`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_29a3ce859df1",
+            "sql": "ALTER TABLE `estate` ADD INDEX `idx_estate_status` (`status`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_110964436240",
+            "sql": "ALTER TABLE `estate` ADD INDEX `idx_estate_external_id` (`external_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_9763adfd8b38",
+            "sql": "ALTER TABLE `estate` ADD INDEX `idx_estate_city` (`city`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_7e7a9fe8b5ee",
+            "sql": "ALTER TABLE `estate` ADD INDEX `idx_estate_zip` (`zip`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_9fe650a6deb2",
+            "sql": "ALTER TABLE `estate` ADD INDEX `idx_estate_price` (`price`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_03bde3d863a1",
+            "sql": "ALTER TABLE `estate` ADD INDEX `idx_estate_property_type_marketing_type_status` (`property_type`, `marketing_type`, `status`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_074e3f48fc80",
+            "sql": "ALTER TABLE `estate` ADD INDEX `idx_estate_city_property_type` (`city`, `property_type`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_ce1401c384fb",
+            "sql": "ALTER TABLE `estate_contact` ADD UNIQUE KEY `uniq_estate_contact_estate_id_contact_id_role` (`estate_id`, `contact_id`, `role`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate_contact",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_e1e526ab5c6f",
+            "sql": "ALTER TABLE `estate_image` ADD INDEX `idx_estate_image_estate_id` (`estate_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate_image",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_cd0444b3dc02",
+            "sql": "ALTER TABLE `estate_image` ADD INDEX `idx_estate_image_category` (`category`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate_image",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_a12e4114a5a0",
+            "sql": "ALTER TABLE `office` ADD INDEX `idx_office_name` (`name`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "office",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_24796e0004f4",
+            "sql": "ALTER TABLE `office` ADD INDEX `idx_office_active` (`active`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "office",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_f901dcfa4a55",
+            "sql": "ALTER TABLE `task` ADD INDEX `idx_task_status` (`status`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "task",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_f05d9a5727f5",
+            "sql": "ALTER TABLE `task` ADD INDEX `idx_task_priority` (`priority`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "task",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_bdcad2084a12",
+            "sql": "ALTER TABLE `task` ADD INDEX `idx_task_due_date` (`due_date`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "task",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_8ce29c55e7e4",
+            "sql": "ALTER TABLE `task` ADD INDEX `idx_task_estate_id` (`estate_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "task",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_cd2fa17911c9",
+            "sql": "ALTER TABLE `task` ADD INDEX `idx_task_contact_id` (`contact_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "task",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_ea0d4504a3fd",
+            "sql": "ALTER TABLE `task_user` ADD UNIQUE KEY `uniq_task_user_task_id_user_id` (`task_id`, `user_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "task_user",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_eb324a971027",
+            "sql": "ALTER TABLE `user` ADD UNIQUE KEY `uniq_user_email` (`email`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "user",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_6da8d0a7fc25",
+            "sql": "ALTER TABLE `user` ADD INDEX `idx_user_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "user",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_ea1755b9d68e",
+            "sql": "ALTER TABLE `user` ADD INDEX `idx_user_role` (`role`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "user",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_39a9c8fc56b9",
+            "sql": "ALTER TABLE `user` ADD INDEX `idx_user_active` (`active`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "user",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_04b3c72daff3",
+            "sql": "ALTER TABLE `activity` ADD INDEX `idx_activity_type` (`type`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "activity",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_b4eb9d3d01f2",
+            "sql": "ALTER TABLE `activity` ADD INDEX `idx_activity_user_id` (`user_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "activity",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_cdd66a763538",
+            "sql": "ALTER TABLE `activity` ADD INDEX `idx_activity_estate_id` (`estate_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "activity",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_8ef6290a76c0",
+            "sql": "ALTER TABLE `activity` ADD INDEX `idx_activity_contact_id` (`contact_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "activity",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_b33cef3cb86e",
+            "sql": "ALTER TABLE `activity` ADD INDEX `idx_activity_estate_id_created_at` (`estate_id`, `created_at`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "activity",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_f13ba66c5f82",
+            "sql": "ALTER TABLE `activity` ADD INDEX `idx_activity_contact_id_created_at` (`contact_id`, `created_at`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "activity",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_6b14df9e082e",
+            "sql": "ALTER TABLE `api_token` ADD UNIQUE KEY `uniq_api_token_token_hash` (`token_hash`(191))",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "api_token",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_215286bab9cc",
+            "sql": "ALTER TABLE `api_token` ADD INDEX `idx_api_token_user_id` (`user_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "api_token",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_65fa338426c1",
+            "sql": "ALTER TABLE `appointment` ADD CONSTRAINT `fk_appointment_estate_id` FOREIGN KEY (`estate_id`) REFERENCES `estate` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "appointment",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_5febadba3e66",
+            "sql": "ALTER TABLE `appointment_contact` ADD CONSTRAINT `fk_appointment_contact_appointment_id` FOREIGN KEY (`appointment_id`) REFERENCES `appointment` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "appointment_contact",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_81cb367ad2cf",
+            "sql": "ALTER TABLE `appointment_contact` ADD CONSTRAINT `fk_appointment_contact_contact_id` FOREIGN KEY (`contact_id`) REFERENCES `contact` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "appointment_contact",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_31dcd218c84b",
+            "sql": "ALTER TABLE `appointment_user` ADD CONSTRAINT `fk_appointment_user_appointment_id` FOREIGN KEY (`appointment_id`) REFERENCES `appointment` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "appointment_user",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_1bebc59459e2",
+            "sql": "ALTER TABLE `appointment_user` ADD CONSTRAINT `fk_appointment_user_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "appointment_user",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_c5e917fac493",
+            "sql": "ALTER TABLE `audit_log` ADD CONSTRAINT `fk_audit_log_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "audit_log",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_2e441cf63998",
+            "sql": "ALTER TABLE `contact` ADD CONSTRAINT `fk_contact_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "contact",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_9b649f53f8e9",
+            "sql": "ALTER TABLE `contact_relationship` ADD CONSTRAINT `fk_contact_relationship_contact_id` FOREIGN KEY (`contact_id`) REFERENCES `contact` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "contact_relationship",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_fd5fe8eea036",
+            "sql": "ALTER TABLE `document` ADD CONSTRAINT `fk_document_estate_id` FOREIGN KEY (`estate_id`) REFERENCES `estate` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "document",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_49aff28e27a6",
+            "sql": "ALTER TABLE `document` ADD CONSTRAINT `fk_document_contact_id` FOREIGN KEY (`contact_id`) REFERENCES `contact` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "document",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_7102e3a92e3d",
+            "sql": "ALTER TABLE `document` ADD CONSTRAINT `fk_document_appointment_id` FOREIGN KEY (`appointment_id`) REFERENCES `appointment` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "document",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_7719f147aa17",
+            "sql": "ALTER TABLE `document` ADD CONSTRAINT `fk_document_email_id` FOREIGN KEY (`email_id`) REFERENCES `email` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "document",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_e2e874ea23dd",
+            "sql": "ALTER TABLE `email` ADD CONSTRAINT `fk_email_email_account_id` FOREIGN KEY (`email_account_id`) REFERENCES `email_account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_d0fe81c502eb",
+            "sql": "ALTER TABLE `email` ADD CONSTRAINT `fk_email_contact_id` FOREIGN KEY (`contact_id`) REFERENCES `contact` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_8767f64856ec",
+            "sql": "ALTER TABLE `email` ADD CONSTRAINT `fk_email_estate_id` FOREIGN KEY (`estate_id`) REFERENCES `estate` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_c6e3936985e2",
+            "sql": "ALTER TABLE `email` ADD CONSTRAINT `fk_email_email_template_id` FOREIGN KEY (`email_template_id`) REFERENCES `email_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_1124c7f297d1",
+            "sql": "ALTER TABLE `email_account` ADD CONSTRAINT `fk_email_account_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "email_account",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_c4a12055a507",
+            "sql": "ALTER TABLE `estate` ADD CONSTRAINT `fk_estate_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_54e415f298f6",
+            "sql": "ALTER TABLE `estate_contact` ADD CONSTRAINT `fk_estate_contact_estate_id` FOREIGN KEY (`estate_id`) REFERENCES `estate` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate_contact",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_702e5f986dad",
+            "sql": "ALTER TABLE `estate_contact` ADD CONSTRAINT `fk_estate_contact_contact_id` FOREIGN KEY (`contact_id`) REFERENCES `contact` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate_contact",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_9010af75563a",
+            "sql": "ALTER TABLE `estate_image` ADD CONSTRAINT `fk_estate_image_estate_id` FOREIGN KEY (`estate_id`) REFERENCES `estate` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "estate_image",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_7fa5151ae4a4",
+            "sql": "ALTER TABLE `task` ADD CONSTRAINT `fk_task_estate_id` FOREIGN KEY (`estate_id`) REFERENCES `estate` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "task",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_16efb6ba3cbb",
+            "sql": "ALTER TABLE `task` ADD CONSTRAINT `fk_task_contact_id` FOREIGN KEY (`contact_id`) REFERENCES `contact` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "task",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_c8a5a7b89ad7",
+            "sql": "ALTER TABLE `task_user` ADD CONSTRAINT `fk_task_user_task_id` FOREIGN KEY (`task_id`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "task_user",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_b5a8f7405922",
+            "sql": "ALTER TABLE `task_user` ADD CONSTRAINT `fk_task_user_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "task_user",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_a03b5f75792c",
+            "sql": "ALTER TABLE `user` ADD CONSTRAINT `fk_user_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "user",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_6e117c9932da",
+            "sql": "ALTER TABLE `activity` ADD CONSTRAINT `fk_activity_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "activity",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_42c6d7a10a67",
+            "sql": "ALTER TABLE `activity` ADD CONSTRAINT `fk_activity_estate_id` FOREIGN KEY (`estate_id`) REFERENCES `estate` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "activity",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_fc6d3c764b1a",
+            "sql": "ALTER TABLE `activity` ADD CONSTRAINT `fk_activity_contact_id` FOREIGN KEY (`contact_id`) REFERENCES `contact` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "activity",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_3611044089dd",
+            "sql": "ALTER TABLE `activity` ADD CONSTRAINT `fk_activity_appointment_id` FOREIGN KEY (`appointment_id`) REFERENCES `appointment` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "activity",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_1cff1cff4a12",
+            "sql": "ALTER TABLE `activity` ADD CONSTRAINT `fk_activity_task_id` FOREIGN KEY (`task_id`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "activity",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_65acac08fab0",
+            "sql": "ALTER TABLE `activity` ADD CONSTRAINT `fk_activity_email_id` FOREIGN KEY (`email_id`) REFERENCES `email` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "activity",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_a485f6a9e312",
+            "sql": "ALTER TABLE `activity` ADD CONSTRAINT `fk_activity_document_id` FOREIGN KEY (`document_id`) REFERENCES `document` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "activity",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_8e7c8c6dc3fe",
+            "sql": "ALTER TABLE `api_token` ADD CONSTRAINT `fk_api_token_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:47+00:00",
+            "table": "api_token",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_fc4e24b5b25b",
+            "sql": "CREATE TABLE `jobs` (\n    `id` VARCHAR(36) NOT NULL PRIMARY KEY,\n    `queue` VARCHAR(255) NOT NULL DEFAULT 'default',\n    `payload` TEXT NOT NULL,\n    `status` VARCHAR(50) NOT NULL DEFAULT 'pending',\n    `attempts` INT NOT NULL DEFAULT 0,\n    `error` TEXT,\n    `run_at` DATETIME NOT NULL,\n    `started_at` DATETIME,\n    `completed_at` DATETIME,\n    `failed_at` DATETIME,\n    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;\n\n-- Create essential indexes for queue performance\nCREATE INDEX jobs_queue_status_run_at_index ON jobs (queue, status, run_at);\nCREATE INDEX jobs_status_run_at_index ON jobs (status, run_at);\nCREATE INDEX jobs_status_index ON jobs (status);",
+            "destructive": false,
+            "generated_at": "2026-03-04T19:13:55+00:00",
+            "table": "jobs",
+            "operation": "create_table",
+            "description": "Create jobs table and indexes for queue system"
+        },
+        {
+            "id": "mig_ea0e71895456",
+            "sql": "ALTER TABLE `user` ADD COLUMN `language` VARCHAR(255) NOT NULL DEFAULT 'en'",
+            "destructive": false,
+            "generated_at": "2026-03-04T20:16:50+00:00",
+            "table": "user",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_f2dc56977bc6",
+            "sql": "ALTER TABLE `audit_log` MODIFY COLUMN `changes` JSON NOT NULL",
+            "destructive": false,
+            "generated_at": "2026-03-04T20:16:50+00:00",
+            "table": "audit_log",
+            "operation": "modify_column",
+            "warning": null
+        },
+        {
+            "id": "mig_9d3ce8d8ad15",
+            "sql": "ALTER TABLE `contact` MODIFY COLUMN `custom_fields` JSON NOT NULL",
+            "destructive": false,
+            "generated_at": "2026-03-04T20:16:50+00:00",
+            "table": "contact",
+            "operation": "modify_column",
+            "warning": null
+        },
+        {
+            "id": "mig_b80739a20c30",
+            "sql": "ALTER TABLE `contact` MODIFY COLUMN `search_profiles` JSON NOT NULL",
+            "destructive": false,
+            "generated_at": "2026-03-04T20:16:50+00:00",
+            "table": "contact",
+            "operation": "modify_column",
+            "warning": null
+        },
+        {
+            "id": "mig_75625f3d79ff",
+            "sql": "ALTER TABLE `email` MODIFY COLUMN `body_html` MEDIUMTEXT",
+            "destructive": true,
+            "generated_at": "2026-03-04T20:16:50+00:00",
+            "table": "email",
+            "operation": "modify_column",
+            "warning": null
+        },
+        {
+            "id": "mig_eff8b233c67b",
+            "sql": "ALTER TABLE `email` MODIFY COLUMN `body_text` MEDIUMTEXT",
+            "destructive": true,
+            "generated_at": "2026-03-04T20:16:50+00:00",
+            "table": "email",
+            "operation": "modify_column",
+            "warning": null
+        },
+        {
+            "id": "mig_857d7e8ca141",
+            "sql": "ALTER TABLE `email_template` MODIFY COLUMN `body_html` MEDIUMTEXT",
+            "destructive": true,
+            "generated_at": "2026-03-04T20:16:50+00:00",
+            "table": "email_template",
+            "operation": "modify_column",
+            "warning": null
+        },
+        {
+            "id": "mig_ab614154b095",
+            "sql": "ALTER TABLE `email_template` MODIFY COLUMN `body_text` MEDIUMTEXT",
+            "destructive": true,
+            "generated_at": "2026-03-04T20:16:50+00:00",
+            "table": "email_template",
+            "operation": "modify_column",
+            "warning": null
+        },
+        {
+            "id": "mig_39b4d76cd4f7",
+            "sql": "ALTER TABLE `estate` MODIFY COLUMN `custom_fields` JSON NOT NULL",
+            "destructive": false,
+            "generated_at": "2026-03-04T20:16:50+00:00",
+            "table": "estate",
+            "operation": "modify_column",
+            "warning": null
+        },
+        {
+            "id": "mig_1d918615b527",
+            "sql": "CREATE TABLE `test` (\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T21:12:13+00:00",
+            "table": "test",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_8f07506a98ef",
+            "sql": "ALTER TABLE `estate` MODIFY COLUMN `custom_fields` JSON",
+            "destructive": false,
+            "generated_at": "2026-03-04T21:12:13+00:00",
+            "table": "estate",
+            "operation": "modify_column",
+            "warning": null
+        },
+        {
+            "id": "mig_4c1718934a8d",
+            "sql": "DROP TABLE IF EXISTS `test`",
+            "destructive": true,
+            "generated_at": "2026-03-04T21:35:32+00:00",
+            "table": "test",
+            "operation": "drop_table",
+            "warning": null
+        },
+        {
+            "id": "mig_6e630aac6f1b",
+            "sql": "CREATE TABLE `invitation` (\n  `office_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `email` TEXT NOT NULL,\n  `token_hash` TEXT NOT NULL,\n  `role` VARCHAR(20) NOT NULL DEFAULT 'agent',\n  `invited_by` VARCHAR(255) NOT NULL DEFAULT '',\n  `expires_at` TEXT,\n  `accepted_at` TEXT,\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T22:43:22+00:00",
+            "table": "invitation",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_1e3690cd235d",
+            "sql": "ALTER TABLE `invitation` ADD UNIQUE KEY `uniq_invitation_token_hash` (`token_hash`(191))",
+            "destructive": false,
+            "generated_at": "2026-03-04T22:43:22+00:00",
+            "table": "invitation",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_448d0f17406a",
+            "sql": "ALTER TABLE `invitation` ADD INDEX `idx_invitation_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T22:43:22+00:00",
+            "table": "invitation",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_355d6bfc2d58",
+            "sql": "ALTER TABLE `invitation` ADD INDEX `idx_invitation_email` (`email`(191))",
+            "destructive": false,
+            "generated_at": "2026-03-04T22:43:22+00:00",
+            "table": "invitation",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_3c444555a7c5",
+            "sql": "ALTER TABLE `invitation` ADD CONSTRAINT `fk_invitation_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T22:43:22+00:00",
+            "table": "invitation",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_ede22d33f6f6",
+            "sql": "CREATE TABLE `task_comment` (\n  `task_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `user_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `body` TEXT NOT NULL,\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-04T23:30:39+00:00",
+            "table": "task_comment",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_26a9f295f520",
+            "sql": "ALTER TABLE `task` ADD COLUMN `type` VARCHAR(30) NOT NULL DEFAULT 'task'",
+            "destructive": false,
+            "generated_at": "2026-03-04T23:30:39+00:00",
+            "table": "task",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_4de69cb66e23",
+            "sql": "ALTER TABLE `task` ADD COLUMN `task_number` INT NOT NULL DEFAULT 0",
+            "destructive": false,
+            "generated_at": "2026-03-04T23:30:39+00:00",
+            "table": "task",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_5cb74ad003f1",
+            "sql": "ALTER TABLE `task` ADD COLUMN `completed_at` DATETIME",
+            "destructive": false,
+            "generated_at": "2026-03-04T23:30:39+00:00",
+            "table": "task",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_8b3d4a058a15",
+            "sql": "ALTER TABLE `task` ADD COLUMN `position` INT",
+            "destructive": false,
+            "generated_at": "2026-03-04T23:30:39+00:00",
+            "table": "task",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_aa215c96140d",
+            "sql": "ALTER TABLE `task` ADD COLUMN `office_id` VARCHAR(36)",
+            "destructive": false,
+            "generated_at": "2026-03-04T23:30:39+00:00",
+            "table": "task",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_ed789707eec1",
+            "sql": "ALTER TABLE `task_comment` ADD INDEX `idx_task_comment_task_id` (`task_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T23:30:39+00:00",
+            "table": "task_comment",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_ea8d33fb8a18",
+            "sql": "ALTER TABLE `task_comment` ADD INDEX `idx_task_comment_user_id` (`user_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T23:30:39+00:00",
+            "table": "task_comment",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_6c734ab9a276",
+            "sql": "ALTER TABLE `task` ADD INDEX `idx_task_type` (`type`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T23:30:39+00:00",
+            "table": "task",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_7f3e321e0bfb",
+            "sql": "ALTER TABLE `task` ADD INDEX `idx_task_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T23:30:39+00:00",
+            "table": "task",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_07c0a5ff59f1",
+            "sql": "ALTER TABLE `task` ADD INDEX `idx_task_created_by_user_id` (`created_by_user_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T23:30:39+00:00",
+            "table": "task",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_d0b5ac7448d2",
+            "sql": "ALTER TABLE `task` ADD UNIQUE KEY `uniq_task_office_id_task_number` (`office_id`, `task_number`)",
+            "destructive": false,
+            "generated_at": "2026-03-04T23:30:39+00:00",
+            "table": "task",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_e8b0dc036d39",
+            "sql": "ALTER TABLE `task_comment` ADD CONSTRAINT `fk_task_comment_task_id` FOREIGN KEY (`task_id`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T23:30:39+00:00",
+            "table": "task_comment",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_33e688c9d8f8",
+            "sql": "ALTER TABLE `task_comment` ADD CONSTRAINT `fk_task_comment_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T23:30:39+00:00",
+            "table": "task_comment",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_8a9a2f05e278",
+            "sql": "ALTER TABLE `task` ADD CONSTRAINT `fk_task_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-04T23:30:39+00:00",
+            "table": "task",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_b3ae6a8c95d4",
+            "sql": "ALTER TABLE `contact` MODIFY COLUMN `custom_fields` JSON",
+            "destructive": false,
+            "generated_at": "2026-03-05T09:32:51+00:00",
+            "table": "contact",
+            "operation": "modify_column",
+            "warning": null
+        },
+        {
+            "id": "mig_be1341866eca",
+            "sql": "ALTER TABLE `contact` MODIFY COLUMN `search_profiles` JSON",
+            "destructive": false,
+            "generated_at": "2026-03-05T09:32:51+00:00",
+            "table": "contact",
+            "operation": "modify_column",
+            "warning": null
+        },
+        {
+            "id": "mig_898dba3d1add",
+            "sql": "ALTER TABLE `appointment` ADD COLUMN `office_id` VARCHAR(36)",
+            "destructive": false,
+            "generated_at": "2026-03-05T10:22:45+00:00",
+            "table": "appointment",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_a8206dad6405",
+            "sql": "ALTER TABLE `appointment` ADD INDEX `idx_appointment_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-05T10:22:45+00:00",
+            "table": "appointment",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_6067c7cf14e0",
+            "sql": "ALTER TABLE `appointment` ADD INDEX `idx_appointment_created_by_user_id` (`created_by_user_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-05T10:22:45+00:00",
+            "table": "appointment",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_e58d3c51eae0",
+            "sql": "ALTER TABLE `appointment` ADD INDEX `idx_appointment_office_id_starts_at` (`office_id`, `starts_at`)",
+            "destructive": false,
+            "generated_at": "2026-03-05T10:22:45+00:00",
+            "table": "appointment",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_4064583e2cd1",
+            "sql": "ALTER TABLE `appointment` ADD CONSTRAINT `fk_appointment_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-05T10:22:45+00:00",
+            "table": "appointment",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_0d38f1e0463e",
+            "sql": "ALTER TABLE `appointment` DROP INDEX `idx_appointment_starts_at`",
+            "destructive": true,
+            "generated_at": "2026-03-05T10:22:45+00:00",
+            "table": "appointment",
+            "operation": "drop_index",
+            "warning": null
+        },
+        {
+            "id": "mig_ccb6812428b7",
+            "sql": "ALTER TABLE `activity` ADD COLUMN `office_id` VARCHAR(36)",
+            "destructive": false,
+            "generated_at": "2026-03-05T11:22:24+00:00",
+            "table": "activity",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_d561da61e66c",
+            "sql": "ALTER TABLE `activity` ADD INDEX `idx_activity_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-05T11:22:24+00:00",
+            "table": "activity",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_3813ecbd44a9",
+            "sql": "ALTER TABLE `activity` ADD INDEX `idx_activity_office_id_created_at` (`office_id`, `created_at`)",
+            "destructive": false,
+            "generated_at": "2026-03-05T11:22:24+00:00",
+            "table": "activity",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_63551171ec0e",
+            "sql": "ALTER TABLE `activity` ADD CONSTRAINT `fk_activity_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-05T11:22:24+00:00",
+            "table": "activity",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_b5caee195b69",
+            "sql": "ALTER TABLE `activity` MODIFY COLUMN `metadata` JSON",
+            "destructive": false,
+            "generated_at": "2026-03-05T11:27:10+00:00",
+            "table": "activity",
+            "operation": "modify_column",
+            "warning": null
+        },
+        {
+            "id": "mig_afa97d5bb652",
+            "sql": "ALTER TABLE `email_account` ADD COLUMN `office_id` VARCHAR(36)",
+            "destructive": false,
+            "generated_at": "2026-03-05T11:39:51+00:00",
+            "table": "email_account",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_c2d9bc756c0e",
+            "sql": "ALTER TABLE `email_account` ADD COLUMN `scope` VARCHAR(20) NOT NULL DEFAULT 'personal'",
+            "destructive": false,
+            "generated_at": "2026-03-05T11:39:51+00:00",
+            "table": "email_account",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_e543f3a06b55",
+            "sql": "ALTER TABLE `email_account` ADD INDEX `idx_email_account_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-05T11:39:51+00:00",
+            "table": "email_account",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_5bc00183a0db",
+            "sql": "ALTER TABLE `email_account` ADD INDEX `idx_email_account_user_id_scope` (`user_id`, `scope`)",
+            "destructive": false,
+            "generated_at": "2026-03-05T11:39:51+00:00",
+            "table": "email_account",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_e9a709568a97",
+            "sql": "ALTER TABLE `email_account` ADD CONSTRAINT `fk_email_account_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-05T11:39:51+00:00",
+            "table": "email_account",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_5235c58f60da",
+            "sql": "ALTER TABLE `email` ADD COLUMN `office_id` VARCHAR(36)",
+            "destructive": false,
+            "generated_at": "2026-03-05T12:16:27+00:00",
+            "table": "email",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_54e492bea6b4",
+            "sql": "ALTER TABLE `email` ADD INDEX `idx_email_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-05T12:16:27+00:00",
+            "table": "email",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_6bcac948507d",
+            "sql": "ALTER TABLE `email` ADD CONSTRAINT `fk_email_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-05T12:16:27+00:00",
+            "table": "email",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_4d293fd20120",
+            "sql": "ALTER TABLE `email` ADD COLUMN `read` TINYINT(1) NOT NULL DEFAULT 0",
+            "destructive": false,
+            "generated_at": "2026-03-05T13:03:00+00:00",
+            "table": "email",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_14b37fa58547",
+            "sql": "ALTER TABLE `document` ADD COLUMN `office_id` VARCHAR(36)",
+            "destructive": false,
+            "generated_at": "2026-03-05T13:14:23+00:00",
+            "table": "document",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_6928b75a3f2c",
+            "sql": "ALTER TABLE `document` ADD INDEX `idx_document_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-05T13:14:23+00:00",
+            "table": "document",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_b88ae3999120",
+            "sql": "ALTER TABLE `document` ADD CONSTRAINT `fk_document_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-05T13:14:23+00:00",
+            "table": "document",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_30c75422d15d",
+            "sql": "ALTER TABLE `email` ADD COLUMN `folder` VARCHAR(20)",
+            "destructive": false,
+            "generated_at": "2026-03-05T18:55:19+00:00",
+            "table": "email",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_12517e3b7d98",
+            "sql": "ALTER TABLE `email` ADD INDEX `idx_email_folder` (`folder`)",
+            "destructive": false,
+            "generated_at": "2026-03-05T18:55:19+00:00",
+            "table": "email",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_2638da52b19a",
+            "sql": "ALTER TABLE `email` ADD COLUMN `from_name` VARCHAR(255)",
+            "destructive": false,
+            "generated_at": "2026-03-05T19:32:49+00:00",
+            "table": "email",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_9a2651aa4f58",
+            "sql": "ALTER TABLE `email` ADD COLUMN `to_names` VARCHAR(255)",
+            "destructive": false,
+            "generated_at": "2026-03-05T19:32:49+00:00",
+            "table": "email",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_c8390ea522f2",
+            "sql": "ALTER TABLE `email` ADD COLUMN `cc_names` VARCHAR(255)",
+            "destructive": false,
+            "generated_at": "2026-03-05T19:32:49+00:00",
+            "table": "email",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_547ae4ed941a",
+            "sql": "ALTER TABLE `email` MODIFY COLUMN `to_names` TEXT",
+            "destructive": false,
+            "generated_at": "2026-03-05T19:33:57+00:00",
+            "table": "email",
+            "operation": "modify_column",
+            "warning": null
+        },
+        {
+            "id": "mig_7aa08110b49a",
+            "sql": "ALTER TABLE `email` MODIFY COLUMN `cc_names` TEXT",
+            "destructive": false,
+            "generated_at": "2026-03-05T19:33:57+00:00",
+            "table": "email",
+            "operation": "modify_column",
+            "warning": null
+        },
+        {
+            "id": "mig_76934222cc40",
+            "sql": "ALTER TABLE `email_template` ADD COLUMN `scope` VARCHAR(20) NOT NULL DEFAULT 'personal'",
+            "destructive": false,
+            "generated_at": "2026-03-05T21:22:51+00:00",
+            "table": "email_template",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_17b969b76dd6",
+            "sql": "ALTER TABLE `email_template` ADD COLUMN `office_id` VARCHAR(36)",
+            "destructive": false,
+            "generated_at": "2026-03-05T21:22:51+00:00",
+            "table": "email_template",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_a04675958b14",
+            "sql": "ALTER TABLE `email_template` ADD INDEX `idx_email_template_scope` (`scope`)",
+            "destructive": false,
+            "generated_at": "2026-03-05T21:22:51+00:00",
+            "table": "email_template",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_3d2d545cba0b",
+            "sql": "ALTER TABLE `email_template` ADD INDEX `idx_email_template_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-05T21:22:51+00:00",
+            "table": "email_template",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_05bbf64d24b5",
+            "sql": "ALTER TABLE `email_template` ADD INDEX `idx_email_template_created_by_user_id` (`created_by_user_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-05T21:22:51+00:00",
+            "table": "email_template",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_b9b0ff39589a",
+            "sql": "ALTER TABLE `email_template` ADD CONSTRAINT `fk_email_template_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-05T21:22:51+00:00",
+            "table": "email_template",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_6115a35b2e4b",
+            "sql": "ALTER TABLE `audit_log` ADD COLUMN `office_id` VARCHAR(36)",
+            "destructive": false,
+            "generated_at": "2026-03-05T22:20:15+00:00",
+            "table": "audit_log",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_9f86807ba9b1",
+            "sql": "ALTER TABLE `audit_log` ADD INDEX `idx_audit_log_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-05T22:20:15+00:00",
+            "table": "audit_log",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_1af3dd351233",
+            "sql": "ALTER TABLE `audit_log` ADD INDEX `idx_audit_log_office_id_created_at` (`office_id`, `created_at`)",
+            "destructive": false,
+            "generated_at": "2026-03-05T22:20:15+00:00",
+            "table": "audit_log",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_e4f7c840a186",
+            "sql": "ALTER TABLE `audit_log` ADD CONSTRAINT `fk_audit_log_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-05T22:20:15+00:00",
+            "table": "audit_log",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_de05ba3647fd",
+            "sql": "ALTER TABLE `audit_log` MODIFY COLUMN `changes` JSON",
+            "destructive": false,
+            "generated_at": "2026-03-05T22:23:08+00:00",
+            "table": "audit_log",
+            "operation": "modify_column",
+            "warning": null
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "sidebar.brand": "Maklr",
+    "sidebar.collapse": "Collapse",
+    "sidebar.logout": "Log out",
+    "sidebar.nav.activity_log": "Activity Log",
+    "sidebar.nav.calendar": "Calendar",
+    "sidebar.nav.contacts": "Contacts",
+    "sidebar.nav.dashboard": "Dashboard",
+    "sidebar.nav.documents": "Documents",
+    "sidebar.nav.email": "Email",
+    "sidebar.nav.email_templates": "Templates",
+    "sidebar.nav.estates": "Estates",
+    "sidebar.nav.tasks": "Tasks",
+    "sidebar.nav.audit_log": "Audit Log",
+    "sidebar.nav.users": "Users",
+    "sidebar.section.admin": "Admin",
+    "sidebar.section.organize": "Organize"
+}

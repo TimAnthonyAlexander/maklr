@@ -1,0 +1,12 @@
+{
+    "common.welcome": "Welkom bij onze applicatie!",
+    "estate.contacts_tab": "Gekoppelde contacten",
+    "estate.link_contact": "Link Contact",
+    "estate.no_linked_contacts": "Geen contacten gekoppeld aan dit landgoed",
+    "estate.role": "Rol",
+    "estate.unlink_contact": "Ontkoppel contact",
+    "__meta": {
+        "last_sync": "2025-09-13T10:26:59+00:00",
+        "needs_review": true
+    }
+}
