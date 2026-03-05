@@ -18,7 +18,7 @@
 
 ## Why Maklr?
 
-Commercial real estate CRMs are expensive, closed-source, and lock you in. Maklr gives brokerages a self-hosted alternative with the features that actually matter — property management, contact matching, activity tracking, and workflow automation — without the vendor lock-in.
+Commercial real estate CRMs are expensive, closed-source, and lock you in. Maklr gives brokerages a self-hosted alternative with the features that actually matter — property management, contact matching, activity tracking, and email integration — without the vendor lock-in.
 
 ---
 
@@ -52,28 +52,31 @@ cd web && bun install && bun run dev
 ### Core Modules
 
 **Estates** `[-]`
-Full property CRUD — apartments, houses, commercial, land, garage. Sale, rent, and lease marketing types. Status lifecycle (draft, active, reserved, sold/rented, archived), image and floor plan uploads, geo data with map pins, owner linking, agent assignment, custom fields, saved filters, bulk actions.
+Full property CRUD — apartments, houses, commercial, land, garage. Sale, rent, and lease marketing types. Status lifecycle (draft, active, reserved, sold/rented, archived), image and floor plan uploads with reordering, virtual tour URLs, owner linking, agent assignment, saved filters. Remaining: geo data map view, custom fields UI, bulk actions, quick search expansion.
 
 **Contacts** `[-]`
-Buyers, sellers, tenants, landlords, service providers. Search profiles with a matching engine — run a contact's criteria against active estates, or run an estate against all search profiles. Pipeline stages, GDPR consent handling, duplicate merging.
+Buyers, sellers, tenants, landlords, service providers. Pipeline stages (cold, warm, hot, deal, lost), GDPR consent handling, file attachments, saved filters, activity log. Remaining: search profiles UI, matching engine, relationship management UI, duplicate merging.
 
-**Activity Log** `[-]`
-Unified timeline per estate and contact. Auto-logged emails, status changes, uploads, appointments, and task completions. Manual entries for calls, meetings, notes, and viewings.
+**Activity Log** `[x]`
+Unified timeline per estate and contact. Auto-logged emails, status changes, uploads, appointments, and task completions. Manual entries for calls, meetings, notes, and viewings. Type and date range filters.
 
 **Calendar** `[-]`
-Appointments linked to estates, contacts, and users. Day, week, and month views. Conflict detection. Types: viewing, meeting, handover, internal.
+Appointments linked to estates, contacts, and users. Day, week, and month views. Types: viewing, meeting, handover, internal, other. Remaining: conflict detection wiring.
 
-**Tasks** `[-]`
-Task management with title, description, due date, priority, and assignees. Linked to estates and contacts. List view and kanban board toggle.
+**Tasks** `[x]`
+Task management with title, description, due date, priority, and assignees. Linked to estates and contacts. Comments. List view and kanban board toggle.
 
-**Email** `[-]`
-Connect external mailboxes via IMAP/SMTP. Send and receive in-app. Auto-match emails to contacts, archive to activity log. Template system with placeholder variables.
+**Email** `[x]`
+Connect external mailboxes via IMAP/SMTP. Send and receive in-app. Auto-match emails to contacts, archive to activity log. File attachments. Create tasks from emails.
+
+**Email Templates** `[x]`
+Template CRUD with placeholder variables for estate and contact fields. Live preview with substitution.
 
 **Documents** `[-]`
-File storage per entity. Upload, download, and delete with permission checks. PDF brochure generation from estate data and images.
+File storage per entity (estate, contact, appointment). Upload, download, and delete with permission checks. Remaining: PDF brochure generation.
 
 **Users & Auth** `[x]`
-Roles (admin, manager, agent, readonly, api_user). Per-module RBAC, record ownership scopes, multi-office support, API token auth, audit log.
+Roles (admin, manager, agent, readonly, api_user). Per-module RBAC, multi-office support, API token auth, team invitations, onboarding flow. Remaining: audit log persistence, record ownership scopes.
 
 ### Roadmap
 
