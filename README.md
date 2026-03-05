@@ -1,10 +1,10 @@
 <p align="center">
-  <h1 align="center">Maklr</h1>
-  <p align="center">
-    Open-source real estate CRM for modern brokerages.
-    <br />
-    Built with PHP 8.4 &amp; React 19.
-  </p>
+  <img src="maklr-logo.svg" alt="Maklr" width="300" />
+  <br />
+  <br />
+  Open-source real estate CRM for modern brokerages.
+  <br />
+  Built with PHP 8.4 &amp; React 19.
 </p>
 
 <p align="center">
