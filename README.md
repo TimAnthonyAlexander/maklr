@@ -60,8 +60,8 @@ Buyers, sellers, tenants, landlords, service providers. Pipeline stages (cold, w
 **Activity Log** `[x]`
 Unified timeline per estate and contact. Auto-logged emails, status changes, uploads, appointments, and task completions. Manual entries for calls, meetings, notes, and viewings. Type and date range filters.
 
-**Calendar** `[-]`
-Appointments linked to estates, contacts, and users. Day, week, and month views. Types: viewing, meeting, handover, internal, other. Remaining: conflict detection wiring.
+**Calendar** `[x]`
+Appointments linked to estates, contacts, and users. Day, week, and month views. Conflict detection with warnings. Types: viewing, meeting, handover, internal, other.
 
 **Tasks** `[x]`
 Task management with title, description, due date, priority, and assignees. Linked to estates and contacts. Comments. List view and kanban board toggle.
