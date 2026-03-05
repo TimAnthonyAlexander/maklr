@@ -22,6 +22,30 @@ Commercial real estate CRMs are expensive, closed-source, and lock you in. Maklr
 
 ---
 
+## Screenshots
+
+<p align="center">
+  <img src="homepage.png" alt="Landing page" width="800" />
+</p>
+
+<p align="center">
+  <img src="dashboard.png" alt="Dashboard" width="800" />
+</p>
+
+<p align="center">
+  <img src="estate.png" alt="Estate detail" width="800" />
+</p>
+
+<p align="center">
+  <img src="tasks.png" alt="Task board" width="800" />
+</p>
+
+<p align="center">
+  <img src="mails.png" alt="Email inbox" width="800" />
+</p>
+
+---
+
 ## Quick Start
 
 **Prerequisites:** PHP 8.4+, MySQL, Redis, Bun, Composer
