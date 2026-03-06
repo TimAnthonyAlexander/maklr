@@ -41,7 +41,7 @@ class AppointmentService
         $results = App::db()->raw($sql, $params);
 
         if ($excludeId !== null) {
-            $results = array_values(array_filter(
+            return array_values(array_filter(
                 $results,
                 static fn (array $row): bool => ($row['appointment_id'] ?? '') !== $excludeId,
             ));

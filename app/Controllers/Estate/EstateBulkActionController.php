@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Estate;
 
+use Throwable;
 use App\Models\Estate;
 use App\Models\User;
 use App\Services\ActivityService;
@@ -38,11 +39,11 @@ class EstateBulkActionController extends Controller
             $this->validate([
                 'action' => 'required|string|in:status_change,assign,archive',
             ]);
-        } catch (ValidationException $e) {
-            return JsonResponse::validationError($e->errors());
+        } catch (ValidationException $validationException) {
+            return JsonResponse::validationError($validationException->errors());
         }
 
-        if (!is_array($this->ids) || count($this->ids) === 0) {
+        if (!is_array($this->ids) || $this->ids === []) {
             return JsonResponse::validationError(['ids' => ['ids is required and must be a non-empty array']]);
         }
 
@@ -97,7 +98,7 @@ class EstateBulkActionController extends Controller
                 } else {
                     $skipped++;
                 }
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 $errors[] = 'Estate ' . ($estate->title ?: $estate->id) . ': ' . $e->getMessage();
             }
         }
@@ -139,7 +140,7 @@ class EstateBulkActionController extends Controller
             userId: $userId,
             officeId: $officeId,
             estateId: $estate->id,
-            oldValue: (string) $oldStatus,
+            oldValue: $oldStatus,
             newValue: (string) $this->status,
         );
 

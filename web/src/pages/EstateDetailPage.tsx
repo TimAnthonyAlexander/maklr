@@ -18,13 +18,14 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import {
   useGetEstateShowById,
   usePatchEstateUpdateById,
   useDeleteEstateById,
 } from "../api/hooks";
 import type { Estate, EstateImage } from "../api/types";
-import { getEstateImageUrl } from "../api/client";
+import { getEstateImageUrl, getEstateBrochureUrl } from "../api/client";
 import { EstateImagesTab } from "../components/estates/EstateImagesTab";
 import { useAuth } from "../contexts/AuthContext";
 import {
@@ -417,6 +418,14 @@ export function EstateDetailPage() {
           >
             Change Status
           </Button>
+          <IconButton
+            component="a"
+            href={getEstateBrochureUrl(estate.id)}
+            target="_blank"
+            size="small"
+          >
+            <PictureAsPdfIcon />
+          </IconButton>
           <IconButton size="small" onClick={() => setFormOpen(true)}>
             <EditIcon />
           </IconButton>

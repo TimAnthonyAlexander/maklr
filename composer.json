@@ -19,6 +19,7 @@
     "require": {
         "php": "^8.4",
         "baseapi/baseapi": "~v1.9.0",
+        "dompdf/dompdf": "^3.1",
         "stripe/stripe-php": "^18.0",
         "symfony/mailer": "^7.1",
         "symfony/mime": "^7.1",

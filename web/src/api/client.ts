@@ -1065,6 +1065,14 @@ export function getEstateImageUrl(
 }
 
 /**
+ * Build URL for downloading an estate brochure PDF
+ * @tags Estates
+ */
+export function getEstateBrochureUrl(estateId: string): string {
+  return `http://127.0.0.1:7273/estates/${encodeURIComponent(estateId)}/brochure`;
+}
+
+/**
  * GET /documents
  * @tags Documents
  */

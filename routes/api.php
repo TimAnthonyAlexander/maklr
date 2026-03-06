@@ -26,6 +26,7 @@ use App\Controllers\Estate\EstateImageUploadController;
 use App\Controllers\Estate\EstateImageUpdateController;
 use App\Controllers\Estate\EstateImageDeleteController;
 use App\Controllers\Estate\EstateImageServeController;
+use App\Controllers\Estate\EstateBrochureController;
 use App\Controllers\Estate\EstateMatchController;
 use App\Controllers\Office\OfficeListController;
 use App\Controllers\Office\OfficeShowController;
@@ -344,6 +345,14 @@ $router->delete('/estates/{id}/images/{imageId}', [
     CombinedAuthMiddleware::class,
     RoleMiddleware::class => ['roles' => ['agent']],
     EstateImageDeleteController::class,
+]);
+
+// Estate Brochure
+$router->get('/estates/{id}/brochure', [
+    RateLimitMiddleware::class => ['limit' => '20/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    EstateBrochureController::class,
 ]);
 
 // ================================

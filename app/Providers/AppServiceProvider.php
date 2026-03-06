@@ -17,6 +17,7 @@ use App\Services\DocumentService;
 use App\Services\MatchingService;
 use App\Services\EmailTemplateService;
 use App\Services\SmtpSendService;
+use App\Services\BrochureService;
 use BaseApi\Auth\UserProvider;
 
 /**
@@ -49,6 +50,9 @@ class AppServiceProvider extends ServiceProvider
 
         // Register the document service as singleton
         $container->singleton(DocumentService::class);
+
+        // Register the brochure service as singleton
+        $container->singleton(BrochureService::class);
 
         // Register encryption and IMAP services
         $container->singleton(EncryptionService::class);
