@@ -13,7 +13,6 @@ import {
   MenuItem,
   Paper,
   Select,
-  Slide,
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -107,43 +106,51 @@ export function EstateBulkActionToolbar({
 
   const count = selectedIds.length;
 
+  const visible = count > 0;
+
   return (
     <>
-      <Slide direction="down" in={count > 0} mountOnEnter unmountOnExit>
-        <Paper
-          variant="outlined"
-          sx={{
-            mb: 2,
-            px: 2,
-            py: 1,
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
-          }}
-        >
-          <Typography variant="body2" sx={{ fontWeight: 500 }}>
-            {t("estate.bulk_selected", { count: String(count) })}
-          </Typography>
+      <Paper
+        variant="outlined"
+        sx={{
+          position: "fixed",
+          bottom: visible ? 24 : 0,
+          left: "50%",
+          transform: visible
+            ? "translateX(-50%) translateY(0)"
+            : "translateX(-50%) translateY(calc(100% + 24px))",
+          opacity: visible ? 1 : 0,
+          transition: "transform 250ms cubic-bezier(0.4, 0, 0.2, 1), opacity 200ms ease",
+          zIndex: 1300,
+          px: 3,
+          py: 1.5,
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          borderRadius: 2,
+          pointerEvents: visible ? "auto" : "none",
+        }}
+      >
+        <Typography variant="body2" sx={{ fontWeight: 500 }}>
+          {t("estate.bulk_selected", { count: String(count) })}
+        </Typography>
 
-          <Box sx={{ display: "flex", gap: 1 }}>
-            <Button size="small" onClick={() => setDialogType("status")}>
-              {t("estate.bulk_change_status")}
-            </Button>
-            <Button size="small" onClick={() => setDialogType("assign")}>
-              {t("estate.bulk_assign")}
-            </Button>
-            <Button size="small" onClick={() => setDialogType("archive")}>
-              {t("estate.bulk_archive")}
-            </Button>
-          </Box>
+        <Box sx={{ display: "flex", gap: 1 }}>
+          <Button size="small" onClick={() => setDialogType("status")}>
+            {t("estate.bulk_change_status")}
+          </Button>
+          <Button size="small" onClick={() => setDialogType("assign")}>
+            {t("estate.bulk_assign")}
+          </Button>
+          <Button size="small" onClick={() => setDialogType("archive")}>
+            {t("estate.bulk_archive")}
+          </Button>
+        </Box>
 
-          <Box sx={{ ml: "auto" }}>
-            <IconButton size="small" onClick={onClearSelection}>
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </Box>
-        </Paper>
-      </Slide>
+        <IconButton size="small" onClick={onClearSelection}>
+          <CloseIcon fontSize="small" />
+        </IconButton>
+      </Paper>
 
       {/* Status Change Dialog */}
       <Dialog open={dialogType === "status"} onClose={handleClose}>
