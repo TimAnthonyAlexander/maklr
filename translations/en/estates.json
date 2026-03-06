@@ -142,5 +142,17 @@
     "estate.upload_retry": "Retry Failed",
     "estate.upload_too_large": "{name}: File too large. Maximum size is 10 MB.",
     "estate.upload_too_large_short": "{name}: File too large. Maximum 10 MB.",
-    "estate.upload_uploading": "Uploading..."
+    "estate.upload_uploading": "Uploading...",
+    "estate.ai_generate_title": "Generate Description with AI",
+    "estate.ai_tone": "Tone",
+    "estate.ai_tone_luxurious": "Luxurious",
+    "estate.ai_tone_neutral": "Neutral",
+    "estate.ai_tone_factual": "Factual",
+    "estate.ai_tone_playful": "Playful",
+    "estate.ai_additional_notes": "Additional Notes",
+    "estate.ai_additional_notes_placeholder": "E.g., emphasize the renovated kitchen, mention proximity to schools...",
+    "estate.ai_generating": "Generating...",
+    "estate.ai_generate": "Generate",
+    "estate.ai_generate_description": "AI Generate",
+    "estate.ai_overwrite_confirm": "The description field already has content. Overwrite it with the generated text?"
 }

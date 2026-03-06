@@ -951,6 +951,56 @@ export function usePostEstateCreate(
 }
 
 /**
+ * React hook for POST /estates/generate-description
+ */
+export function usePostEstateDescriptionGenerate(
+  options?: QueryOptions<Types.PostEstateDescriptionGenerateResponse>,
+): MutationResult<
+  Types.PostEstateDescriptionGenerateResponse,
+  { body: Types.PostEstateDescriptionGenerateRequestBody }
+> {
+  const [data, setData] =
+    useState<Types.PostEstateDescriptionGenerateResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
+
+  const mutate = useCallback(
+    async (variables: {
+      body: Types.PostEstateDescriptionGenerateRequestBody;
+    }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.postEstateDescriptionGenerate(
+          variables.body,
+          optionsRef.current,
+        );
+        setData(result);
+        optionsRef.current?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        optionsRef.current?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+/**
  * React hook for POST /estates/bulk-action
  * Returns a mutate function that must be called manually
  */

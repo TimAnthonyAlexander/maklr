@@ -1356,6 +1356,19 @@ export async function deleteContactRelationship(
 }
 
 /**
+ * POST /estates/generate-description
+ * @tags Estates
+ */
+export async function postEstateDescriptionGenerate(
+  body: Types.PostEstateDescriptionGenerateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.PostEstateDescriptionGenerateResponse> {
+  const url = "/estates/generate-description";
+
+  return http.post(url, body, options);
+}
+
+/**
  * POST /estates/bulk-action
  * @tags Estates
  */

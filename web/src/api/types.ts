@@ -1298,6 +1298,16 @@ export interface EmailTemplatePreviewResponse {
   body_text: string | null;
 }
 
+export interface PostEstateDescriptionGenerateRequestBody {
+  estate_data: Record<string, unknown>;
+  tone: string;
+  additional_notes?: string;
+}
+
+export interface PostEstateDescriptionGenerateResponse {
+  description: string;
+}
+
 export interface PostEmailTemplateGenerateRequestBody {
   description: string;
   tone?: string;

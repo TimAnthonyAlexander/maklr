@@ -27,6 +27,7 @@ use App\Controllers\Estate\EstateImageUpdateController;
 use App\Controllers\Estate\EstateImageDeleteController;
 use App\Controllers\Estate\EstateImageServeController;
 use App\Controllers\Estate\EstateBrochureController;
+use App\Controllers\Estate\EstateDescriptionGenerateController;
 use App\Controllers\Estate\EstateMatchController;
 use App\Controllers\Office\OfficeListController;
 use App\Controllers\Office\OfficeShowController;
@@ -264,6 +265,13 @@ $router->get('/estates', [
     CombinedAuthMiddleware::class,
     RoleMiddleware::class => ['roles' => ['agent']],
     EstateListController::class,
+]);
+
+$router->post('/estates/generate-description', [
+    RateLimitMiddleware::class => ['limit' => '30/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    EstateDescriptionGenerateController::class,
 ]);
 
 $router->post('/estates/bulk-action', [

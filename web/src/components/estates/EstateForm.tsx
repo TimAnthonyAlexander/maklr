@@ -15,12 +15,17 @@ import {
   IconButton,
   Divider,
   Collapse,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
-import { X, ChevronDown, ChevronUp } from "lucide-react";
+import { X, ChevronDown, ChevronUp, Sparkles } from "lucide-react";
 import type { Estate, PostEstateCreateRequestBody, PatchEstateUpdateByIdRequestBody } from "../../api/types";
 import { usePostEstateCreate, usePatchEstateUpdateById } from "../../api/hooks";
 import { useTranslation } from "../../contexts/LanguageContext";
 import { CustomFieldsSection } from "../custom-fields/CustomFieldsSection";
+import { AiDescriptionDialog } from "./AiDescriptionDialog";
 
 interface EstateFormProps {
   open: boolean;
@@ -232,6 +237,10 @@ export function EstateForm({
   });
   const [submitError, setSubmitError] = useState<string | null>(null);
 
+  const [showAiDialog, setShowAiDialog] = useState(false);
+  const [showOverwriteConfirm, setShowOverwriteConfirm] = useState(false);
+  const [pendingDescription, setPendingDescription] = useState("");
+
   const createMutation = usePostEstateCreate();
   const updateMutation = usePatchEstateUpdateById();
 
@@ -246,6 +255,36 @@ export function EstateForm({
 
   const toggleSection = useCallback((key: keyof typeof sections) => {
     setSections((prev) => ({ ...prev, [key]: !prev[key] }));
+  }, []);
+
+  const aiButtonDisabled =
+    form.property_type === "" ||
+    form.rooms === "" ||
+    (form.area_total === "" && form.area_living === "");
+
+  const handleAiGenerated = useCallback(
+    (description: string) => {
+      if (form.description.trim() !== "") {
+        setPendingDescription(description);
+        setShowOverwriteConfirm(true);
+        setShowAiDialog(false);
+      } else {
+        updateField("description", description);
+        setShowAiDialog(false);
+      }
+    },
+    [form.description, updateField],
+  );
+
+  const handleOverwriteConfirm = useCallback(() => {
+    updateField("description", pendingDescription);
+    setPendingDescription("");
+    setShowOverwriteConfirm(false);
+  }, [pendingDescription, updateField]);
+
+  const handleOverwriteCancel = useCallback(() => {
+    setPendingDescription("");
+    setShowOverwriteConfirm(false);
   }, []);
 
   const handleSubmit = useCallback(async () => {
@@ -376,14 +415,37 @@ export function EstateForm({
                 </Select>
               </FormControl>
             </Box>
-            <TextField
-              label={t("estate.field_description")}
-              size="small"
-              multiline
-              rows={3}
-              value={form.description}
-              onChange={(e) => updateField("description", e.target.value)}
-            />
+            <Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  mb: 0.5,
+                }}
+              >
+                <Typography variant="body2" color="text.secondary">
+                  {t("estate.field_description")}
+                </Typography>
+                <Button
+                  size="small"
+                  startIcon={<Sparkles size={14} />}
+                  onClick={() => setShowAiDialog(true)}
+                  disabled={aiButtonDisabled}
+                  sx={{ textTransform: "none", minWidth: 0, py: 0 }}
+                >
+                  {t("estate.ai_generate_description")}
+                </Button>
+              </Box>
+              <TextField
+                size="small"
+                multiline
+                rows={3}
+                fullWidth
+                value={form.description}
+                onChange={(e) => updateField("description", e.target.value)}
+              />
+            </Box>
             <TextField
               label={t("estate.field_external_id")}
               size="small"
@@ -695,6 +757,36 @@ export function EstateForm({
           </Button>
         </Box>
       </Box>
+      <AiDescriptionDialog
+        open={showAiDialog}
+        onClose={() => setShowAiDialog(false)}
+        onGenerated={handleAiGenerated}
+        estateData={form}
+      />
+
+      <Dialog
+        open={showOverwriteConfirm}
+        onClose={handleOverwriteCancel}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle>{t("estate.ai_generate_title")}</DialogTitle>
+        <DialogContent>
+          <Typography>{t("estate.ai_overwrite_confirm")}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleOverwriteCancel} size="small">
+            {t("estate.form_cancel")}
+          </Button>
+          <Button
+            variant="contained"
+            onClick={handleOverwriteConfirm}
+            size="small"
+          >
+            {t("estate.ai_generate")}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Drawer>
   );
 }
