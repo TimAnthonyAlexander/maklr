@@ -79,7 +79,7 @@ trait EstateContextTrait
         foreach ($fields as $key => $label) {
             $value = $data[$key] ?? null;
             if ($value !== null && $value !== '') {
-                $lines[] = "{$label}: {$value}";
+                $lines[] = sprintf('%s: %s', $label, $value);
             }
         }
 

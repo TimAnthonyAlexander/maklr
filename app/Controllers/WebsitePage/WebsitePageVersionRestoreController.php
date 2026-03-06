@@ -59,13 +59,13 @@ class WebsitePageVersionRestoreController extends Controller
             ? $lastVersion->version_number + 1
             : 1;
 
-        $snapshot = new WebsitePageVersion();
-        $snapshot->page_id = $this->pageId;
-        $snapshot->html_content = $page->html_content;
-        $snapshot->version_number = $nextVersionNumber;
-        $snapshot->change_summary = 'Snapshot before restoring version ' . $version->version_number;
-        $snapshot->created_by_user_id = $userId;
-        $snapshot->save();
+        $websitePageVersion = new WebsitePageVersion();
+        $websitePageVersion->page_id = $this->pageId;
+        $websitePageVersion->html_content = $page->html_content;
+        $websitePageVersion->version_number = $nextVersionNumber;
+        $websitePageVersion->change_summary = 'Snapshot before restoring version ' . $version->version_number;
+        $websitePageVersion->created_by_user_id = $userId;
+        $websitePageVersion->save();
 
         // Restore the version's HTML to the page
         $page->html_content = $version->html_content;

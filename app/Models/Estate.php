@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Override;
 use BaseApi\Database\Relations\BelongsTo;
 use BaseApi\Database\Relations\HasMany;
 use BaseApi\Models\BaseModel;
@@ -128,6 +129,7 @@ class Estate extends BaseModel
         ['city', 'property_type'],
     ];
 
+    #[Override]
     public function toArray(bool $includeRelations = false): array
     {
         $data = parent::toArray($includeRelations);

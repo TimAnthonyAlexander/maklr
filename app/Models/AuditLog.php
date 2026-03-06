@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Override;
 use BaseApi\Database\Relations\BelongsTo;
 use BaseApi\Models\BaseModel;
 
@@ -68,6 +69,7 @@ class AuditLog extends BaseModel
         ['office_id', 'created_at'],
     ];
 
+    #[Override]
     public function toArray(bool $includeRelations = false): array
     {
         $data = parent::toArray($includeRelations);

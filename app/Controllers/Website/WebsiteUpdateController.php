@@ -55,12 +55,10 @@ class WebsiteUpdateController extends Controller
         }
 
         // Check slug uniqueness if changed
-        if ($this->slug !== null && $this->slug !== $website->slug) {
-            if (Website::where('slug', '=', $this->slug)->exists()) {
-                return JsonResponse::validationError([
-                    'slug' => ['This slug is already taken'],
-                ]);
-            }
+        if ($this->slug !== null && $this->slug !== $website->slug && Website::where('slug', '=', $this->slug)->exists()) {
+            return JsonResponse::validationError([
+                'slug' => ['This slug is already taken'],
+            ]);
         }
 
         // Snapshot old values for audit

@@ -50,7 +50,9 @@ PROMPT;
 
         $userPrompt = $this->description;
         if ($this->category !== null && $this->category !== '') {
-            $userPrompt .= "\n\nCategory: {$this->category}";
+            $userPrompt .= '
+
+Category: ' . $this->category;
         }
 
         $schema = [
@@ -89,8 +91,8 @@ PROMPT;
                 'body_html' => $parsed['body_html'],
                 'body_text' => $parsed['body_text'],
             ]);
-        } catch (RuntimeException $e) {
-            return JsonResponse::error('AI generation failed: ' . $e->getMessage(), 502);
+        } catch (RuntimeException $runtimeException) {
+            return JsonResponse::error('AI generation failed: ' . $runtimeException->getMessage(), 502);
         }
     }
 
@@ -103,7 +105,7 @@ PROMPT;
         foreach ($placeholders as $group => $items) {
             $lines[] = ucfirst($group) . ':';
             foreach ($items as $item) {
-                $lines[] = "  {$item['key']} — {$item['label']}";
+                $lines[] = sprintf('  %s — %s', $item['key'], $item['label']);
             }
         }
 

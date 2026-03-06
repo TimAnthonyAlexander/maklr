@@ -12,7 +12,9 @@ use RuntimeException;
 class MatchExplainController extends Controller
 {
     public string $estate_id = '';
+
     public string $contact_id = '';
+
     public string $profile_id = '';
 
     public function post(): JsonResponse
@@ -119,8 +121,8 @@ PROMPT;
                 'stretches' => $parsed['stretches'],
                 'suggested_pitch' => $parsed['suggested_pitch'],
             ]);
-        } catch (RuntimeException $e) {
-            return JsonResponse::error('AI explanation failed: ' . $e->getMessage(), 502);
+        } catch (RuntimeException $runtimeException) {
+            return JsonResponse::error('AI explanation failed: ' . $runtimeException->getMessage(), 502);
         }
     }
 
@@ -151,7 +153,7 @@ PROMPT;
         foreach ($fields as $key => $label) {
             $value = $data[$key] ?? null;
             if ($value !== null && $value !== '') {
-                $lines[] = "{$label}: {$value}";
+                $lines[] = sprintf('%s: %s', $label, $value);
             }
         }
 
@@ -198,7 +200,7 @@ PROMPT;
         foreach ($simpleFields as $key => $label) {
             $value = $profile[$key] ?? null;
             if ($value !== null && $value !== '') {
-                $lines[] = "{$label}: {$value}";
+                $lines[] = sprintf('%s: %s', $label, $value);
             }
         }
 
@@ -215,7 +217,7 @@ PROMPT;
             if ($min !== null || $max !== null) {
                 $minStr = $min !== null ? (string) $min : 'any';
                 $maxStr = $max !== null ? (string) $max : 'any';
-                $lines[] = "{$label}: {$minStr} - {$maxStr}";
+                $lines[] = sprintf('%s: %s - %s', $label, $minStr, $maxStr);
             }
         }
 

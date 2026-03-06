@@ -5,7 +5,6 @@ namespace App\Controllers\Website;
 use App\Models\Website;
 use App\Models\WebsitePage;
 use BaseApi\Controllers\Controller;
-use BaseApi\Http\JsonResponse;
 use BaseApi\Http\Response;
 
 class WebsiteServeController extends Controller
@@ -58,16 +57,16 @@ class WebsiteServeController extends Controller
     /**
      * @param WebsitePage[] $pages
      */
-    private function renderPage(Website $website, array $pages, ?WebsitePage $activePage): string
+    private function renderPage(Website $website, array $pages, ?WebsitePage $websitePage): string
     {
         $siteName = htmlspecialchars($website->name, ENT_QUOTES, 'UTF-8');
-        $pageTitle = $activePage instanceof WebsitePage
-            ? htmlspecialchars($activePage->title, ENT_QUOTES, 'UTF-8') . ' — ' . $siteName
+        $pageTitle = $websitePage instanceof WebsitePage
+            ? htmlspecialchars($websitePage->title, ENT_QUOTES, 'UTF-8') . ' — ' . $siteName
             : $siteName;
 
-        $navHtml = $this->renderNav($website, $pages, $activePage);
-        $contentHtml = $activePage instanceof WebsitePage
-            ? ($activePage->html_content ?? '')
+        $navHtml = $this->renderNav($website, $pages, $websitePage);
+        $contentHtml = $websitePage instanceof WebsitePage
+            ? ($websitePage->html_content ?? '')
             : '<div class="text-center py-20 text-gray-500"><p>No pages yet.</p></div>';
 
         return <<<HTML
@@ -92,7 +91,7 @@ HTML;
     /**
      * @param WebsitePage[] $pages
      */
-    private function renderNav(Website $website, array $pages, ?WebsitePage $activePage): string
+    private function renderNav(Website $website, array $pages, ?WebsitePage $websitePage): string
     {
         if ($pages === []) {
             return '';
@@ -105,7 +104,7 @@ HTML;
         foreach ($pages as $page) {
             $url = $baseUrl . '/' . htmlspecialchars($page->slug, ENT_QUOTES, 'UTF-8');
             $label = htmlspecialchars($page->title, ENT_QUOTES, 'UTF-8');
-            $activeClass = ($activePage instanceof WebsitePage && $activePage->id === $page->id)
+            $activeClass = ($websitePage instanceof WebsitePage && $websitePage->id === $page->id)
                 ? 'text-gray-900 font-semibold'
                 : 'text-gray-600 hover:text-gray-900';
 

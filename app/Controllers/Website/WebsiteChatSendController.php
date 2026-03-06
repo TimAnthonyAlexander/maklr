@@ -21,7 +21,7 @@ class WebsiteChatSendController extends Controller
     public ?string $page_id = null;
 
     public function __construct(
-        private readonly WebsiteLlmService $llmService,
+        private readonly WebsiteLlmService $websiteLlmService,
     ) {}
 
     public function post(): JsonResponse
@@ -65,16 +65,16 @@ class WebsiteChatSendController extends Controller
             ->get();
 
         $chatHistory = array_map(
-            fn (WebsiteChatMessage $msg) => [
-                'role' => $msg->role,
-                'content' => $msg->content ?? '',
+            fn (WebsiteChatMessage $websiteChatMessage): array => [
+                'role' => $websiteChatMessage->role,
+                'content' => $websiteChatMessage->content ?? '',
             ],
             $recentMessages,
         );
 
         // Call LLM
         try {
-            $result = $this->llmService->processEdit(
+            $result = $this->websiteLlmService->processEdit(
                 userMessage: $this->message,
                 currentHtml: $page instanceof WebsitePage ? $page->html_content : null,
                 pageTitle: $page instanceof WebsitePage ? $page->title : 'Untitled',
@@ -83,8 +83,8 @@ class WebsiteChatSendController extends Controller
                 userId: $userId,
                 officeId: $officeId,
             );
-        } catch (RuntimeException $e) {
-            return JsonResponse::badRequest($e->getMessage());
+        } catch (RuntimeException $runtimeException) {
+            return JsonResponse::badRequest($runtimeException->getMessage());
         }
 
         // Save user message
@@ -117,13 +117,13 @@ class WebsiteChatSendController extends Controller
                 : 1;
 
             // Snapshot current content
-            $version = new WebsitePageVersion();
-            $version->page_id = $page->id;
-            $version->html_content = $page->html_content;
-            $version->version_number = $nextVersion;
-            $version->change_summary = $result['summary'];
-            $version->created_by_user_id = $userId;
-            $version->save();
+            $websitePageVersion = new WebsitePageVersion();
+            $websitePageVersion->page_id = $page->id;
+            $websitePageVersion->html_content = $page->html_content;
+            $websitePageVersion->version_number = $nextVersion;
+            $websitePageVersion->change_summary = $result['summary'];
+            $websitePageVersion->created_by_user_id = $userId;
+            $websitePageVersion->save();
 
             // Update page with new HTML
             $page->html_content = $result['html'];

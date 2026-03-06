@@ -72,14 +72,14 @@ class WebsitePageCreateController extends Controller
         // Determine sort order
         $sortOrder = $this->sort_order ?? $pageCount;
 
-        $page = new WebsitePage();
-        $page->title = $this->title;
-        $page->slug = $this->slug;
-        $page->html_content = $this->html_content;
-        $page->sort_order = $sortOrder;
-        $page->published = true;
-        $page->website_id = $this->websiteId;
-        $page->save();
+        $websitePage = new WebsitePage();
+        $websitePage->title = $this->title;
+        $websitePage->slug = $this->slug;
+        $websitePage->html_content = $this->html_content;
+        $websitePage->sort_order = $sortOrder;
+        $websitePage->published = true;
+        $websitePage->website_id = $this->websiteId;
+        $websitePage->save();
 
         /** @var AuditLogService $auditLog */
         $auditLog = $this->make(AuditLogService::class);
@@ -87,12 +87,12 @@ class WebsitePageCreateController extends Controller
             $this->request->user['id'],
             'created',
             'website_page',
-            $page->id,
+            $websitePage->id,
             [],
             ClientIp::from($this->request, true),
             $officeId,
         );
 
-        return JsonResponse::created($page->toArray());
+        return JsonResponse::created($websitePage->toArray());
     }
 }

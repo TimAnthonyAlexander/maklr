@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Override;
 use BaseApi\Database\Relations\BelongsTo;
 use BaseApi\Models\BaseModel;
 
@@ -56,6 +57,7 @@ class CustomFieldDefinition extends BaseModel
         $this->options = $options === [] ? null : (json_encode($options) ?: null);
     }
 
+    #[Override]
     public function toArray(bool $includeRelations = false): array
     {
         $data = parent::toArray($includeRelations);

@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use DOMDocument;
+use DOMNode;
+use DOMElement;
+use DOMAttr;
+
 /**
  * Sanitizes HTML content for website builder output.
  * Removes scripts, event handlers, and dangerous elements while preserving
@@ -26,19 +31,19 @@ final class HtmlSanitizerService
             return '';
         }
 
-        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $domDocument = new DOMDocument('1.0', 'UTF-8');
 
         // Suppress warnings from malformed HTML
         libxml_use_internal_errors(true);
-        $dom->loadHTML(
+        $domDocument->loadHTML(
             '<?xml encoding="UTF-8">' . $html,
             LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD,
         );
         libxml_clear_errors();
 
-        $this->sanitizeNode($dom, $dom);
+        $this->sanitizeNode($domDocument, $domDocument);
 
-        $output = $dom->saveHTML();
+        $output = $domDocument->saveHTML();
         if ($output === false) {
             return '';
         }
@@ -49,12 +54,12 @@ final class HtmlSanitizerService
         return trim($output);
     }
 
-    private function sanitizeNode(\DOMDocument $dom, \DOMNode $node): void
+    private function sanitizeNode(DOMDocument $domDocument, DOMNode $domNode): void
     {
         $nodesToRemove = [];
 
-        foreach ($node->childNodes as $child) {
-            if (!$child instanceof \DOMElement) {
+        foreach ($domNode->childNodes as $child) {
+            if (!$child instanceof DOMElement) {
                 continue;
             }
 
@@ -76,7 +81,7 @@ final class HtmlSanitizerService
             $this->sanitizeAttributes($child);
 
             // Recurse into children
-            $this->sanitizeNode($dom, $child);
+            $this->sanitizeNode($domDocument, $child);
         }
 
         foreach ($nodesToRemove as $nodeToRemove) {
@@ -84,12 +89,12 @@ final class HtmlSanitizerService
         }
     }
 
-    private function sanitizeAttributes(\DOMElement $element): void
+    private function sanitizeAttributes(DOMElement $domElement): void
     {
         $attributesToRemove = [];
 
-        /** @var \DOMAttr $attr */
-        foreach ($element->attributes as $attr) {
+        /** @var DOMAttr $attr */
+        foreach ($domElement->attributes as $attr) {
             $attrName = strtolower($attr->name);
 
             // Remove all on* event handlers
@@ -99,15 +104,13 @@ final class HtmlSanitizerService
             }
 
             // Check href and src for dangerous URIs
-            if (in_array($attrName, ['href', 'src', 'action'], true)) {
-                if ($this->isDangerousUri($attr->value)) {
-                    $attributesToRemove[] = $attr->name;
-                }
+            if (in_array($attrName, ['href', 'src', 'action'], true) && $this->isDangerousUri($attr->value)) {
+                $attributesToRemove[] = $attr->name;
             }
         }
 
-        foreach ($attributesToRemove as $attrName) {
-            $element->removeAttribute($attrName);
+        foreach ($attributesToRemove as $attributeToRemove) {
+            $domElement->removeAttribute($attributeToRemove);
         }
     }
 
@@ -121,12 +124,7 @@ final class HtmlSanitizerService
                 return true;
             }
         }
-
         // Allow data: URIs only for images
-        if (str_starts_with($lower, 'data:') && !str_starts_with($lower, 'data:image/')) {
-            return true;
-        }
-
-        return false;
+        return str_starts_with($lower, 'data:') && !str_starts_with($lower, 'data:image/');
     }
 }

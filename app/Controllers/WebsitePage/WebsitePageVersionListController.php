@@ -40,7 +40,7 @@ class WebsitePageVersionListController extends Controller
             ->orderBy('version_number', 'DESC')
             ->get();
 
-        $items = array_map(fn (WebsitePageVersion $v) => $v->toArray(), $versions);
+        $items = array_map(fn (WebsitePageVersion $websitePageVersion): array => $websitePageVersion->toArray(), $versions);
 
         return JsonResponse::ok(['items' => $items]);
     }

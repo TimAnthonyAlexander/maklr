@@ -11,7 +11,7 @@ use RuntimeException;
  * AI-powered website HTML generation and editing service.
  * Uses OpenAI to generate/edit HTML with Tailwind CSS styling.
  */
-final class WebsiteLlmService
+final readonly class WebsiteLlmService
 {
     private const int DAILY_EDIT_LIMIT = 50;
 
@@ -38,8 +38,8 @@ You must respond with valid JSON containing these fields:
 PROMPT;
 
     public function __construct(
-        private readonly OpenAIService $openai,
-        private readonly HtmlSanitizerService $sanitizer,
+        private OpenAIService $openAIService,
+        private HtmlSanitizerService $htmlSanitizerService,
     ) {}
 
     /**
@@ -100,7 +100,8 @@ PROMPT;
         string $userId,
     ): array {
         $prompt = "Website: {$websiteName}\nPage: {$pageTitle}\n\n"
-            . "Create the initial HTML content for this page based on this description:\n{$description}";
+            . ('Create the initial HTML content for this page based on this description:
+' . $description);
 
         $input = [['role' => 'user', 'content' => $prompt]];
 
@@ -124,8 +125,8 @@ PROMPT;
             'additionalProperties' => false,
         ];
 
-        $response = $this->openai
-            ->model('gpt-4.1')
+        $response = $this->openAIService
+            ->model('gpt-5-mini')
             ->withInstructions(self::SYSTEM_PROMPT)
             ->withSampling(0.7)
             ->withResponseFormatJsonSchema('website_edit', $schema)
@@ -141,11 +142,11 @@ PROMPT;
         }
 
         // Sanitize the generated HTML
-        $sanitizedHtml = $this->sanitizer->sanitize($parsed['html']);
+        $sanitizedHtml = $this->htmlSanitizerService->sanitize($parsed['html']);
 
         return [
             'html' => $sanitizedHtml,
-            'summary' => mb_substr($parsed['summary'], 0, 500),
+            'summary' => mb_substr((string) $parsed['summary'], 0, 500),
             'message' => $parsed['message'],
         ];
     }

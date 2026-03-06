@@ -7,8 +7,6 @@ namespace App\Services;
 use CurlHandle;
 use Generator;
 use RuntimeException;
-use Throwable;
-use App\Models\ApiCost;
 
 ini_set('max_execution_time', '-1'); // Disable max execution time limit for long-running requests
 
@@ -24,10 +22,6 @@ final class OpenAIService
 
     private array $options = [];
 
-    private ?string $serviceType = null;
-
-    private ?string $userId = null;
-
     public function __construct(
         ?string $apiKey = null,
         private string $model = 'gpt-4.1',
@@ -42,16 +36,10 @@ final class OpenAIService
 
     /**
      * Enable cost tracking for this request
-     *
-     * @param string $service Service type (e.g., 'explanation', 'course_generation', 'image_generation')
-     * @param ?string $userId Optional user ID for attribution
      */
-    public function withService(string $service, ?string $userId = null): self
+    public function withService(): self
     {
-        $clone = clone $this;
-        $clone->serviceType = $service;
-        $clone->userId = $userId;
-        return $clone;
+        return clone $this;
     }
 
     /**

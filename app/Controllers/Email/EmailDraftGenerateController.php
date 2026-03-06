@@ -53,8 +53,8 @@ class EmailDraftGenerateController extends Controller
             );
 
             return JsonResponse::ok($result);
-        } catch (RuntimeException $e) {
-            return JsonResponse::error('AI generation failed: ' . $e->getMessage(), 502);
+        } catch (RuntimeException $runtimeException) {
+            return JsonResponse::error('AI generation failed: ' . $runtimeException->getMessage(), 502);
         }
     }
 }

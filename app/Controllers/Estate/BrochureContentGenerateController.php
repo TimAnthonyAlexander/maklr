@@ -50,18 +50,22 @@ class BrochureContentGenerateController extends Controller
 
         $agentInfo = '';
         if ($agent instanceof User) {
-            $agentInfo .= "\nAgent: {$agent->name}";
+            $agentInfo .= '
+Agent: ' . $agent->name;
             if ($agent->email !== '') {
-                $agentInfo .= ", Email: {$agent->email}";
+                $agentInfo .= ', Email: ' . $agent->email;
             }
+
             if ($agent->phone !== null && $agent->phone !== '') {
-                $agentInfo .= ", Phone: {$agent->phone}";
+                $agentInfo .= ', Phone: ' . $agent->phone;
             }
         }
+
         if ($office instanceof Office) {
-            $agentInfo .= "\nOffice: {$office->name}";
+            $agentInfo .= '
+Office: ' . $office->name;
             if ($office->phone !== null && $office->phone !== '') {
-                $agentInfo .= ", Phone: {$office->phone}";
+                $agentInfo .= ', Phone: ' . $office->phone;
             }
         }
 
@@ -91,9 +95,10 @@ Rules:
 - Call to action should encourage the reader to schedule a viewing, personalized with agent/office info if available
 PROMPT;
 
-        $userPrompt = "Property data:\n{$estateContext}";
+        $userPrompt = 'Property data:
+' . $estateContext;
         if ($agentInfo !== '') {
-            $userPrompt .= "\n{$agentInfo}";
+            $userPrompt .= PHP_EOL . $agentInfo;
         }
 
         $schema = [
@@ -144,8 +149,8 @@ PROMPT;
                 'location_summary' => $parsed['location_summary'],
                 'call_to_action' => $parsed['call_to_action'],
             ]);
-        } catch (RuntimeException $e) {
-            return JsonResponse::error('AI generation failed: ' . $e->getMessage(), 502);
+        } catch (RuntimeException $runtimeException) {
+            return JsonResponse::error('AI generation failed: ' . $runtimeException->getMessage(), 502);
         }
     }
 }

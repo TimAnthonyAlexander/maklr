@@ -4,25 +4,26 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use RuntimeException;
 use App\Models\Activity;
 use App\Models\Contact;
 use App\Models\Estate;
 use App\Models\User;
 
-final class EmailDraftService
+final readonly class EmailDraftService
 {
     private const array INTENT_MAP = [
         'follow_up_viewing' => 'Write a follow-up email after a property viewing. Reference the specific property and the viewing experience. Be warm and ask if they have any questions.',
         'price_update' => 'Inform the contact about a price change on a property they are interested in. Mention the old and new price if available, and highlight the opportunity.',
-        'new_listing_match' => 'Introduce a new listing that matches the contact\'s search criteria. Highlight the key features that align with their preferences.',
+        'new_listing_match' => "Introduce a new listing that matches the contact's search criteria. Highlight the key features that align with their preferences.",
         'document_request' => 'Request necessary documents from the contact. Be clear about which documents are needed and provide a reasonable deadline.',
         'viewing_invitation' => 'Invite the contact to view a property. Suggest specific times and highlight what makes this property worth visiting.',
         'general_follow_up' => 'Write a general relationship maintenance follow-up. Reference recent interactions and maintain the professional relationship.',
-        'custom' => 'Use the agent\'s additional notes to determine the email content and tone.',
+        'custom' => "Use the agent's additional notes to determine the email content and tone.",
     ];
 
     public function __construct(
-        private readonly OpenAIService $openai,
+        private OpenAIService $openAIService,
     ) {}
 
     /**
@@ -76,7 +77,7 @@ final class EmailDraftService
             'additionalProperties' => false,
         ];
 
-        $response = $this->openai
+        $response = $this->openAIService
             ->model('gpt-4.1-mini')
             ->withInstructions($systemPrompt)
             ->withSampling(0.7)
@@ -89,7 +90,7 @@ final class EmailDraftService
         $parsed = json_decode($text, true);
 
         if (!is_array($parsed) || !isset($parsed['subject'], $parsed['body_html'], $parsed['body_text'])) {
-            throw new \RuntimeException('Failed to parse AI response');
+            throw new RuntimeException('Failed to parse AI response');
         }
 
         return [
@@ -109,7 +110,7 @@ final class EmailDraftService
      */
     public function buildContactContext(?Contact $contact): array
     {
-        if ($contact === null) {
+        if (!$contact instanceof Contact) {
             return [];
         }
 
@@ -122,18 +123,23 @@ final class EmailDraftService
         if ($contact->email !== null) {
             $context['email'] = $contact->email;
         }
+
         if ($contact->phone !== null) {
             $context['phone'] = $contact->phone;
         }
+
         if ($contact->city !== null) {
             $context['city'] = $contact->city;
         }
+
         if ($contact->country !== null) {
             $context['country'] = $contact->country;
         }
+
         if ($contact->company_name !== null) {
             $context['company'] = $contact->company_name;
         }
+
         if ($contact->salutation !== null) {
             $context['salutation'] = $contact->salutation;
         }
@@ -151,7 +157,7 @@ final class EmailDraftService
      */
     public function buildEstateContext(?Estate $estate): array
     {
-        if ($estate === null) {
+        if (!$estate instanceof Estate) {
             return [];
         }
 
@@ -165,24 +171,31 @@ final class EmailDraftService
         if ($estate->price !== null) {
             $context['price'] = number_format($estate->price, 2, '.', ',');
         }
+
         if ($estate->rooms !== null) {
             $context['rooms'] = (string) $estate->rooms;
         }
+
         if ($estate->area_total !== null) {
             $context['area_total'] = $estate->area_total . ' m²';
         }
+
         if ($estate->area_living !== null) {
             $context['area_living'] = $estate->area_living . ' m²';
         }
+
         if ($estate->city !== null) {
             $context['city'] = $estate->city;
         }
+
         if ($estate->street !== null && $estate->house_number !== null) {
             $context['address'] = $estate->street . ' ' . $estate->house_number;
         }
+
         if ($estate->bedrooms !== null) {
             $context['bedrooms'] = (string) $estate->bedrooms;
         }
+
         if ($estate->bathrooms !== null) {
             $context['bathrooms'] = (string) $estate->bathrooms;
         }
@@ -195,7 +208,7 @@ final class EmailDraftService
      */
     public function buildActivitySummary(?string $contactId, ?string $estateId, string $officeId): array
     {
-        $query = Activity::where('office_id', '=', $officeId);
+        $modelQuery = Activity::where('office_id', '=', $officeId);
 
         if ($contactId !== null && $estateId !== null) {
             // Get activities for either the contact or the estate
@@ -218,18 +231,20 @@ final class EmailDraftService
                 if (isset($seen[$activity->id])) {
                     continue;
                 }
+
                 $seen[$activity->id] = true;
                 $all[] = $activity;
             }
-            usort($all, static fn($a, $b) => strcmp($b->created_at ?? '', $a->created_at ?? ''));
+
+            usort($all, static fn($a, $b): int => strcmp($b->created_at ?? '', $a->created_at ?? ''));
             $activities = array_slice($all, 0, 10);
         } elseif ($contactId !== null) {
-            $activities = $query->where('contact_id', '=', $contactId)
+            $activities = $modelQuery->where('contact_id', '=', $contactId)
                 ->orderBy('created_at', 'DESC')
                 ->limit(10)
                 ->get();
         } elseif ($estateId !== null) {
-            $activities = $query->where('estate_id', '=', $estateId)
+            $activities = $modelQuery->where('estate_id', '=', $estateId)
                 ->orderBy('created_at', 'DESC')
                 ->limit(10)
                 ->get();
@@ -240,7 +255,7 @@ final class EmailDraftService
         $lines = [];
         foreach ($activities as $activity) {
             $date = substr($activity->created_at ?? '', 0, 10);
-            $lines[] = "{$date}: {$activity->type} — {$activity->subject}";
+            $lines[] = sprintf('%s: %s — %s', $date, $activity->type, $activity->subject);
         }
 
         return $lines;
@@ -251,7 +266,7 @@ final class EmailDraftService
      */
     public function buildAgentContext(?User $user): array
     {
-        if ($user === null) {
+        if (!$user instanceof User) {
             return [];
         }
 
@@ -279,7 +294,7 @@ final class EmailDraftService
     ): string {
         $intentInstruction = $this->getIntentInstruction($intent);
         $sections = ["You are a real estate email writer. Generate a ready-to-send email (not a template).\n"];
-        $sections[] = "INTENT: {$intentInstruction}\n";
+        $sections[] = sprintf('INTENT: %s%s', $intentInstruction, PHP_EOL);
 
         $contactContext = $this->buildContactContext($contact);
         if ($contactContext !== []) {
@@ -302,7 +317,8 @@ final class EmailDraftService
         }
 
         if ($contextNotes !== null && $contextNotes !== '') {
-            $sections[] = "ADDITIONAL NOTES FROM AGENT:\n{$contextNotes}";
+            $sections[] = 'ADDITIONAL NOTES FROM AGENT:
+' . $contextNotes;
         }
 
         $sections[] = "RULES:\n" .
@@ -325,7 +341,7 @@ final class EmailDraftService
     {
         $lines = [];
         foreach ($context as $key => $value) {
-            $lines[] = "  {$key}: {$value}";
+            $lines[] = sprintf('  %s: %s', $key, $value);
         }
 
         return implode("\n", $lines);

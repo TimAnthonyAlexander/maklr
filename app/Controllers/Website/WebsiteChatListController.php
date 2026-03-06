@@ -33,7 +33,7 @@ class WebsiteChatListController extends Controller
         }
 
         $messages = $query->orderBy('created_at', 'ASC')->get();
-        $items = array_map(fn (WebsiteChatMessage $msg) => $msg->toArray(), $messages);
+        $items = array_map(fn (WebsiteChatMessage $websiteChatMessage): array => $websiteChatMessage->toArray(), $messages);
 
         return JsonResponse::ok(['items' => $items]);
     }

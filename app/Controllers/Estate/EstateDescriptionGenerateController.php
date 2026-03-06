@@ -29,7 +29,7 @@ class EstateDescriptionGenerateController extends Controller
             return JsonResponse::error('Unauthorized', 401);
         }
 
-        if (!is_array($this->estate_data) || empty($this->estate_data)) {
+        if (!is_array($this->estate_data) || $this->estate_data === []) {
             return JsonResponse::badRequest('estate_data is required');
         }
 
@@ -76,10 +76,14 @@ Rules:
 - Return plain text (no HTML, no markdown)
 PROMPT;
 
-        $userPrompt = "Property data:\n{$estateContext}";
+        $userPrompt = 'Property data:
+' . $estateContext;
 
         if ($this->additional_notes !== '') {
-            $userPrompt .= "\n\nAdditional notes from the agent:\n{$this->additional_notes}";
+            $userPrompt .= '
+
+Additional notes from the agent:
+' . $this->additional_notes;
         }
 
         $schema = [
@@ -114,8 +118,8 @@ PROMPT;
             return JsonResponse::ok([
                 'description' => $parsed['description'],
             ]);
-        } catch (RuntimeException $e) {
-            return JsonResponse::error('AI generation failed: ' . $e->getMessage(), 502);
+        } catch (RuntimeException $runtimeException) {
+            return JsonResponse::error('AI generation failed: ' . $runtimeException->getMessage(), 502);
         }
     }
 

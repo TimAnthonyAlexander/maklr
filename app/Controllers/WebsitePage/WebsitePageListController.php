@@ -28,7 +28,7 @@ class WebsitePageListController extends Controller
             ->orderBy('sort_order', 'ASC')
             ->get();
 
-        $items = array_map(fn (WebsitePage $page) => $page->toArray(), $pages);
+        $items = array_map(fn (WebsitePage $websitePage): array => $websitePage->toArray(), $pages);
 
         return JsonResponse::ok(['items' => $items]);
     }

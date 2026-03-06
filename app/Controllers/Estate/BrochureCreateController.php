@@ -155,14 +155,14 @@ class BrochureCreateController extends Controller
         }
 
         $imageMap = [];
-        foreach ($allImages as $image) {
-            $imageMap[$image->id] = $image;
+        foreach ($allImages as $allImage) {
+            $imageMap[$allImage->id] = $allImage;
         }
 
         $ordered = [];
-        foreach ($this->image_ids as $imageId) {
-            if (isset($imageMap[$imageId])) {
-                $ordered[] = $imageMap[$imageId];
+        foreach ($this->image_ids as $image_id) {
+            if (isset($imageMap[$image_id])) {
+                $ordered[] = $imageMap[$image_id];
             }
         }
 

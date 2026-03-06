@@ -69,15 +69,12 @@ class WebsitePageUpdateController extends Controller
         }
 
         // Check slug uniqueness if changed
-        if ($this->slug !== null && $this->slug !== $page->slug) {
-            if (WebsitePage::where('website_id', '=', $this->websiteId)
-                ->where('slug', '=', $this->slug)
-                ->exists()
-            ) {
-                return JsonResponse::validationError([
-                    'slug' => ['This slug is already used in this website'],
-                ]);
-            }
+        if ($this->slug !== null && $this->slug !== $page->slug && WebsitePage::where('website_id', '=', $this->websiteId)
+            ->where('slug', '=', $this->slug)
+            ->exists()) {
+            return JsonResponse::validationError([
+                'slug' => ['This slug is already used in this website'],
+            ]);
         }
 
         // Snapshot old values for audit

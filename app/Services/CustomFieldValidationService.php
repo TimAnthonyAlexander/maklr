@@ -46,6 +46,7 @@ class CustomFieldValidationService
             if ($value === null) {
                 continue;
             }
+
             if ($value === '') {
                 continue;
             }
