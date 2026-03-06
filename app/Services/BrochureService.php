@@ -67,10 +67,13 @@ class BrochureService
         $gridDataUris = array_map(fn(EstateImage $estateImage): ?string => $this->imageToDataUri($estateImage), $gridImages);
         $floorPlanDataUris = array_map(fn(EstateImage $estateImage): ?string => $this->imageToDataUri($estateImage), $floorPlans);
 
+        $hasFloorPlans = array_filter($floorPlanDataUris, fn($uri): bool => $uri !== null) !== [];
+        $totalPages = $hasFloorPlans ? 3 : 2;
+
         $styles = $this->buildStyles();
-        $page1 = $this->buildPage1($estate, $heroDataUri);
-        $page2 = $this->buildPage2($estate, $gridDataUris, $user, $office);
-        $page3 = $this->buildPage3($floorPlanDataUris);
+        $page1 = $this->buildPage1($estate, $heroDataUri, 1, $totalPages);
+        $page2 = $this->buildPage2($estate, $gridDataUris, $user, $office, 2, $totalPages);
+        $page3 = $this->buildPage3($floorPlanDataUris, 3, $totalPages);
 
         return <<<HTML
         <!DOCTYPE html>
@@ -88,7 +91,7 @@ class BrochureService
         HTML;
     }
 
-    private function buildPage1(Estate $estate, ?string $heroDataUri): string
+    private function buildPage1(Estate $estate, ?string $heroDataUri, int $pageNum, int $totalPages): string
     {
         $address = $this->buildAddress($estate);
         $price = $this->formatPrice($estate->price, $estate->marketing_type);
@@ -98,12 +101,16 @@ class BrochureService
         $heroHtml = '';
         if ($heroDataUri !== null) {
             $heroHtml = '<div class="hero-image"><img src="' . $heroDataUri . '" /></div>';
+        } else {
+            $heroHtml = '<div class="hero-placeholder"></div>';
         }
 
         $facts = $this->buildKeyFacts($estate);
+        $footer = $this->buildFooter($estate, $pageNum, $totalPages);
 
         return <<<HTML
         <div class="page">
+            <div class="header-bar"></div>
             {$heroHtml}
             <div class="title-block">
                 <h1>{$title}</h1>
@@ -113,11 +120,12 @@ class BrochureService
             <table class="facts-table">
                 {$facts}
             </table>
+            {$footer}
         </div>
         HTML;
     }
 
-    private function buildPage2(Estate $estate, array $gridDataUris, ?User $user, ?Office $office): string
+    private function buildPage2(Estate $estate, array $gridDataUris, ?User $user, ?Office $office, int $pageNum, int $totalPages): string
     {
         $description = '';
         if ($estate->description !== null && $estate->description !== '') {
@@ -152,6 +160,7 @@ class BrochureService
         }
 
         $agentHtml = $this->buildAgentBlock($user, $office);
+        $footer = $this->buildFooter($estate, $pageNum, $totalPages);
 
         return <<<HTML
         <div class="page">
@@ -159,11 +168,12 @@ class BrochureService
             {$featuresHtml}
             {$gridHtml}
             {$agentHtml}
+            {$footer}
         </div>
         HTML;
     }
 
-    private function buildPage3(array $floorPlanDataUris): string
+    private function buildPage3(array $floorPlanDataUris, int $pageNum, int $totalPages): string
     {
         $validUris = array_filter($floorPlanDataUris, fn($uri): bool => $uri !== null);
         if ($validUris === []) {
@@ -175,10 +185,35 @@ class BrochureService
             $imagesHtml .= '<div class="floor-plan-image"><img src="' . $validUri . '" /></div>';
         }
 
+        $footer = $this->buildFooter(null, $pageNum, $totalPages);
+
         return <<<HTML
         <div class="page">
             <h2>Floor Plans</h2>
             {$imagesHtml}
+            {$footer}
+        </div>
+        HTML;
+    }
+
+    private function buildFooter(?Estate $estate, int $pageNum, int $totalPages): string
+    {
+        $ref = '';
+        if ($estate !== null) {
+            $id = $estate->external_id ?? $estate->id;
+            $ref = htmlspecialchars($id, ENT_QUOTES, 'UTF-8');
+        }
+
+        $leftHtml = $ref !== '' ? '<span class="footer-ref">Ref: ' . $ref . '</span>' : '';
+
+        return <<<HTML
+        <div class="page-footer">
+            <table class="footer-table">
+                <tr>
+                    <td class="footer-left">{$leftHtml}</td>
+                    <td class="footer-right">Page {$pageNum} of {$totalPages}</td>
+                </tr>
+            </table>
         </div>
         HTML;
     }
@@ -191,7 +226,7 @@ class BrochureService
 
         return <<<CSS
         @page {
-            margin: 40px 50px;
+            margin: 40px 50px 60px 50px;
         }
         body {
             font-family: {$font};
@@ -203,9 +238,16 @@ class BrochureService
         }
         .page {
             page-break-after: always;
+            position: relative;
         }
         .page:last-child {
             page-break-after: auto;
+        }
+        .header-bar {
+            width: 100%;
+            height: 6px;
+            background-color: {$primary};
+            margin-bottom: 20px;
         }
         h1 {
             font-size: 22pt;
@@ -226,11 +268,20 @@ class BrochureService
         }
         .hero-image {
             width: 100%;
+            max-height: 350px;
+            overflow: hidden;
             margin-bottom: 20px;
         }
         .hero-image img {
             width: 100%;
             height: auto;
+        }
+        .hero-placeholder {
+            width: 100%;
+            height: 120px;
+            background-color: #F0F0F0;
+            border: 2px dashed #D0D0D0;
+            margin-bottom: 20px;
         }
         .title-block {
             margin-bottom: 20px;
@@ -252,18 +303,18 @@ class BrochureService
             margin-top: 10px;
         }
         .facts-table td {
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-bottom: 1px solid #E0E0E0;
             vertical-align: top;
+            font-size: 10pt;
         }
         .facts-table .label {
             color: {$accent};
-            width: 40%;
-            font-size: 10pt;
+            width: 20%;
         }
         .facts-table .value {
             font-weight: 500;
-            font-size: 10pt;
+            width: 30%;
         }
         .section {
             margin-bottom: 15px;
@@ -301,10 +352,21 @@ class BrochureService
             height: auto;
         }
         .agent-block {
-            margin-top: 20px;
-            padding: 15px;
+            margin-top: 25px;
+            padding: 15px 20px;
             background-color: #F5F5F5;
-            border: 1px solid #E0E0E0;
+            border-top: 3px solid {$primary};
+        }
+        .agent-block .office-name {
+            font-weight: 700;
+            font-size: 12pt;
+            margin: 0 0 8px 0;
+            color: {$primary};
+        }
+        .agent-block .agent-divider {
+            border: none;
+            border-top: 1px solid #D0D0D0;
+            margin: 8px 0;
         }
         .agent-block .agent-name {
             font-weight: 600;
@@ -323,6 +385,33 @@ class BrochureService
         .floor-plan-image img {
             max-width: 100%;
             height: auto;
+        }
+        .page-footer {
+            position: fixed;
+            bottom: -30px;
+            left: 0;
+            width: 100%;
+        }
+        .footer-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-top: 1px solid #E0E0E0;
+        }
+        .footer-table td {
+            padding: 8px 0 0 0;
+            font-size: 8pt;
+            color: {$accent};
+            vertical-align: top;
+        }
+        .footer-left {
+            text-align: left;
+        }
+        .footer-right {
+            text-align: right;
+        }
+        .footer-ref {
+            font-size: 8pt;
+            color: {$accent};
         }
         CSS;
     }
@@ -394,11 +483,26 @@ class BrochureService
             $rows[] = ['Condition', ucfirst(str_replace('_', ' ', $estate->condition))];
         }
 
+        // Build 4-column layout: two label-value pairs per row
         $html = '';
-        foreach ($rows as $row) {
-            $label = htmlspecialchars($row[0], ENT_QUOTES, 'UTF-8');
-            $value = htmlspecialchars($row[1], ENT_QUOTES, 'UTF-8');
-            $html .= '<tr><td class="label">' . $label . '</td><td class="value">' . $value . '</td></tr>';
+        for ($i = 0; $i < count($rows); $i += 2) {
+            $label1 = htmlspecialchars($rows[$i][0], ENT_QUOTES, 'UTF-8');
+            $value1 = htmlspecialchars($rows[$i][1], ENT_QUOTES, 'UTF-8');
+
+            if (isset($rows[$i + 1])) {
+                $label2 = htmlspecialchars($rows[$i + 1][0], ENT_QUOTES, 'UTF-8');
+                $value2 = htmlspecialchars($rows[$i + 1][1], ENT_QUOTES, 'UTF-8');
+            } else {
+                $label2 = '';
+                $value2 = '';
+            }
+
+            $html .= '<tr>'
+                . '<td class="label">' . $label1 . '</td>'
+                . '<td class="value">' . $value1 . '</td>'
+                . '<td class="label">' . $label2 . '</td>'
+                . '<td class="value">' . $value2 . '</td>'
+                . '</tr>';
         }
 
         return $html;
@@ -448,6 +552,16 @@ class BrochureService
 
         $lines = [];
 
+        // Office name as bold header
+        if ($office instanceof Office) {
+            $lines[] = '<p class="office-name">' . htmlspecialchars($office->name, ENT_QUOTES, 'UTF-8') . '</p>';
+        }
+
+        // Divider between office header and agent details
+        if ($office instanceof Office && $user instanceof User) {
+            $lines[] = '<hr class="agent-divider" />';
+        }
+
         if ($user instanceof User) {
             $lines[] = '<p class="agent-name">' . htmlspecialchars($user->name, ENT_QUOTES, 'UTF-8') . '</p>';
             if ($user->email !== '') {
@@ -459,8 +573,8 @@ class BrochureService
             }
         }
 
+        // Office contact details below agent
         if ($office instanceof Office) {
-            $lines[] = '<p class="agent-detail" style="margin-top: 8px;">' . htmlspecialchars($office->name, ENT_QUOTES, 'UTF-8') . '</p>';
             if ($office->phone !== null && $office->phone !== '') {
                 $lines[] = '<p class="agent-detail">' . htmlspecialchars($office->phone, ENT_QUOTES, 'UTF-8') . '</p>';
             }
@@ -499,18 +613,18 @@ class BrochureService
         $formatted = number_format($price, 0, ',', '.');
 
         return match ($marketingType) {
-            'rent' => "\xe2\x82\xac " . $formatted . ' /month',
-            default => "\xe2\x82\xac " . $formatted,
+            'rent' => '€ ' . $formatted . ' /month',
+            default => '€ ' . $formatted,
         };
     }
 
     private function formatArea(?float $area): string
     {
         if ($area === null) {
-            return "\xe2\x80\x94";
+            return '—';
         }
 
-        return number_format($area, 1, ',', '.') . " m\xc2\xb2";
+        return number_format($area, 1, ',', '.') . ' m²';
     }
 
     private function buildAddress(Estate $estate): string
