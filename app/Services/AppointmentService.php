@@ -37,7 +37,16 @@ class AppointmentService
             $params[] = $excludeId;
         }
 
-        return App::db()->raw($sql, $params);
+        $results = App::db()->raw($sql, $params);
+
+        if ($excludeId !== null) {
+            $results = array_values(array_filter(
+                $results,
+                static fn (array $row): bool => ($row['appointment_id'] ?? '') !== $excludeId,
+            ));
+        }
+
+        return $results;
     }
 
     /**

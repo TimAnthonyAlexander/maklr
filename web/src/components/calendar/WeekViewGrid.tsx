@@ -1,4 +1,4 @@
-import { useRef, useEffect, useMemo, useCallback } from "react";
+import { useRef, useEffect, useMemo, useCallback, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import type { Appointment } from "../../api/types";
 import {
@@ -20,6 +20,15 @@ interface WeekViewGridProps {
 
 const HOUR_HEIGHT = 60;
 
+function useCurrentTime() {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 60_000);
+    return () => clearInterval(id);
+  }, []);
+  return now;
+}
+
 export function WeekViewGrid({
   weekDays,
   appointments,
@@ -29,6 +38,7 @@ export function WeekViewGrid({
   onEventClick,
 }: WeekViewGridProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const now = useCurrentTime();
   const hours = useMemo(
     () => Array.from({ length: endHour - startHour }, (_, i) => startHour + i),
     [startHour, endHour],
@@ -169,6 +179,42 @@ export function WeekViewGrid({
                 );
               });
             })()}
+
+            {/* Current time indicator */}
+            {isSameDay(now, weekDays[dayIdx]) &&
+              now.getHours() >= startHour &&
+              now.getHours() < endHour && (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    left: 0,
+                    right: 0,
+                    top:
+                      (now.getHours() - startHour + now.getMinutes() / 60) *
+                      HOUR_HEIGHT,
+                    zIndex: 3,
+                    pointerEvents: "none",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      left: -5,
+                      top: -5,
+                      width: 10,
+                      height: 10,
+                      borderRadius: "50%",
+                      bgcolor: "error.main",
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      height: "2px",
+                      bgcolor: "error.main",
+                    }}
+                  />
+                </Box>
+              )}
           </Box>
         ))}
       </Box>
