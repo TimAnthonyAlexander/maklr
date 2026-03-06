@@ -44,6 +44,12 @@ Commercial real estate CRMs are expensive, closed-source, and lock you in. Maklr
   <img src="mails.png" alt="Email inbox" width="800" />
 </p>
 
+<p align="center">
+  <img src="ai-websites.png" alt="AI Website Builder" width="800" />
+</p>
+
+**AI Website Builder** — Create and manage public-facing websites directly from the CRM. Each website consists of pages with AI-generated HTML content powered by an integrated LLM chat interface. Describe what you want in natural language, and the AI generates responsive, Tailwind-styled pages following a clean minimalist design. Edit iteratively through conversation — the chat history provides context for follow-up changes. Includes daily rate limiting per office and HTML sanitization for safe output.
+
 ---
 
 ## Quick Start
@@ -95,6 +101,9 @@ Connect external mailboxes via IMAP/SMTP. Send and receive in-app. Auto-match em
 
 **Email Templates** `[x]`
 Template CRUD with placeholder variables for estate and contact fields. Live preview with substitution.
+
+**AI Website Builder** `[x]`
+Create and manage public-facing websites with AI-generated pages. Chat-based editing interface — describe changes in natural language and the LLM generates responsive, Tailwind-styled HTML. Iterative conversation with full chat history context. Per-office daily rate limiting and HTML sanitization. Website listing with search, pagination, and publish/draft status.
 
 **Documents** `[-]`
 File storage per entity (estate, contact, appointment). Upload, download, and delete with permission checks. Remaining: PDF brochure generation.
