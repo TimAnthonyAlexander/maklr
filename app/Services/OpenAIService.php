@@ -37,7 +37,7 @@ final class OpenAIService
     /**
      * Enable cost tracking for this request
      */
-    public function withService(): self
+    public function withService(string $service = '', string $userId = ''): self
     {
         return clone $this;
     }
