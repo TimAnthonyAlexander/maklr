@@ -114,6 +114,15 @@ class Contact extends BaseModel
         $this->search_profiles = json_encode($profiles) ?: null;
     }
 
+    public function toArray(bool $includeRelations = false): array
+    {
+        $data = parent::toArray($includeRelations);
+        $data['search_profiles'] = $this->getSearchProfiles();
+        $data['custom_fields'] = $this->getCustomFields();
+
+        return $data;
+    }
+
     public function assignedUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_user_id');
