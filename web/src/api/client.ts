@@ -1309,6 +1309,15 @@ export async function deleteEmailTemplateById(
  * POST /email-templates/{id}/preview
  * @tags EmailTemplates
  */
+export async function postEmailTemplateGenerate(
+  body: Types.PostEmailTemplateGenerateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.PostEmailTemplateGenerateResponse> {
+  const url = "/email-templates/generate";
+
+  return http.post(url, body, options);
+}
+
 export async function postEmailTemplatePreviewById(
   path: Types.EmailTemplateByIdPathParams,
   body: Types.PostEmailTemplatePreviewRequestBody,

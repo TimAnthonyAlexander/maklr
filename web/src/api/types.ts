@@ -1298,6 +1298,18 @@ export interface EmailTemplatePreviewResponse {
   body_text: string | null;
 }
 
+export interface PostEmailTemplateGenerateRequestBody {
+  description: string;
+  tone?: string;
+  category?: string | null;
+}
+
+export interface PostEmailTemplateGenerateResponse {
+  subject: string;
+  body_html: string;
+  body_text: string;
+}
+
 // --- Custom Field Definition types ---
 
 export type CustomFieldType = 'text' | 'number' | 'select' | 'boolean' | 'date' | 'textarea';

@@ -1,6 +1,20 @@
 {
+    "__meta": {
+        "needs_review": true,
+        "last_sync": "2026-03-06T16:16:29+00:00"
+    },
     "email_templates.actions": "Aktionen",
     "email_templates.active": "Aktiv",
+    "email_templates.ai_description": "Beschreiben Sie die E-Mail, die Sie benötigen",
+    "email_templates.ai_description_placeholder": "z. B. eine Follow-up-E-Mail nach einer Immobilienbesichtigung, in der Sie sich beim Kunden bedanken und ihn um Feedback bitten...",
+    "email_templates.ai_generate": "Generieren mit AI",
+    "email_templates.ai_generate_title": "E-Mail-Vorlage generieren",
+    "email_templates.ai_generating": "Erzeugen...",
+    "email_templates.ai_tone": "Ton",
+    "email_templates.ai_tone_casual": "Lässig",
+    "email_templates.ai_tone_formal": "Formal",
+    "email_templates.ai_tone_friendly": "Freundlich",
+    "email_templates.ai_tone_professional": "Professionell",
     "email_templates.body_placeholder": "Schreiben Sie hier den Inhalt Ihrer Vorlage...",
     "email_templates.cancel": "Abbrechen",
     "email_templates.category": "Kategorie",

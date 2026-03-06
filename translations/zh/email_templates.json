@@ -1,6 +1,20 @@
 {
+    "__meta": {
+        "last_sync": "2026-03-05T21:34:40+00:00",
+        "needs_review": true
+    },
     "email_templates.actions": "行动",
     "email_templates.active": "活跃",
+    "email_templates.ai_description": "描述您需要的电子邮件",
+    "email_templates.ai_description_placeholder": "例如，在客户看房后发送后续电子邮件，感谢客户并征求反馈意见...",
+    "email_templates.ai_generate": "用人工智能生成",
+    "email_templates.ai_generate_title": "生成电子邮件模板",
+    "email_templates.ai_generating": "生成...",
+    "email_templates.ai_tone": "音调",
+    "email_templates.ai_tone_casual": "休闲",
+    "email_templates.ai_tone_formal": "正式",
+    "email_templates.ai_tone_friendly": "友好型",
+    "email_templates.ai_tone_professional": "专业人员",
     "email_templates.body_placeholder": "在此写入模板内容...",
     "email_templates.cancel": "取消",
     "email_templates.category": "类别",
@@ -26,9 +40,5 @@
     "email_templates.subject": "主题",
     "email_templates.tab_all": "全部",
     "email_templates.template": "模板",
-    "email_templates.title": "电子邮件模板",
-    "__meta": {
-        "last_sync": "2026-03-05T21:34:40+00:00",
-        "needs_review": true
-    }
+    "email_templates.title": "电子邮件模板"
 }

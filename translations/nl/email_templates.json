@@ -1,6 +1,20 @@
 {
+    "__meta": {
+        "last_sync": "2026-03-05T21:34:38+00:00",
+        "needs_review": true
+    },
     "email_templates.actions": "Acties",
     "email_templates.active": "Actief",
+    "email_templates.ai_description": "Beschrijf de e-mail die je nodig hebt",
+    "email_templates.ai_description_placeholder": "Bijvoorbeeld een follow-up e-mail na een bezichtiging van een woning, waarin de klant wordt bedankt en om feedback wordt gevraagd...",
+    "email_templates.ai_generate": "Genereren met AI",
+    "email_templates.ai_generate_title": "E-mailsjabloon genereren",
+    "email_templates.ai_generating": "Het genereren van...",
+    "email_templates.ai_tone": "Toon",
+    "email_templates.ai_tone_casual": "Vrijblijvend",
+    "email_templates.ai_tone_formal": "Formeel",
+    "email_templates.ai_tone_friendly": "Vriendelijk",
+    "email_templates.ai_tone_professional": "Professioneel",
     "email_templates.body_placeholder": "Schrijf hier de inhoud van je sjabloon...",
     "email_templates.cancel": "Annuleren",
     "email_templates.category": "Categorie",
@@ -26,9 +40,5 @@
     "email_templates.subject": "Onderwerp",
     "email_templates.tab_all": "Alle",
     "email_templates.template": "Sjabloon",
-    "email_templates.title": "E-mail sjablonen",
-    "__meta": {
-        "last_sync": "2026-03-05T21:34:38+00:00",
-        "needs_review": true
-    }
+    "email_templates.title": "E-mail sjablonen"
 }

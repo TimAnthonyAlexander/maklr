@@ -2788,6 +2788,56 @@ export function usePostEmailTemplateCreate(
 }
 
 /**
+ * React hook for POST /email-templates/generate
+ */
+export function usePostEmailTemplateGenerate(
+  options?: QueryOptions<Types.PostEmailTemplateGenerateResponse>,
+): MutationResult<
+  Types.PostEmailTemplateGenerateResponse,
+  { body: Types.PostEmailTemplateGenerateRequestBody }
+> {
+  const [data, setData] =
+    useState<Types.PostEmailTemplateGenerateResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
+
+  const mutate = useCallback(
+    async (variables: {
+      body: Types.PostEmailTemplateGenerateRequestBody;
+    }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.postEmailTemplateGenerate(
+          variables.body,
+          optionsRef.current,
+        );
+        setData(result);
+        optionsRef.current?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        optionsRef.current?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+/**
  * React hook for PATCH /email-templates/{id}
  */
 export function usePatchEmailTemplateUpdateById(

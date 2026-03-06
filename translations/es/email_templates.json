@@ -1,6 +1,20 @@
 {
+    "__meta": {
+        "last_sync": "2026-03-05T21:34:37+00:00",
+        "needs_review": true
+    },
     "email_templates.actions": "Acciones",
     "email_templates.active": "Activo",
+    "email_templates.ai_description": "Describa el correo electrónico que necesita",
+    "email_templates.ai_description_placeholder": "Por ejemplo, un correo electrónico de seguimiento tras la visita a una propiedad, en el que se da las gracias al cliente y se le pide su opinión...",
+    "email_templates.ai_generate": "Generar con IA",
+    "email_templates.ai_generate_title": "Generar plantilla de correo electrónico",
+    "email_templates.ai_generating": "Generar...",
+    "email_templates.ai_tone": "Tono",
+    "email_templates.ai_tone_casual": "Casual",
+    "email_templates.ai_tone_formal": "Formal",
+    "email_templates.ai_tone_friendly": "Friendly",
+    "email_templates.ai_tone_professional": "Profesional",
     "email_templates.body_placeholder": "Escriba aquí el contenido de su plantilla...",
     "email_templates.cancel": "Cancelar",
     "email_templates.category": "Categoría",
@@ -26,9 +40,5 @@
     "email_templates.subject": "Asunto",
     "email_templates.tab_all": "Todos",
     "email_templates.template": "Plantilla",
-    "email_templates.title": "Plantillas de correo electrónico",
-    "__meta": {
-        "last_sync": "2026-03-05T21:34:37+00:00",
-        "needs_review": true
-    }
+    "email_templates.title": "Plantillas de correo electrónico"
 }

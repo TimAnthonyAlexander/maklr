@@ -97,6 +97,7 @@ use App\Controllers\EmailTemplate\EmailTemplateUpdateController;
 use App\Controllers\EmailTemplate\EmailTemplateDeleteController;
 use App\Controllers\EmailTemplate\EmailTemplatePlaceholdersController;
 use App\Controllers\EmailTemplate\EmailTemplatePreviewController;
+use App\Controllers\EmailTemplate\EmailTemplateGenerateController;
 use App\Middleware\CombinedAuthMiddleware;
 use App\Middleware\RoleMiddleware;
 use BaseApi\Http\Middleware\RateLimitMiddleware;
@@ -797,11 +798,18 @@ $router->post('/email-accounts/{id}/sync', [
 // Email Templates
 // ================================
 
-// Placeholders must be before {id} routes
+// Placeholders and generate must be before {id} routes
 $router->get('/email-templates/placeholders', [
     CombinedAuthMiddleware::class,
     RoleMiddleware::class => ['roles' => ['agent']],
     EmailTemplatePlaceholdersController::class,
+]);
+
+$router->post('/email-templates/generate', [
+    RateLimitMiddleware::class => ['limit' => '10/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    EmailTemplateGenerateController::class,
 ]);
 
 $router->get('/email-templates', [

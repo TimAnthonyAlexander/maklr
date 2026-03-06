@@ -1,6 +1,20 @@
 {
+    "__meta": {
+        "needs_review": true,
+        "last_sync": "2026-03-06T16:16:29+00:00"
+    },
     "email_templates.actions": "Actions",
     "email_templates.active": "Actif",
+    "email_templates.ai_description": "Décrivez l'e-mail dont vous avez besoin",
+    "email_templates.ai_description_placeholder": "Par exemple, un courriel de suivi après une visite de propriété, remerciant le client et lui demandant son avis...",
+    "email_templates.ai_generate": "Générer avec l'IA",
+    "email_templates.ai_generate_title": "Générer un modèle d'e-mail",
+    "email_templates.ai_generating": "Générer...",
+    "email_templates.ai_tone": "Tonalité",
+    "email_templates.ai_tone_casual": "Décontracté",
+    "email_templates.ai_tone_formal": "Formel",
+    "email_templates.ai_tone_friendly": "Convivialité",
+    "email_templates.ai_tone_professional": "Professionnel",
     "email_templates.body_placeholder": "Écrivez le contenu de votre modèle ici...",
     "email_templates.cancel": "Annuler",
     "email_templates.category": "Catégorie",

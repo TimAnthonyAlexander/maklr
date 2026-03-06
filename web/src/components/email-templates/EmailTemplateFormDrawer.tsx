@@ -20,12 +20,16 @@ import {
   FormControlLabel,
   Switch,
 } from "@mui/material";
-import { X, Save, Braces } from "lucide-react";
+import { X, Save, Braces, Sparkles } from "lucide-react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
-import type { EmailTemplate } from "../../api/types";
+import type {
+  EmailTemplate,
+  PostEmailTemplateGenerateResponse,
+} from "../../api/types";
+import { AiGenerateDialog } from "./AiGenerateDialog";
 import {
   usePostEmailTemplateCreate,
   usePatchEmailTemplateUpdateById,
@@ -69,6 +73,7 @@ export function EmailTemplateFormDrawer({
   const [active, setActive] = useState(true);
   const [placeholderAnchor, setPlaceholderAnchor] =
     useState<HTMLElement | null>(null);
+  const [aiDialogOpen, setAiDialogOpen] = useState(false);
 
   const { data: placeholders } = useGetEmailTemplatePlaceholders({
     enabled: open,
@@ -108,6 +113,7 @@ export function EmailTemplateFormDrawer({
     }
     createMutation.reset();
     updateMutation.reset();
+    setAiDialogOpen(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, template]);
 
@@ -175,6 +181,15 @@ export function EmailTemplateFormDrawer({
     updateMutation,
     onSuccess,
   ]);
+
+  const handleAiGenerated = useCallback(
+    (result: PostEmailTemplateGenerateResponse) => {
+      setSubject(result.subject);
+      editor?.commands.setContent(result.body_html);
+      setAiDialogOpen(false);
+    },
+    [editor],
+  );
 
   const mutationError = createMutation.error ?? updateMutation.error;
   const saving = createMutation.loading || updateMutation.loading;
@@ -302,8 +317,8 @@ export function EmailTemplateFormDrawer({
             </Box>
           </Box>
 
-          {/* Placeholder insert button */}
-          <Box sx={{ px: 3, pt: 2 }}>
+          {/* Toolbar buttons */}
+          <Box sx={{ px: 3, pt: 2, display: "flex", gap: 1 }}>
             <Button
               size="small"
               variant="outlined"
@@ -311,6 +326,14 @@ export function EmailTemplateFormDrawer({
               onClick={(e) => setPlaceholderAnchor(e.currentTarget)}
             >
               {t("email_templates.insert_placeholder")}
+            </Button>
+            <Button
+              size="small"
+              variant="outlined"
+              startIcon={<Sparkles size={18} />}
+              onClick={() => setAiDialogOpen(true)}
+            >
+              {t("email_templates.ai_generate")}
             </Button>
           </Box>
 
@@ -407,6 +430,12 @@ export function EmailTemplateFormDrawer({
           ))}
         </List>
       </Popover>
+      <AiGenerateDialog
+        open={aiDialogOpen}
+        onClose={() => setAiDialogOpen(false)}
+        onGenerated={handleAiGenerated}
+        category={category}
+      />
     </Drawer>
   );
 }
