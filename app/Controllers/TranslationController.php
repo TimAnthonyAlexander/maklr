@@ -37,11 +37,15 @@ final class TranslationController extends Controller
         $user = $this->request->user ?? null;
         $includeAdmin = $user !== null && isset($user['role']) && $user['role'] === 'admin';
 
-        $cacheKey = $includeAdmin ? $language . ':admin' : $language;
-        $translations = CacheHelper::remember('translations', $cacheKey, 86400, function () use ($translationService, $language, $includeAdmin): array {
-            $all = $translationService->getAll($language, $includeAdmin);
-            return array_filter($all, fn(string $key): bool => !str_starts_with($key, '__'), ARRAY_FILTER_USE_KEY);
-        }, useJitter: false);
+        $all = $translationService->getAll($language, $includeAdmin);
+        $filtered = array_filter($all, fn(string $key): bool => !str_starts_with($key, '__'), ARRAY_FILTER_USE_KEY);
+
+        if (App::config('app.env') === 'local') {
+            $translations = $filtered;
+        } else {
+            $cacheKey = $includeAdmin ? $language . ':admin' : $language;
+            $translations = CacheHelper::remember('translations', $cacheKey, 86400, fn(): array => $filtered, useJitter: false);
+        }
 
         return JsonResponse::ok([
             'translations' => $translations,
