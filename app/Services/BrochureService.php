@@ -199,7 +199,7 @@ class BrochureService
     private function buildFooter(?Estate $estate, int $pageNum, int $totalPages): string
     {
         $ref = '';
-        if ($estate !== null) {
+        if ($estate instanceof Estate) {
             $id = $estate->external_id ?? $estate->id;
             $ref = htmlspecialchars($id, ENT_QUOTES, 'UTF-8');
         }
@@ -480,7 +480,8 @@ class BrochureService
 
         // Build 4-column layout: two label-value pairs per row
         $html = '';
-        for ($i = 0; $i < count($rows); $i += 2) {
+        $counter = count($rows);
+        for ($i = 0; $i < $counter; $i += 2) {
             $label1 = htmlspecialchars($rows[$i][0], ENT_QUOTES, 'UTF-8');
             $value1 = htmlspecialchars($rows[$i][1], ENT_QUOTES, 'UTF-8');
 

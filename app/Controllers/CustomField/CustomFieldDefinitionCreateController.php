@@ -38,8 +38,8 @@ class CustomFieldDefinitionCreateController extends Controller
                 'field_type' => 'required|string|in:' . implode(',', self::FIELD_TYPES),
                 'entity_type' => 'required|string|in:' . implode(',', self::ENTITY_TYPES),
             ]);
-        } catch (ValidationException $e) {
-            return JsonResponse::validationError($e->errors());
+        } catch (ValidationException $validationException) {
+            return JsonResponse::validationError($validationException->errors());
         }
 
         $officeId = $this->request->user['office_id'] ?? null;
@@ -53,20 +53,20 @@ class CustomFieldDefinitionCreateController extends Controller
             return JsonResponse::validationError(['name' => ['A custom field with this name already exists']]);
         }
 
-        $definition = new CustomFieldDefinition();
-        $definition->name = $this->name;
-        $definition->label = $this->label;
-        $definition->field_type = $this->field_type;
-        $definition->entity_type = $this->entity_type;
-        $definition->required = $this->required;
-        $definition->sort_order = $this->sort_order;
-        $definition->office_id = $officeId;
+        $customFieldDefinition = new CustomFieldDefinition();
+        $customFieldDefinition->name = $this->name;
+        $customFieldDefinition->label = $this->label;
+        $customFieldDefinition->field_type = $this->field_type;
+        $customFieldDefinition->entity_type = $this->entity_type;
+        $customFieldDefinition->required = $this->required;
+        $customFieldDefinition->sort_order = $this->sort_order;
+        $customFieldDefinition->office_id = $officeId;
 
         if ($this->options !== null) {
-            $definition->setOptions($this->options);
+            $customFieldDefinition->setOptions($this->options);
         }
 
-        $definition->save();
+        $customFieldDefinition->save();
 
         /** @var AuditLogService $auditLog */
         $auditLog = $this->make(AuditLogService::class);
@@ -74,12 +74,12 @@ class CustomFieldDefinitionCreateController extends Controller
             $this->request->user['id'],
             'created',
             'custom_field_definition',
-            $definition->id,
-            ['name' => ['old' => null, 'new' => $definition->name]],
+            $customFieldDefinition->id,
+            ['name' => ['old' => null, 'new' => $customFieldDefinition->name]],
             ClientIp::from($this->request, true),
             $officeId,
         );
 
-        return JsonResponse::created($definition->toArray());
+        return JsonResponse::created($customFieldDefinition->toArray());
     }
 }

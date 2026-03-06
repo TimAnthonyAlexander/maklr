@@ -32,7 +32,7 @@ class CustomFieldValidationService
         foreach ($applicableDefinitions as $name => $def) {
             $fieldValue = $values[$name] ?? null;
             if ($def->required && ($fieldValue === null || $fieldValue === '')) {
-                $errors["custom_fields.{$name}"] = ["{$def->label} is required"];
+                $errors['custom_fields.' . $name] = [$def->label . ' is required'];
             }
         }
 
@@ -43,14 +43,16 @@ class CustomFieldValidationService
             }
 
             $def = $applicableDefinitions[$name];
-
-            if ($value === null || $value === '') {
+            if ($value === null) {
+                continue;
+            }
+            if ($value === '') {
                 continue;
             }
 
             $fieldErrors = $this->validateFieldValue($value, $def);
             if ($fieldErrors !== []) {
-                $errors["custom_fields.{$name}"] = $fieldErrors;
+                $errors['custom_fields.' . $name] = $fieldErrors;
             }
         }
 
@@ -60,34 +62,38 @@ class CustomFieldValidationService
     /**
      * @return string[]
      */
-    private function validateFieldValue(mixed $value, CustomFieldDefinition $def): array
+    private function validateFieldValue(mixed $value, CustomFieldDefinition $customFieldDefinition): array
     {
         $errors = [];
 
-        switch ($def->field_type) {
+        switch ($customFieldDefinition->field_type) {
             case 'number':
                 if (!is_numeric($value)) {
-                    $errors[] = "{$def->label} must be a number";
+                    $errors[] = $customFieldDefinition->label . ' must be a number';
                 }
+
                 break;
 
             case 'boolean':
                 if (!is_bool($value) && $value !== 0 && $value !== 1 && $value !== '0' && $value !== '1') {
-                    $errors[] = "{$def->label} must be a boolean";
+                    $errors[] = $customFieldDefinition->label . ' must be a boolean';
                 }
+
                 break;
 
             case 'select':
-                $options = $def->getOptions();
+                $options = $customFieldDefinition->getOptions();
                 if ($options !== [] && !in_array($value, $options, true)) {
-                    $errors[] = "{$def->label} must be one of: " . implode(', ', $options);
+                    $errors[] = $customFieldDefinition->label . ' must be one of: ' . implode(', ', $options);
                 }
+
                 break;
 
             case 'date':
                 if (!is_string($value) || strtotime($value) === false) {
-                    $errors[] = "{$def->label} must be a valid date";
+                    $errors[] = $customFieldDefinition->label . ' must be a valid date';
                 }
+
                 break;
         }
 

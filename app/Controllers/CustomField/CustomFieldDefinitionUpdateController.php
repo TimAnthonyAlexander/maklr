@@ -55,8 +55,8 @@ class CustomFieldDefinitionUpdateController extends Controller
             if ($this->entity_type !== null) {
                 $this->validate(['entity_type' => 'string|in:' . implode(',', self::ENTITY_TYPES)]);
             }
-        } catch (ValidationException $e) {
-            return JsonResponse::validationError($e->errors());
+        } catch (ValidationException $validationException) {
+            return JsonResponse::validationError($validationException->errors());
         }
 
         // Snapshot old values for audit

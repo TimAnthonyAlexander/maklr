@@ -17,29 +17,29 @@ class CustomFieldDefinitionListController extends Controller
     {
         $officeId = $this->request->user['office_id'] ?? null;
 
-        $query = CustomFieldDefinition::query()->where('office_id', '=', $officeId);
+        $modelQuery = CustomFieldDefinition::query()->where('office_id', '=', $officeId);
 
         if ($this->entity_type !== null) {
             $entityType = $this->entity_type;
-            $query->qb()->whereGroup(function ($qb) use ($entityType): void {
+            $modelQuery->qb()->whereGroup(function ($qb) use ($entityType): void {
                 $qb->where('entity_type', '=', $entityType)
                     ->orWhere('entity_type', '=', 'both');
             });
         }
 
         if ($this->active !== null) {
-            $query->where('active', '=', $this->active === '1');
+            $modelQuery->where('active', '=', $this->active === '1');
         }
 
-        $query->orderBy('sort_order', 'ASC');
+        $modelQuery->orderBy('sort_order', 'ASC');
 
-        [$query, $page, $perPage, $withTotal] = ControllerListHelpers::applyListParams(
-            $query,
+        [$modelQuery, $page, $perPage, $withTotal] = ControllerListHelpers::applyListParams(
+            $modelQuery,
             $this->request,
             100,
         );
 
-        $result = $query->paginate($page, $perPage, 100, true);
+        $result = $modelQuery->paginate($page, $perPage, 100, true);
 
         return JsonResponse::paginated($result);
     }
