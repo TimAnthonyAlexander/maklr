@@ -12,7 +12,7 @@ import {
   Alert,
   IconButton,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { X } from "lucide-react";
 import type { Task, PostTaskCreateRequestBody } from "../../api/types";
 import { usePostTaskCreate, usePatchTaskUpdateById } from "../../api/hooks";
 import { useTranslation } from "../../contexts/LanguageContext";
@@ -199,7 +199,7 @@ export function TaskForm({
             {isEdit ? t("tasks.form.edit_title") : t("tasks.form.new_title")}
           </Typography>
           <IconButton onClick={onClose} size="small">
-            <CloseIcon />
+            <X size={20} />
           </IconButton>
         </Box>
 

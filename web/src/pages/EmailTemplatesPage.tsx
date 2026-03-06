@@ -27,10 +27,7 @@ import {
   DialogContentText,
   DialogActions,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import SearchIcon from "@mui/icons-material/Search";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { Plus, Search, Pencil, Trash2 } from "lucide-react";
 import {
   useGetEmailTemplateList,
   useDeleteEmailTemplateById,
@@ -206,7 +203,7 @@ export function EmailTemplatesPage() {
         </Typography>
         <Button
           variant="contained"
-          startIcon={<AddIcon />}
+          startIcon={<Plus size={18} />}
           onClick={handleCreateClick}
         >
           {t("email_templates.new")}
@@ -230,7 +227,7 @@ export function EmailTemplatesPage() {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton size="small" onClick={handleSearch}>
-                  <SearchIcon fontSize="small" />
+                  <Search size={20} />
                 </IconButton>
               </InputAdornment>
             ),
@@ -353,7 +350,7 @@ export function EmailTemplatesPage() {
                                 handleRowClick(template);
                               }}
                             >
-                              <EditIcon fontSize="small" />
+                              <Pencil size={20} />
                             </IconButton>
                           </Tooltip>
                           <Tooltip title={t("email_templates.delete")}>
@@ -361,7 +358,7 @@ export function EmailTemplatesPage() {
                               size="small"
                               onClick={(e) => handleDeleteClick(e, template)}
                             >
-                              <DeleteOutlineIcon fontSize="small" />
+                              <Trash2 size={20} />
                             </IconButton>
                           </Tooltip>
                         </>

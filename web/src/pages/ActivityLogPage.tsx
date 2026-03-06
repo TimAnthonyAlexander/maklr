@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router";
 import { Box, Typography, Button, Alert, TablePagination } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { Plus } from "lucide-react";
 import { useGetActivityList } from "../api/hooks";
 import type { ActivityListQueryParams } from "../api/types";
 import { ActivityFilters } from "../components/activity/ActivityFilters";
@@ -101,7 +101,7 @@ export function ActivityLogPage() {
         </Typography>
         <Button
           variant="contained"
-          startIcon={<AddIcon />}
+          startIcon={<Plus size={18} />}
           onClick={() => setDialogOpen(true)}
         >
           {t("activity.page.add_activity")}

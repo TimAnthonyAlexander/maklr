@@ -12,9 +12,7 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
-import DownloadIcon from "@mui/icons-material/Download";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import { Download, Trash2, FileText } from "lucide-react";
 import {
   type Document,
   DOCUMENT_CATEGORY_LABELS,
@@ -88,7 +86,7 @@ export function DocumentListTable({
           color: "text.secondary",
         }}
       >
-        <DescriptionOutlinedIcon sx={{ fontSize: 48, mb: 1, opacity: 0.5 }} />
+        <FileText size={48} style={{ marginBottom: 8, opacity: 0.5 }} />
         <Typography variant="body1">No documents yet</Typography>
       </Box>
     );
@@ -153,7 +151,7 @@ export function DocumentListTable({
                       target="_blank"
                       rel="noopener"
                     >
-                      <DownloadIcon fontSize="small" />
+                      <Download size={20} />
                     </IconButton>
                   </Tooltip>
                   {canDelete && (
@@ -163,7 +161,7 @@ export function DocumentListTable({
                         color="error"
                         onClick={() => onDeleteClick(doc)}
                       >
-                        <DeleteOutlineIcon fontSize="small" />
+                        <Trash2 size={20} />
                       </IconButton>
                     </Tooltip>
                   )}

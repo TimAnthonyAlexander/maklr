@@ -8,9 +8,7 @@ import {
     Tooltip,
     CircularProgress,
 } from "@mui/material";
-import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
-import SyncIcon from "@mui/icons-material/Sync";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import { PenSquare, RefreshCw, Settings } from "lucide-react";
 import type { EmailAccount } from "../../api/types";
 import { useTranslation } from "../../contexts/LanguageContext";
 
@@ -66,7 +64,7 @@ export function EmailToolbar({
             <Button
                 variant="contained"
                 size="small"
-                startIcon={<CreateOutlinedIcon />}
+                startIcon={<PenSquare size={18} />}
                 onClick={onCompose}
             >
                 {t("email.compose")}
@@ -81,7 +79,7 @@ export function EmailToolbar({
                     {syncLoading ? (
                         <CircularProgress size={20} />
                     ) : (
-                        <SyncIcon fontSize="small" />
+                        <RefreshCw size={20} />
                     )}
                 </IconButton>
             </Tooltip>
@@ -90,7 +88,7 @@ export function EmailToolbar({
 
             <Tooltip title={t("email.settings")}>
                 <IconButton size="small" onClick={onOpenSettings}>
-                    <SettingsOutlinedIcon fontSize="small" />
+                    <Settings size={20} />
                 </IconButton>
             </Tooltip>
         </Box>

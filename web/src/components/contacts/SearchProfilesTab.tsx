@@ -8,9 +8,7 @@ import {
   Chip,
   Alert,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { Plus, Pencil, Trash2 } from "lucide-react";
 import type { Contact, SearchProfile } from "../../api/types";
 import { usePatchContactUpdateById } from "../../api/hooks";
 import { SearchProfileForm } from "./SearchProfileForm";
@@ -137,7 +135,7 @@ export function SearchProfilesTab({
           </Typography>
           <Button
             variant="outlined"
-            startIcon={<AddIcon />}
+            startIcon={<Plus size={18} />}
             onClick={handleAdd}
           >
             Add Search Profile
@@ -158,7 +156,7 @@ export function SearchProfilesTab({
             </Typography>
             <Button
               size="small"
-              startIcon={<AddIcon />}
+              startIcon={<Plus size={18} />}
               onClick={handleAdd}
             >
               Add Profile
@@ -188,14 +186,14 @@ export function SearchProfilesTab({
                       size="small"
                       onClick={() => handleEdit(profile)}
                     >
-                      <EditIcon fontSize="small" />
+                      <Pencil size={20} />
                     </IconButton>
                     <IconButton
                       size="small"
                       color="error"
                       onClick={() => handleDelete(profile.id)}
                     >
-                      <DeleteOutlineIcon fontSize="small" />
+                      <Trash2 size={20} />
                     </IconButton>
                   </Box>
                 </Box>

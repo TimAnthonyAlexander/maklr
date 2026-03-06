@@ -7,11 +7,7 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
-import MarkunreadOutlinedIcon from "@mui/icons-material/MarkunreadOutlined";
-import SearchIcon from "@mui/icons-material/Search";
-import CallMadeIcon from "@mui/icons-material/CallMade";
-import CallReceivedIcon from "@mui/icons-material/CallReceived";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import { MailOpen, Search, ArrowUpRight, ArrowDownLeft, Mail } from "lucide-react";
 import type { EmailMessage } from "../../api/types";
 import { useTranslation } from "../../contexts/LanguageContext";
 
@@ -96,7 +92,7 @@ export function EmailList({
             input: {
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon sx={{ fontSize: 20, color: "text.secondary" }} />
+                  <Search size={20} />
                 </InputAdornment>
               ),
             },
@@ -119,7 +115,7 @@ export function EmailList({
               flexShrink: 0,
             }}
           >
-            <MarkunreadOutlinedIcon sx={{ fontSize: 20 }} />
+            <MailOpen size={20} />
           </IconButton>
         </Tooltip>
       </Box>
@@ -153,7 +149,7 @@ export function EmailList({
               color: "text.secondary",
             }}
           >
-            <EmailOutlinedIcon sx={{ fontSize: 48, mb: 1, opacity: 0.3 }} />
+            <Mail size={48} style={{ marginBottom: 8, opacity: 0.3 }} />
             <Typography variant="body2">{t("email.no_emails_found")}</Typography>
           </Box>
         )}
@@ -189,12 +185,12 @@ export function EmailList({
                 }}
               >
                 {email.direction === "outgoing" ? (
-                  <CallMadeIcon
-                    sx={{ fontSize: 14, color: "text.secondary" }}
+                  <ArrowUpRight
+                    size={14}
                   />
                 ) : (
-                  <CallReceivedIcon
-                    sx={{ fontSize: 14, color: "text.secondary" }}
+                  <ArrowDownLeft
+                    size={14}
                   />
                 )}
                 <Typography

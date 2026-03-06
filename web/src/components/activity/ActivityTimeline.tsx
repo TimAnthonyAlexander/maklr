@@ -1,21 +1,21 @@
 import { Box, Typography, Chip, Skeleton } from "@mui/material";
 import {
   Home as EstateIcon,
-  Person as ContactIcon,
+  User as ContactIcon,
   CheckCircle as TaskIcon,
-  CalendarMonth as AppointmentIcon,
+  Calendar as AppointmentIcon,
   Phone as PhoneIcon,
-  Groups as MeetingIcon,
-  StickyNote2 as NoteIcon,
-  Visibility as ViewingIcon,
-  Delete as DeleteIcon,
-  SwapHoriz as ChangeIcon,
-  Add as CreateIcon,
-  Edit as EditIcon,
-  Email as EmailIcon,
+  Users as MeetingIcon,
+  StickyNote as NoteIcon,
+  Eye as ViewingIcon,
+  Trash2 as DeleteIcon,
+  ArrowLeftRight as ChangeIcon,
+  Plus as CreateIcon,
+  Pencil as EditIcon,
+  Mail as EmailIcon,
   Link as LinkIcon,
-  LinkOff as UnlinkIcon,
-} from "@mui/icons-material";
+  Unlink as UnlinkIcon,
+} from "lucide-react";
 import type { Activity, ActivityListQueryParams } from "../../api/types";
 import { useTranslation } from "../../contexts/LanguageContext";
 import { useGetActivityList } from "../../api/hooks";
@@ -23,20 +23,20 @@ import { colors } from "../../theme/colors";
 
 function getActivityIcon(type: string) {
   if (type === "task_created_from_email")
-    return <EmailIcon sx={{ fontSize: 20 }} />;
+    return <EmailIcon size={20} />;
   if (type === "contact_linked_to_estate")
-    return <LinkIcon sx={{ fontSize: 20 }} />;
+    return <LinkIcon size={20} />;
   if (type === "contact_unlinked_from_estate")
-    return <UnlinkIcon sx={{ fontSize: 20 }} />;
-  if (type.includes("deleted")) return <DeleteIcon sx={{ fontSize: 20 }} />;
-  if (type.includes("created")) return <CreateIcon sx={{ fontSize: 20 }} />;
+    return <UnlinkIcon size={20} />;
+  if (type.includes("deleted")) return <DeleteIcon size={20} />;
+  if (type.includes("created")) return <CreateIcon size={20} />;
   if (type.includes("changed") || type.includes("updated"))
-    return <ChangeIcon sx={{ fontSize: 20 }} />;
-  if (type === "phone_call") return <PhoneIcon sx={{ fontSize: 20 }} />;
-  if (type === "meeting") return <MeetingIcon sx={{ fontSize: 20 }} />;
-  if (type === "note") return <NoteIcon sx={{ fontSize: 20 }} />;
-  if (type === "viewing") return <ViewingIcon sx={{ fontSize: 20 }} />;
-  return <EditIcon sx={{ fontSize: 20 }} />;
+    return <ChangeIcon size={20} />;
+  if (type === "phone_call") return <PhoneIcon size={20} />;
+  if (type === "meeting") return <MeetingIcon size={20} />;
+  if (type === "note") return <NoteIcon size={20} />;
+  if (type === "viewing") return <ViewingIcon size={20} />;
+  return <EditIcon size={20} />;
 }
 
 function getActivityColor(type: string): string {
@@ -58,22 +58,22 @@ function getEntityChip(activity: Activity, t: (key: string) => string) {
   if (activity.estate_id)
     chips.push({
       label: t("activity.entity.estate"),
-      icon: <EstateIcon sx={{ fontSize: 14 }} />,
+      icon: <EstateIcon size={14} />,
     });
   if (activity.contact_id)
     chips.push({
       label: t("activity.entity.contact"),
-      icon: <ContactIcon sx={{ fontSize: 14 }} />,
+      icon: <ContactIcon size={14} />,
     });
   if (activity.task_id)
     chips.push({
       label: t("activity.entity.task"),
-      icon: <TaskIcon sx={{ fontSize: 14 }} />,
+      icon: <TaskIcon size={14} />,
     });
   if (activity.appointment_id)
     chips.push({
       label: t("activity.entity.appointment"),
-      icon: <AppointmentIcon sx={{ fontSize: 14 }} />,
+      icon: <AppointmentIcon size={14} />,
     });
   return chips;
 }

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { Box, TextField, MenuItem, InputAdornment } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+import { Search } from "lucide-react";
 import type { ActivityListQueryParams } from "../../api/types";
 import { useTranslation } from "../../contexts/LanguageContext";
 
@@ -105,7 +105,7 @@ export function ActivityFilters({
           input: {
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon sx={{ fontSize: 20, color: "text.secondary" }} />
+                <Search size={20} />
               </InputAdornment>
             ),
           },

@@ -15,10 +15,7 @@ import {
   IconButton,
   LinearProgress,
 } from "@mui/material";
-import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
-import CloseIcon from "@mui/icons-material/Close";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { CloudUpload, X, CheckCircle, AlertCircle } from "lucide-react";
 import {
   ESTATE_IMAGE_CATEGORIES,
   ESTATE_IMAGE_CATEGORY_LABELS,
@@ -199,8 +196,9 @@ export function EstateImageUploadDialog({
               onChange={handleFileChange}
               style={{ display: "none" }}
             />
-            <CloudUploadOutlinedIcon
-              sx={{ fontSize: 40, color: "text.secondary", mb: 1 }}
+            <CloudUpload
+              size={40}
+              style={{ marginBottom: 8 }}
             />
             <Typography variant="body2" color="text.secondary">
               {t("estate.upload_drag_text")}
@@ -265,13 +263,13 @@ export function EstateImageUploadDialog({
                     )}
                   </Box>
                   {item.status === "success" && (
-                    <CheckCircleOutlineIcon
-                      color="success"
-                      sx={{ fontSize: 20 }}
+                    <CheckCircle
+                      size={20}
+                      color="#2e7d32"
                     />
                   )}
                   {item.status === "error" && (
-                    <ErrorOutlineIcon color="error" sx={{ fontSize: 20 }} />
+                    <AlertCircle size={20} color="#d32f2f" />
                   )}
                   {(item.status === "pending" || item.status === "error") &&
                     !uploading && (
@@ -279,7 +277,7 @@ export function EstateImageUploadDialog({
                         size="small"
                         onClick={() => handleRemoveFile(index)}
                       >
-                        <CloseIcon fontSize="small" />
+                        <X size={20} />
                       </IconButton>
                     )}
                 </Box>

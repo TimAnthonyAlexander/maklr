@@ -11,9 +11,7 @@ import {
   IconButton,
   Chip,
 } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import EditIcon from "@mui/icons-material/Edit";
-import PersonOffIcon from "@mui/icons-material/PersonOff";
+import { ArrowLeft, Pencil, UserX } from "lucide-react";
 import {
   useGetUserShowById,
   usePatchUserUpdateById,
@@ -128,7 +126,7 @@ export function UserDetailPage() {
     <Box sx={{ p: 3 }}>
       {/* Back */}
       <Button
-        startIcon={<ArrowBackIcon />}
+        startIcon={<ArrowLeft size={18} />}
         onClick={() => navigate("/users")}
         sx={{ mb: 2 }}
       >
@@ -162,7 +160,7 @@ export function UserDetailPage() {
 
         <Box sx={{ display: "flex", gap: 1 }}>
           <IconButton size="small" onClick={() => setFormOpen(true)}>
-            <EditIcon />
+            <Pencil size={20} />
           </IconButton>
           {canDeactivate && user.active && (
             <IconButton
@@ -170,7 +168,7 @@ export function UserDetailPage() {
               color="error"
               onClick={() => setDeleteOpen(true)}
             >
-              <PersonOffIcon />
+              <UserX size={20} />
             </IconButton>
           )}
         </Box>

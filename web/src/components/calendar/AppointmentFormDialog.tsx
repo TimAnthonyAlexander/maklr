@@ -16,7 +16,7 @@ import {
   IconButton,
   Switch,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { X } from "lucide-react";
 import type {
   Appointment,
   PostAppointmentCreateRequestBody,
@@ -262,7 +262,7 @@ export function AppointmentFormDialog({
       >
         {isEdit ? t("calendar.form.edit_title") : t("calendar.form.new_title")}
         <IconButton onClick={onClose} size="small">
-          <CloseIcon />
+          <X size={20} />
         </IconButton>
       </DialogTitle>
 

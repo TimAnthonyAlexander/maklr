@@ -15,7 +15,7 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { X } from "lucide-react";
 import { usePostEstateBulkAction } from "../../api/hooks";
 import { useGetUserList } from "../../api/hooks";
 import { useTranslation } from "../../contexts/LanguageContext";
@@ -148,7 +148,7 @@ export function EstateBulkActionToolbar({
         </Box>
 
         <IconButton size="small" onClick={onClearSelection}>
-          <CloseIcon fontSize="small" />
+          <X size={20} />
         </IconButton>
       </Paper>
 

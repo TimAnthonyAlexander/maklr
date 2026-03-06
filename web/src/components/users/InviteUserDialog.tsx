@@ -15,7 +15,7 @@ import {
   Box,
   IconButton,
 } from "@mui/material";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { Copy } from "lucide-react";
 import { postInvitation } from "../../api/client";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -120,7 +120,7 @@ export function InviteUserDialog({ open, onClose }: InviteUserDialogProps) {
                 {inviteUrl}
               </Typography>
               <IconButton size="small" onClick={handleCopy}>
-                <ContentCopyIcon fontSize="small" />
+                <Copy size={20} />
               </IconButton>
             </Box>
             {copied && (

@@ -8,7 +8,7 @@ import {
   TablePagination,
   Alert,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { Plus } from "lucide-react";
 import {
   useGetDocumentList,
   usePostDocumentCreate,
@@ -123,7 +123,7 @@ export function DocumentsPage() {
         </Typography>
         <Button
           variant="contained"
-          startIcon={<AddIcon />}
+          startIcon={<Plus size={18} />}
           onClick={() => setUploadOpen(true)}
         >
           Upload

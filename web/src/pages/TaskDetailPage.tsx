@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router";
 import { Box, Button } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { ArrowLeft } from "lucide-react";
 import { TaskDetailContent } from "../components/tasks/TaskDetailContent";
 
 export function TaskDetailPage() {
@@ -14,7 +14,7 @@ export function TaskDetailPage() {
   return (
     <Box sx={{ p: 3 }}>
       <Button
-        startIcon={<ArrowBackIcon />}
+        startIcon={<ArrowLeft size={18} />}
         onClick={() => navigate("/tasks")}
         sx={{ mb: 2 }}
       >

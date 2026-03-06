@@ -9,8 +9,7 @@ import {
   Button,
   InputAdornment,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import ClearIcon from "@mui/icons-material/Clear";
+import { Search, X } from "lucide-react";
 import type { UserListQueryParams } from "../../api/types";
 
 interface UserFiltersProps {
@@ -75,7 +74,7 @@ export function UserFilters({ filters, onFilterChange }: UserFiltersProps) {
           input: {
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon fontSize="small" />
+                <Search size={20} />
               </InputAdornment>
             ),
           },
@@ -116,7 +115,7 @@ export function UserFilters({ filters, onFilterChange }: UserFiltersProps) {
       {hasActiveFilters && (
         <Button
           size="small"
-          startIcon={<ClearIcon />}
+          startIcon={<X size={18} />}
           onClick={handleClear}
           sx={{ textTransform: "none" }}
         >

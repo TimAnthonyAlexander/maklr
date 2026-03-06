@@ -12,7 +12,7 @@ import {
   Alert,
   IconButton,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { X } from "lucide-react";
 import type {
   EmailAccount,
   PostEmailAccountCreateRequestBody,
@@ -202,7 +202,7 @@ export function EmailAccountForm({
             {isEdit ? t("email.edit_account") : t("email.connect_email_account")}
           </Typography>
           <IconButton onClick={onClose} size="small">
-            <CloseIcon />
+            <X size={20} />
           </IconButton>
         </Box>
 

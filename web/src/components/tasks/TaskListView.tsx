@@ -12,8 +12,7 @@ import {
   TablePagination,
   Skeleton,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
+import { Plus, CheckSquare } from "lucide-react";
 import type { Task, PaginationMeta } from "../../api/types";
 import {
   TaskStatusChip,
@@ -88,15 +87,13 @@ export function TaskListView({
                       color: "text.secondary",
                     }}
                   >
-                    <CheckBoxOutlinedIcon
-                      sx={{ fontSize: 48, mb: 1, opacity: 0.5 }}
-                    />
+                    <CheckSquare size={48} style={{ marginBottom: 8, opacity: 0.5 }} />
                     <Typography variant="body1" sx={{ mb: 1 }}>
                       {t("tasks.list.empty")}
                     </Typography>
                     <Button
                       size="small"
-                      startIcon={<AddIcon />}
+                      startIcon={<Plus size={18} />}
                       onClick={onCreateClick}
                     >
                       {t("tasks.list.add_first")}

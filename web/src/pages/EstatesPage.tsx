@@ -16,8 +16,7 @@ import {
   Skeleton,
   Alert,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import HomeWorkOutlinedIcon from "@mui/icons-material/HomeWorkOutlined";
+import { Plus, Building2 } from "lucide-react";
 import { useGetEstateList } from "../api/hooks";
 import type { EstateListQueryParams } from "../api/types";
 import { EstateStatusChip } from "../components/estates/EstateStatusChip";
@@ -181,7 +180,7 @@ export function EstatesPage() {
         </Typography>
         <Button
           variant="contained"
-          startIcon={<AddIcon />}
+          startIcon={<Plus size={18} />}
           onClick={() => setFormOpen(true)}
         >
           {t("estate.add_estate")}
@@ -253,15 +252,16 @@ export function EstatesPage() {
                         color: "text.secondary",
                       }}
                     >
-                      <HomeWorkOutlinedIcon
-                        sx={{ fontSize: 48, mb: 1, opacity: 0.5 }}
+                      <Building2
+                        size={48}
+                        style={{ marginBottom: 8, opacity: 0.5 }}
                       />
                       <Typography variant="body1" sx={{ mb: 1 }}>
                         {t("estate.no_estates_yet")}
                       </Typography>
                       <Button
                         size="small"
-                        startIcon={<AddIcon />}
+                        startIcon={<Plus size={18} />}
                         onClick={() => setFormOpen(true)}
                       >
                         {t("estate.add_first_estate")}

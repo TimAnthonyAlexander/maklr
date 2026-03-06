@@ -1,7 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { Box, Typography, IconButton, Button, TextField } from "@mui/material";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { Trash2, ExternalLink } from "lucide-react";
 import {
   TaskStatusChip,
   TaskPriorityChip,
@@ -99,14 +98,14 @@ export function TaskDetailHeader({
               onClick={onDelete}
               sx={{ ml: 0.5 }}
             >
-              <DeleteOutlineIcon sx={{ fontSize: 16 }} />
+              <Trash2 size={16} />
             </IconButton>
           )}
         </Box>
         {showFullPageLink && (
           <Button
             size="small"
-            endIcon={<OpenInNewIcon sx={{ fontSize: 14 }} />}
+            endIcon={<ExternalLink size={14} />}
             onClick={onOpenFullPage}
             sx={{ textTransform: "none", fontSize: "0.8rem" }}
           >

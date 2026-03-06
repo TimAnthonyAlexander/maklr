@@ -12,8 +12,7 @@ import {
   Skeleton,
   Button,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
+import { Plus, Users } from "lucide-react";
 import type { Contact, PaginationMeta } from "../../api/types";
 import { ContactStageChip, ContactTypeChip } from "./ContactStageChip";
 import { getContactDisplayName } from "../../utils/contactHelpers";
@@ -88,15 +87,16 @@ export function ContactListView({
                       color: "text.secondary",
                     }}
                   >
-                    <PeopleOutlinedIcon
-                      sx={{ fontSize: 48, mb: 1, opacity: 0.5 }}
+                    <Users
+                      size={48}
+                      style={{ marginBottom: 8, opacity: 0.5 }}
                     />
                     <Typography variant="body1" sx={{ mb: 1 }}>
                       No contacts yet
                     </Typography>
                     <Button
                       size="small"
-                      startIcon={<AddIcon />}
+                      startIcon={<Plus size={18} />}
                       onClick={onAddClick}
                     >
                       Add your first contact

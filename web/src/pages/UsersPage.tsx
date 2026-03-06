@@ -1,8 +1,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { Box, Typography, Button, Alert } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { Plus, UserPlus } from "lucide-react";
 import { useGetUserList } from "../api/hooks";
 import type { UserListQueryParams } from "../api/types";
 import { UserFilters } from "../components/users/UserFilters";
@@ -103,14 +102,14 @@ export function UsersPage() {
         <Box sx={{ display: "flex", gap: 1 }}>
           <Button
             variant="outlined"
-            startIcon={<PersonAddIcon />}
+            startIcon={<UserPlus size={18} />}
             onClick={() => setInviteOpen(true)}
           >
             Invite
           </Button>
           <Button
             variant="contained"
-            startIcon={<AddIcon />}
+            startIcon={<Plus size={18} />}
             onClick={() => setFormOpen(true)}
           >
             Add User

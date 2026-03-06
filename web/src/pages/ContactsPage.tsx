@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { Box, Typography, Button, Alert } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { Plus } from "lucide-react";
 import { useGetContactList } from "../api/hooks";
 import type { ContactListQueryParams } from "../api/types";
 import { ContactFilters } from "../components/contacts/ContactFilters";
@@ -101,7 +101,7 @@ export function ContactsPage() {
         </Typography>
         <Button
           variant="contained"
-          startIcon={<AddIcon />}
+          startIcon={<Plus size={18} />}
           onClick={() => setFormOpen(true)}
         >
           Add Contact

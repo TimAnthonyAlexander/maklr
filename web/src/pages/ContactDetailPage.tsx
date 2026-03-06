@@ -13,9 +13,7 @@ import {
   IconButton,
   Chip,
 } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
 import { useGetContactShowById, useDeleteContactById } from "../api/hooks";
 import type { Contact, ContactWithRelations } from "../api/types";
 import { useAuth } from "../contexts/AuthContext";
@@ -272,7 +270,7 @@ export function ContactDetailPage() {
     <Box sx={{ p: 3 }}>
       {/* Back */}
       <Button
-        startIcon={<ArrowBackIcon />}
+        startIcon={<ArrowLeft size={18} />}
         onClick={() => navigate("/contacts")}
         sx={{ mb: 2 }}
       >
@@ -306,7 +304,7 @@ export function ContactDetailPage() {
 
         <Box sx={{ display: "flex", gap: 1 }}>
           <IconButton size="small" onClick={() => setFormOpen(true)}>
-            <EditIcon />
+            <Pencil size={20} />
           </IconButton>
           {canDelete && (
             <IconButton
@@ -314,7 +312,7 @@ export function ContactDetailPage() {
               color="error"
               onClick={() => setDeleteOpen(true)}
             >
-              <DeleteOutlineIcon />
+              <Trash2 size={20} />
             </IconButton>
           )}
         </Box>

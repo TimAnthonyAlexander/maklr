@@ -16,9 +16,7 @@ import {
   Divider,
   Collapse,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import { X, ChevronDown, ChevronUp } from "lucide-react";
 import type { Estate, PostEstateCreateRequestBody } from "../../api/types";
 import { usePostEstateCreate, usePatchEstateUpdateById } from "../../api/hooks";
 import { useTranslation } from "../../contexts/LanguageContext";
@@ -190,9 +188,9 @@ function Section({ title, open, onToggle, children }: SectionProps) {
           {title}
         </Typography>
         {open ? (
-          <ExpandLessIcon fontSize="small" />
+          <ChevronUp size={20} />
         ) : (
-          <ExpandMoreIcon fontSize="small" />
+          <ChevronDown size={20} />
         )}
       </Box>
       <Collapse in={open}>
@@ -306,7 +304,7 @@ export function EstateForm({
             {isEdit ? t("estate.form_title_edit") : t("estate.form_title_new")}
           </Typography>
           <IconButton onClick={onClose} size="small">
-            <CloseIcon />
+            <X size={20} />
           </IconButton>
         </Box>
 

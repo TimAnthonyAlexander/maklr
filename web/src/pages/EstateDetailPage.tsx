@@ -15,10 +15,7 @@ import {
   Grid,
   IconButton,
 } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import { ArrowLeft, Pencil, Trash2, FileText } from "lucide-react";
 import {
   useGetEstateShowById,
   usePatchEstateUpdateById,
@@ -383,7 +380,7 @@ export function EstateDetailPage() {
     <Box sx={{ p: 3 }}>
       {/* Back */}
       <Button
-        startIcon={<ArrowBackIcon />}
+        startIcon={<ArrowLeft size={18} />}
         onClick={() => navigate("/estates")}
         sx={{ mb: 2 }}
       >
@@ -424,10 +421,10 @@ export function EstateDetailPage() {
             target="_blank"
             size="small"
           >
-            <PictureAsPdfIcon />
+            <FileText size={20} />
           </IconButton>
           <IconButton size="small" onClick={() => setFormOpen(true)}>
-            <EditIcon />
+            <Pencil size={20} />
           </IconButton>
           {canDelete && (
             <IconButton
@@ -435,7 +432,7 @@ export function EstateDetailPage() {
               color="error"
               onClick={() => setDeleteOpen(true)}
             >
-              <DeleteOutlineIcon />
+              <Trash2 size={20} />
             </IconButton>
           )}
         </Box>

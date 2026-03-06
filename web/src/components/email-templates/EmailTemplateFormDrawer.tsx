@@ -20,9 +20,7 @@ import {
   FormControlLabel,
   Switch,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import SaveIcon from "@mui/icons-material/Save";
-import DataObjectIcon from "@mui/icons-material/DataObject";
+import { X, Save, Braces } from "lucide-react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
@@ -207,7 +205,7 @@ export function EmailTemplateFormDrawer({
               : t("email_templates.new")}
           </Typography>
           <IconButton onClick={onClose} size="small">
-            <CloseIcon />
+            <X size={20} />
           </IconButton>
         </Box>
 
@@ -309,7 +307,7 @@ export function EmailTemplateFormDrawer({
             <Button
               size="small"
               variant="outlined"
-              startIcon={<DataObjectIcon />}
+              startIcon={<Braces size={18} />}
               onClick={(e) => setPlaceholderAnchor(e.currentTarget)}
             >
               {t("email_templates.insert_placeholder")}
@@ -364,7 +362,7 @@ export function EmailTemplateFormDrawer({
           </Button>
           <Button
             variant="contained"
-            startIcon={<SaveIcon />}
+            startIcon={<Save size={18} />}
             onClick={handleSave}
             disabled={!name || !subject || saving}
             size="small"

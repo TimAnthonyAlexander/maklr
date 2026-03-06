@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { Box, Button } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { Plus } from "lucide-react";
 import {
   useGetDocumentList,
   usePostDocumentCreate,
@@ -59,7 +59,7 @@ export function EntityDocumentsTab({
       <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
         <Button
           size="small"
-          startIcon={<AddIcon />}
+          startIcon={<Plus size={18} />}
           onClick={() => setUploadOpen(true)}
         >
           Upload

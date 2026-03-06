@@ -1,9 +1,5 @@
 import { Box, Typography, Badge } from "@mui/material";
-import InboxOutlinedIcon from "@mui/icons-material/InboxOutlined";
-import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
-import ReportOutlinedIcon from "@mui/icons-material/ReportOutlined";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
+import { Inbox, Send, AlertTriangle, Trash2, Archive } from "lucide-react";
 import { useTranslation } from "../../contexts/LanguageContext";
 
 export type EmailFolder = "inbox" | "sent" | "spam" | "trash" | "archived";
@@ -14,13 +10,21 @@ interface EmailFolderNavProps {
   unreadInboxCount: number;
 }
 
+const FOLDER_ICONS: Record<EmailFolder, React.ElementType> = {
+  inbox: Inbox,
+  sent: Send,
+  archived: Archive,
+  spam: AlertTriangle,
+  trash: Trash2,
+};
+
 const MAIN_FOLDERS: {
   id: EmailFolder;
   icon: React.ElementType;
   translationKey: string;
 }[] = [
-  { id: "inbox", icon: InboxOutlinedIcon, translationKey: "email.folder_inbox" },
-  { id: "sent", icon: SendOutlinedIcon, translationKey: "email.folder_sent" },
+  { id: "inbox", icon: FOLDER_ICONS.inbox, translationKey: "email.folder_inbox" },
+  { id: "sent", icon: FOLDER_ICONS.sent, translationKey: "email.folder_sent" },
 ];
 
 const SECONDARY_FOLDERS: {
@@ -28,9 +32,9 @@ const SECONDARY_FOLDERS: {
   icon: React.ElementType;
   translationKey: string;
 }[] = [
-  { id: "archived", icon: ArchiveOutlinedIcon, translationKey: "email.folder_archived" },
-  { id: "spam", icon: ReportOutlinedIcon, translationKey: "email.folder_spam" },
-  { id: "trash", icon: DeleteOutlinedIcon, translationKey: "email.folder_trash" },
+  { id: "archived", icon: FOLDER_ICONS.archived, translationKey: "email.folder_archived" },
+  { id: "spam", icon: FOLDER_ICONS.spam, translationKey: "email.folder_spam" },
+  { id: "trash", icon: FOLDER_ICONS.trash, translationKey: "email.folder_trash" },
 ];
 
 export function EmailFolderNav({
@@ -66,10 +70,10 @@ export function EmailFolderNav({
       >
         {showBadge ? (
           <Badge badgeContent={unreadInboxCount} color="primary" max={99}>
-            <Icon sx={{ fontSize: 18 }} />
+            <Icon size={18} />
           </Badge>
         ) : (
-          <Icon sx={{ fontSize: 18 }} />
+          <Icon size={18} />
         )}
         <Typography
           variant="body2"

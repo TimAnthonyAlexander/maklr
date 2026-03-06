@@ -9,12 +9,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
-import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
-import StarIcon from "@mui/icons-material/Star";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { ImagePlus, Image, Star, Trash2, MoreVertical } from "lucide-react";
 import type { EstateImage } from "../../api/types";
 import {
   ESTATE_IMAGE_CATEGORY_LABELS,
@@ -120,7 +115,7 @@ export function EstateImagesTab({
         </Typography>
         <Button
           size="small"
-          startIcon={<AddPhotoAlternateOutlinedIcon />}
+          startIcon={<ImagePlus size={18} />}
           onClick={() => setUploadOpen(true)}
         >
           {t("estate.upload_image")}
@@ -137,7 +132,7 @@ export function EstateImagesTab({
             color: "text.secondary",
           }}
         >
-          <ImageOutlinedIcon sx={{ fontSize: 48, mb: 1, opacity: 0.5 }} />
+          <Image size={48} style={{ marginBottom: 8, opacity: 0.5 }} />
           <Typography variant="body2">{t("estate.no_images")}</Typography>
         </Box>
       ) : (
@@ -189,7 +184,7 @@ export function EstateImagesTab({
                   }}
                   onClick={(e) => handleMenuOpen(e, img)}
                 >
-                  <MoreVertIcon fontSize="small" />
+                  <MoreVertical size={20} />
                 </IconButton>
                 <Box sx={{ p: 1 }}>
                   <Typography
@@ -247,13 +242,13 @@ export function EstateImagesTab({
               handleMenuClose();
             }}
           >
-            <StarIcon sx={{ fontSize: 18, mr: 1 }} />
+            <Star size={18} style={{ marginRight: 8 }} />
             {t("estate.image_set_primary")}
           </MenuItem>
         )}
         {menuImage?.is_primary && (
           <MenuItem disabled>
-            <StarBorderIcon sx={{ fontSize: 18, mr: 1 }} />
+            <Star size={18} style={{ marginRight: 8 }} />
             {t("estate.image_is_primary")}
           </MenuItem>
         )}
@@ -264,7 +259,7 @@ export function EstateImagesTab({
           }}
           sx={{ color: "error.main" }}
         >
-          <DeleteOutlineIcon sx={{ fontSize: 18, mr: 1 }} />
+          <Trash2 size={18} style={{ marginRight: 8 }} />
           {t("estate.image_delete")}
         </MenuItem>
       </Menu>

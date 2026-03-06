@@ -15,7 +15,7 @@ import {
   IconButton,
   Divider,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { X } from "lucide-react";
 import type {
   User,
   PostUserCreateRequestBody,
@@ -183,7 +183,7 @@ export function UserForm({ open, onClose, user, onSuccess }: UserFormProps) {
             {isEdit ? "Edit User" : "New User"}
           </Typography>
           <IconButton onClick={onClose} size="small">
-            <CloseIcon />
+            <X size={20} />
           </IconButton>
         </Box>
 

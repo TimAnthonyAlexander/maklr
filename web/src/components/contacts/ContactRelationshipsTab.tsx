@@ -18,9 +18,7 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import CloseIcon from "@mui/icons-material/Close";
+import { Trash2, UserPlus, X } from "lucide-react";
 import {
   usePostContactRelationship,
   useDeleteContactRelationship,
@@ -168,7 +166,7 @@ export function ContactRelationshipsTab({
         </Typography>
         <Button
           size="small"
-          startIcon={<PersonAddIcon />}
+          startIcon={<UserPlus size={18} />}
           onClick={() => setDialogOpen(true)}
         >
           Add Relationship
@@ -237,7 +235,7 @@ export function ContactRelationshipsTab({
                   onClick={() => handleDelete(rel.id)}
                   disabled={deleteMutation.loading}
                 >
-                  <DeleteOutlineIcon fontSize="small" />
+                  <Trash2 size={20} />
                 </IconButton>
               </Box>
             );
@@ -254,7 +252,7 @@ export function ContactRelationshipsTab({
             onClick={closeDialog}
             sx={{ position: "absolute", right: 8, top: 8 }}
           >
-            <CloseIcon />
+            <X size={20} />
           </IconButton>
         </DialogTitle>
         <DialogContent>

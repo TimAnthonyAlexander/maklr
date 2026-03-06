@@ -9,8 +9,7 @@ import {
   Button,
   InputAdornment,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import ClearIcon from "@mui/icons-material/Clear";
+import { Search, X } from "lucide-react";
 import type { ContactListQueryParams } from "../../api/types";
 
 interface ContactFiltersProps {
@@ -87,7 +86,7 @@ export function ContactFilters({
           input: {
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon fontSize="small" />
+                <Search size={20} />
               </InputAdornment>
             ),
           },
@@ -143,7 +142,7 @@ export function ContactFilters({
       {hasActiveFilters && (
         <Button
           size="small"
-          startIcon={<ClearIcon />}
+          startIcon={<X size={18} />}
           onClick={handleClear}
           sx={{ textTransform: "none" }}
         >

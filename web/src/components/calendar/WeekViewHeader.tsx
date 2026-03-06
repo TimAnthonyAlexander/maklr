@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { Box, Typography, Button } from "@mui/material";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { isSameDay } from "../../utils/dateUtils";
 import { useTranslation } from "../../contexts/LanguageContext";
 
@@ -38,10 +37,10 @@ export function WeekViewHeader({
           {t("calendar.today")}
         </Button>
         <Button size="small" onClick={onPrevWeek} sx={{ minWidth: 32, p: 0.5 }}>
-          <ChevronLeftIcon fontSize="small" />
+          <ChevronLeft size={20} />
         </Button>
         <Button size="small" onClick={onNextWeek} sx={{ minWidth: 32, p: 0.5 }}>
-          <ChevronRightIcon fontSize="small" />
+          <ChevronRight size={20} />
         </Button>
       </Box>
 

@@ -9,9 +9,7 @@ import {
   ToggleButton,
   Skeleton,
 } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import ViewListIcon from "@mui/icons-material/ViewList";
-import ViewKanbanIcon from "@mui/icons-material/ViewKanban";
+import { Plus, List, Kanban } from "lucide-react";
 import {
   useGetTaskList,
   useDeleteTaskById,
@@ -210,18 +208,18 @@ export function TasksPage() {
             }}
           >
             <ToggleButton value="list" aria-label={t("tasks.page.list_view")}>
-              <ViewListIcon sx={{ fontSize: 20 }} />
+              <List size={20} />
             </ToggleButton>
             <ToggleButton
               value="kanban"
               aria-label={t("tasks.page.kanban_view")}
             >
-              <ViewKanbanIcon sx={{ fontSize: 20 }} />
+              <Kanban size={20} />
             </ToggleButton>
           </ToggleButtonGroup>
           <Button
             variant="contained"
-            startIcon={<AddIcon />}
+            startIcon={<Plus size={18} />}
             onClick={handleCreateClick}
           >
             {t("tasks.page.add_task")}

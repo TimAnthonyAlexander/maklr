@@ -1,7 +1,6 @@
 import { useMemo, useCallback } from "react";
 import { Box, Typography, IconButton } from "@mui/material";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   getMonthGrid,
   isSameDay,
@@ -68,7 +67,7 @@ export function MiniCalendar({
         }}
       >
         <IconButton size="small" onClick={handlePrevMonth}>
-          <ChevronLeftIcon fontSize="small" />
+          <ChevronLeft size={20} />
         </IconButton>
         <Typography
           variant="subtitle2"
@@ -77,7 +76,7 @@ export function MiniCalendar({
           {t(`calendar.month.${MONTH_KEYS[viewMonth]}`)} {viewYear}
         </Typography>
         <IconButton size="small" onClick={handleNextMonth}>
-          <ChevronRightIcon fontSize="small" />
+          <ChevronRight size={20} />
         </IconButton>
       </Box>
 

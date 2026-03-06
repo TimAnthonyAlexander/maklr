@@ -8,7 +8,7 @@ import {
   MenuItem,
   Button,
 } from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
+import { X } from "lucide-react";
 import {
   DOCUMENT_CATEGORIES,
   DOCUMENT_CATEGORY_LABELS,
@@ -76,7 +76,7 @@ export function DocumentFilters({
       {hasActiveFilters && (
         <Button
           size="small"
-          startIcon={<ClearIcon />}
+          startIcon={<X size={18} />}
           onClick={() =>
             onFilterChange({ page: 1, per_page: filters.per_page })
           }

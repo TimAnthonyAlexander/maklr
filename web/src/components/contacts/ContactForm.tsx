@@ -17,9 +17,7 @@ import {
   ToggleButtonGroup,
   ToggleButton,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import PersonIcon from "@mui/icons-material/Person";
-import BusinessIcon from "@mui/icons-material/Business";
+import { X, User, Building2 } from "lucide-react";
 import type { Contact, PostContactCreateRequestBody } from "../../api/types";
 import {
   usePostContactCreate,
@@ -232,7 +230,7 @@ export function ContactForm({
             {isEdit ? "Edit Contact" : "New Contact"}
           </Typography>
           <IconButton onClick={onClose} size="small">
-            <CloseIcon />
+            <X size={20} />
           </IconButton>
         </Box>
 
@@ -266,11 +264,11 @@ export function ContactForm({
               fullWidth
             >
               <ToggleButton value="person">
-                <PersonIcon sx={{ mr: 0.5 }} fontSize="small" />
+                <User size={18} style={{ marginRight: 4 }} />
                 Person
               </ToggleButton>
               <ToggleButton value="company">
-                <BusinessIcon sx={{ mr: 0.5 }} fontSize="small" />
+                <Building2 size={18} style={{ marginRight: 4 }} />
                 Company
               </ToggleButton>
             </ToggleButtonGroup>

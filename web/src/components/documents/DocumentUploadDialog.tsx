@@ -13,7 +13,7 @@ import {
   MenuItem,
   Alert,
 } from "@mui/material";
-import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
+import { CloudUpload } from "lucide-react";
 import {
   DOCUMENT_CATEGORIES,
   DOCUMENT_CATEGORY_LABELS,
@@ -113,8 +113,9 @@ export function DocumentUploadDialog({
               onChange={handleFileChange}
               style={{ display: "none" }}
             />
-            <CloudUploadOutlinedIcon
-              sx={{ fontSize: 40, color: "text.secondary", mb: 1 }}
+            <CloudUpload
+              size={40}
+              style={{ marginBottom: 8 }}
             />
             {file ? (
               <Typography variant="body2" sx={{ fontWeight: 500 }}>

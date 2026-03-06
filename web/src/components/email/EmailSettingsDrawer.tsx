@@ -17,10 +17,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import AddIcon from "@mui/icons-material/Add";
-import NetworkCheckIcon from "@mui/icons-material/NetworkCheck";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { X, Plus, Wifi, Trash2 } from "lucide-react";
 import CircularProgress from "@mui/material/CircularProgress";
 import type { EmailAccount } from "../../api/types";
 import { useTranslation } from "../../contexts/LanguageContext";
@@ -186,13 +183,13 @@ export function EmailSettingsDrawer({
               <Button
                 variant="contained"
                 size="small"
-                startIcon={<AddIcon />}
+                startIcon={<Plus size={18} />}
                 onClick={handleCreateClick}
               >
                 {t("email.connect_account")}
               </Button>
               <IconButton onClick={onClose} size="small">
-                <CloseIcon />
+                <X size={20} />
               </IconButton>
             </Box>
           </Box>
@@ -278,7 +275,7 @@ export function EmailSettingsDrawer({
                               {testingId === account.id ? (
                                 <CircularProgress size={18} />
                               ) : (
-                                <NetworkCheckIcon fontSize="small" />
+                                <Wifi size={20} />
                               )}
                             </IconButton>
                           </Tooltip>
@@ -287,7 +284,7 @@ export function EmailSettingsDrawer({
                               size="small"
                               onClick={(e) => handleDeleteClick(e, account)}
                             >
-                              <DeleteOutlineIcon fontSize="small" />
+                              <Trash2 size={20} />
                             </IconButton>
                           </Tooltip>
                         </TableCell>

@@ -1,5 +1,5 @@
 import { Dialog, IconButton, Box } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { X } from "lucide-react";
 import { TaskDetailContent } from "./TaskDetailContent";
 
 interface TaskDetailModalProps {
@@ -34,7 +34,7 @@ export function TaskDetailModal({
       {/* Close button */}
       <Box sx={{ position: "absolute", top: 8, right: 8, zIndex: 1 }}>
         <IconButton size="small" onClick={onClose}>
-          <CloseIcon fontSize="small" />
+          <X size={20} />
         </IconButton>
       </Box>
 

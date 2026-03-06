@@ -15,7 +15,7 @@ import {
   ToggleButtonGroup,
   ToggleButton,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { X } from "lucide-react";
 import type { SearchProfile } from "../../api/types";
 
 interface SearchProfileFormProps {
@@ -177,7 +177,7 @@ export function SearchProfileForm({
             {isEdit ? "Edit Search Profile" : "New Search Profile"}
           </Typography>
           <IconButton onClick={onClose} size="small">
-            <CloseIcon />
+            <X size={20} />
           </IconButton>
         </Box>
 

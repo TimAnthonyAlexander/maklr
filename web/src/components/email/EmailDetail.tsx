@@ -20,19 +20,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import ReplyIcon from "@mui/icons-material/Reply";
-import ForwardOutlinedIcon from "@mui/icons-material/ForwardOutlined";
-import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import CallMadeIcon from "@mui/icons-material/CallMade";
-import CallReceivedIcon from "@mui/icons-material/CallReceived";
-import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
-import LinkIcon from "@mui/icons-material/Link";
-import LinkOffIcon from "@mui/icons-material/LinkOff";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import PersonAddAlt1OutlinedIcon from "@mui/icons-material/PersonAddAlt1Outlined";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import CloseIcon from "@mui/icons-material/Close";
+import { Reply, Forward, Archive, Mail, ArrowUpRight, ArrowDownLeft, ClipboardList, Link, Unlink, User, UserPlus, Home, X } from "lucide-react";
 import {
   useGetEmailShowById,
   useDeleteEmailById,
@@ -278,7 +266,7 @@ export function EmailDetail({
           color: "text.secondary",
         }}
       >
-        <EmailOutlinedIcon sx={{ fontSize: 64, mb: 2, opacity: 0.2 }} />
+        <Mail size={64} style={{ marginBottom: 16, opacity: 0.2 }} />
         <Typography variant="body1">{t("email.select_to_read")}</Typography>
       </Box>
     );
@@ -341,9 +329,9 @@ export function EmailDetail({
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 0.5 }}>
           {email.direction === "outgoing" ? (
-            <CallMadeIcon sx={{ fontSize: 16, color: "text.secondary" }} />
+            <ArrowUpRight size={16} />
           ) : (
-            <CallReceivedIcon sx={{ fontSize: 16, color: "text.secondary" }} />
+            <ArrowDownLeft size={16} />
           )}
           <Typography
             variant="body2"
@@ -416,7 +404,7 @@ export function EmailDetail({
         <Button
           variant="outlined"
           size="small"
-          startIcon={<ReplyIcon />}
+          startIcon={<Reply size={18} />}
           onMouseEnter={(e) => setEmailMenuAnchor(e.currentTarget)}
           onClick={() => onReply(email)}
         >
@@ -431,18 +419,18 @@ export function EmailDetail({
           transformOrigin={{ vertical: "bottom", horizontal: "left" }}
         >
           <MenuItem onClick={() => { onReply(email); setEmailMenuAnchor(null); }}>
-            <ListItemIcon><ReplyIcon fontSize="small" /></ListItemIcon>
+            <ListItemIcon><Reply size={20} /></ListItemIcon>
             <ListItemText>{t("email.reply")}</ListItemText>
           </MenuItem>
           <MenuItem disabled>
-            <ListItemIcon><ForwardOutlinedIcon fontSize="small" /></ListItemIcon>
+            <ListItemIcon><Forward size={20} /></ListItemIcon>
             <ListItemText>{t("email.forward")} ({t("email.coming_soon")})</ListItemText>
           </MenuItem>
           <MenuItem
             onClick={() => { handleArchive(); setEmailMenuAnchor(null); }}
             disabled={archiveMutation.loading}
           >
-            <ListItemIcon><ArchiveOutlinedIcon fontSize="small" /></ListItemIcon>
+            <ListItemIcon><Archive size={20} /></ListItemIcon>
             <ListItemText>{t("email.archive")}</ListItemText>
           </MenuItem>
         </Menu>
@@ -450,7 +438,7 @@ export function EmailDetail({
         <Button
           variant="outlined"
           size="small"
-          startIcon={<LinkIcon />}
+          startIcon={<Link size={18} />}
           onMouseEnter={(e) => setActionsMenuAnchor(e.currentTarget)}
           onClick={(e) => setActionsMenuAnchor(e.currentTarget)}
         >
@@ -465,12 +453,12 @@ export function EmailDetail({
           transformOrigin={{ vertical: "bottom", horizontal: "left" }}
         >
           <MenuItem onClick={() => { handleOpenTaskForm(); setActionsMenuAnchor(null); }}>
-            <ListItemIcon><AssignmentOutlinedIcon fontSize="small" /></ListItemIcon>
+            <ListItemIcon><ClipboardList size={20} /></ListItemIcon>
             <ListItemText>{t("email.create_task")}</ListItemText>
           </MenuItem>
           {email.contact ? (
             <MenuItem onClick={() => { handleUnlinkEntity("contact"); setActionsMenuAnchor(null); }}>
-              <ListItemIcon><LinkOffIcon fontSize="small" /></ListItemIcon>
+              <ListItemIcon><Unlink size={20} /></ListItemIcon>
               <ListItemText>
                 {t("email.unlink_contact")}: {
                   email.contact.first_name || email.contact.last_name
@@ -482,12 +470,12 @@ export function EmailDetail({
           ) : (
             <>
               <MenuItem onClick={() => { setLinkDialog("contact"); setActionsMenuAnchor(null); }}>
-                <ListItemIcon><PersonOutlineIcon fontSize="small" /></ListItemIcon>
+                <ListItemIcon><User size={20} /></ListItemIcon>
                 <ListItemText>{t("email.link_contact")}</ListItemText>
               </MenuItem>
               {email.direction === "incoming" && (
                 <MenuItem onClick={() => { setContactFormOpen(true); setActionsMenuAnchor(null); }}>
-                  <ListItemIcon><PersonAddAlt1OutlinedIcon fontSize="small" /></ListItemIcon>
+                  <ListItemIcon><UserPlus size={20} /></ListItemIcon>
                   <ListItemText>{t("email.create_contact_from_sender")}</ListItemText>
                 </MenuItem>
               )}
@@ -495,14 +483,14 @@ export function EmailDetail({
           )}
           {email.estate ? (
             <MenuItem onClick={() => { handleUnlinkEntity("estate"); setActionsMenuAnchor(null); }}>
-              <ListItemIcon><LinkOffIcon fontSize="small" /></ListItemIcon>
+              <ListItemIcon><Unlink size={20} /></ListItemIcon>
               <ListItemText>
                 {t("email.unlink_estate")}: {email.estate.title ?? t("activity.entity.estate")}
               </ListItemText>
             </MenuItem>
           ) : (
             <MenuItem onClick={() => { setLinkDialog("estate"); setActionsMenuAnchor(null); }}>
-              <ListItemIcon><HomeOutlinedIcon fontSize="small" /></ListItemIcon>
+              <ListItemIcon><Home size={20} /></ListItemIcon>
               <ListItemText>{t("email.link_estate")}</ListItemText>
             </MenuItem>
           )}
@@ -531,7 +519,7 @@ export function EmailDetail({
             }}
             sx={{ position: "absolute", right: 8, top: 8 }}
           >
-            <CloseIcon />
+            <X size={20} />
           </IconButton>
         </DialogTitle>
         <DialogContent>

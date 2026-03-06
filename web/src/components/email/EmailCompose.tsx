@@ -14,9 +14,7 @@ import {
   InputLabel,
   Alert,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import SendIcon from "@mui/icons-material/Send";
-import ClearIcon from "@mui/icons-material/Clear";
+import { X, Send } from "lucide-react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
@@ -235,7 +233,7 @@ export function EmailCompose({
             {replyTo ? t("email.reply") : t("email.new_email")}
           </Typography>
           <IconButton onClick={onClose} size="small">
-            <CloseIcon />
+            <X size={20} />
           </IconButton>
         </Box>
 
@@ -319,7 +317,7 @@ export function EmailCompose({
                       editor?.commands.setContent("");
                     }}
                   >
-                    <ClearIcon fontSize="small" />
+                    <X size={20} />
                   </IconButton>
                 )}
               </Box>
@@ -499,7 +497,7 @@ export function EmailCompose({
           </Button>
           <Button
             variant="contained"
-            startIcon={<SendIcon />}
+            startIcon={<Send size={18} />}
             onClick={handleSend}
             disabled={!accountId || !to || !subject || sendMutation.loading}
             size="small"

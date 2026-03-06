@@ -18,9 +18,7 @@ import {
   InputLabel,
   Skeleton,
 } from "@mui/material";
-import LinkOffIcon from "@mui/icons-material/LinkOff";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import CloseIcon from "@mui/icons-material/Close";
+import { Unlink, UserPlus, X } from "lucide-react";
 import {
   useGetEstateContactList,
   usePostEstateContactLink,
@@ -145,7 +143,7 @@ export function EstateContactsTab({ estateId }: EstateContactsTabProps) {
         </Typography>
         <Button
           size="small"
-          startIcon={<PersonAddIcon />}
+          startIcon={<UserPlus size={18} />}
           onClick={() => setDialogOpen(true)}
         >
           {t("estate.link_contact")}
@@ -207,7 +205,7 @@ export function EstateContactsTab({ estateId }: EstateContactsTabProps) {
                   }
                   disabled={unlinkMutation.loading}
                 >
-                  <LinkOffIcon fontSize="small" />
+                  <Unlink size={20} />
                 </IconButton>
               </Box>
             );
@@ -237,7 +235,7 @@ export function EstateContactsTab({ estateId }: EstateContactsTabProps) {
             }}
             sx={{ position: "absolute", right: 8, top: 8 }}
           >
-            <CloseIcon />
+            <X size={20} />
           </IconButton>
         </DialogTitle>
         <DialogContent>
