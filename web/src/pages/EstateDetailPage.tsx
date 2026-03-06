@@ -526,9 +526,6 @@ export function EstateDetailPage() {
           >
             {/* Contacts */}
             <Paper variant="outlined" sx={{ p: 3 }}>
-              <Typography variant="subtitle2" sx={{ mb: 2, fontWeight: 600 }}>
-                {t("estate.detail_contacts")}
-              </Typography>
               {id && <EstateContactsTab estateId={id} />}
             </Paper>
 
