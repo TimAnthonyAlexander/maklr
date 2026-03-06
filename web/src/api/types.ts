@@ -1486,3 +1486,205 @@ export interface AuditLogListResponse {
   items: AuditLog[];
   pagination: PaginationMeta;
 }
+
+// ================================
+// Website Builder Types
+// ================================
+
+export interface Website {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string | null;
+  published: boolean;
+  user_id?: string | null;
+  office_id?: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+  pages?: WebsitePage[];
+}
+
+export interface WebsitePage {
+  id: string;
+  title: string;
+  slug: string;
+  html_content?: string | null;
+  sort_order: number;
+  published: boolean;
+  website_id?: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+
+export interface WebsitePageVersion {
+  id: string;
+  page_id?: string | null;
+  html_content?: string | null;
+  version_number: number;
+  change_summary?: string | null;
+  created_by_user_id?: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+
+export interface WebsiteChatMessage {
+  id: string;
+  role: string;
+  content?: string | null;
+  website_id?: string | null;
+  page_id?: string | null;
+  user_id?: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+
+// Website List
+export interface WebsiteListQueryParams {
+  q?: string;
+  published?: string;
+  page?: number;
+  per_page?: number;
+}
+
+export interface WebsiteListResponse {
+  items: Website[];
+  pagination: PaginationMeta;
+}
+
+// Website Show
+export interface WebsiteShowPathParams {
+  id: string;
+}
+
+export type WebsiteShowResponse = Website;
+
+// Website Create
+export interface WebsiteCreateRequestBody {
+  name: string;
+  slug: string;
+  description?: string | null;
+}
+
+export type WebsiteCreateResponse = Website;
+
+// Website Update
+export interface WebsiteUpdatePathParams {
+  id: string;
+}
+
+export interface WebsiteUpdateRequestBody {
+  name?: string;
+  slug?: string;
+  description?: string | null;
+  published?: boolean;
+}
+
+export type WebsiteUpdateResponse = Website;
+
+// Website Delete
+export interface WebsiteDeletePathParams {
+  id: string;
+}
+
+export type WebsiteDeleteResponse = { message: string };
+
+// Website Pages
+export interface WebsitePageListPathParams {
+  websiteId: string;
+}
+
+export interface WebsitePageListResponse {
+  items: WebsitePage[];
+}
+
+export interface WebsitePageShowPathParams {
+  websiteId: string;
+  id: string;
+}
+
+export type WebsitePageShowResponse = WebsitePage;
+
+export interface WebsitePageCreatePathParams {
+  websiteId: string;
+}
+
+export interface WebsitePageCreateRequestBody {
+  title: string;
+  slug: string;
+  html_content?: string | null;
+  sort_order?: number;
+}
+
+export type WebsitePageCreateResponse = WebsitePage;
+
+export interface WebsitePageUpdatePathParams {
+  websiteId: string;
+  id: string;
+}
+
+export interface WebsitePageUpdateRequestBody {
+  title?: string;
+  slug?: string;
+  html_content?: string | null;
+  sort_order?: number;
+  published?: boolean;
+}
+
+export type WebsitePageUpdateResponse = WebsitePage;
+
+export interface WebsitePageDeletePathParams {
+  websiteId: string;
+  id: string;
+}
+
+export type WebsitePageDeleteResponse = { message: string };
+
+// Chat
+export interface WebsiteChatSendPathParams {
+  websiteId: string;
+}
+
+export interface WebsiteChatSendRequestBody {
+  message: string;
+  page_id?: string | null;
+}
+
+export interface WebsiteChatSendResponse {
+  message: string;
+  html: string;
+  summary: string;
+  page: WebsitePage | null;
+}
+
+export interface WebsiteChatListPathParams {
+  websiteId: string;
+}
+
+export interface WebsiteChatListQueryParams {
+  page_id?: string;
+}
+
+export interface WebsiteChatListResponse {
+  items: WebsiteChatMessage[];
+}
+
+// Versions
+export interface WebsitePageVersionListPathParams {
+  websiteId: string;
+  pageId: string;
+}
+
+export interface WebsitePageVersionListResponse {
+  items: WebsitePageVersion[];
+}
+
+export interface WebsitePageVersionRestorePathParams {
+  websiteId: string;
+  pageId: string;
+  versionId: string;
+}
+
+export interface WebsitePageVersionRestoreResponse {
+  message: string;
+  page: WebsitePage;
+}

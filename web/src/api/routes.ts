@@ -88,6 +88,20 @@ export const Routes = {
   GetAuditLogList: "/audit-logs",
   PostContactRelationship: "/contacts/{id}/relationships",
   DeleteContactRelationship: "/contacts/{contactId}/relationships/{id}",
+  GetWebsiteList: "/websites",
+  PostWebsiteCreate: "/websites",
+  GetWebsiteShowById: "/websites/{id}",
+  PatchWebsiteUpdateById: "/websites/{id}",
+  DeleteWebsiteById: "/websites/{id}",
+  GetWebsitePageList: "/websites/{websiteId}/pages",
+  PostWebsitePageCreate: "/websites/{websiteId}/pages",
+  GetWebsitePageShowById: "/websites/{websiteId}/pages/{id}",
+  PatchWebsitePageUpdateById: "/websites/{websiteId}/pages/{id}",
+  DeleteWebsitePageById: "/websites/{websiteId}/pages/{id}",
+  PostWebsiteChatSend: "/websites/{websiteId}/chat",
+  GetWebsiteChatList: "/websites/{websiteId}/chat",
+  GetWebsitePageVersionList: "/websites/{websiteId}/pages/{pageId}/versions",
+  PostWebsitePageVersionRestore: "/websites/{websiteId}/pages/{pageId}/versions/{versionId}/restore",
 } as const;
 
 export type RouteKey = keyof typeof Routes;

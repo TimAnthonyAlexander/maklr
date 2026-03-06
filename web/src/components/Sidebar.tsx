@@ -10,6 +10,7 @@ import {
   CheckSquare,
   Mail,
   FileText,
+  Globe,
   LayoutTemplate,
   ShieldCheck,
   ClipboardList,
@@ -55,6 +56,11 @@ const organizeItems: NavItem[] = [
     translationKey: "sidebar.nav.documents",
     path: "/documents",
     icon: FileText,
+  },
+  {
+    translationKey: "sidebar.nav.websites",
+    path: "/websites",
+    icon: Globe,
   },
 ];
 

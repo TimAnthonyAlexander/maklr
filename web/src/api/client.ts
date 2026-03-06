@@ -1518,3 +1518,174 @@ export async function getAuditLogList(
 
   return http.get(fullUrl, options);
 }
+
+// ================================
+// Website Builder Client Functions
+// ================================
+
+/**
+ * GET /websites
+ */
+export async function getWebsiteList(
+  query?: Types.WebsiteListQueryParams,
+  options?: HttpOptions,
+): Promise<Types.WebsiteListResponse> {
+  const url = "/websites";
+  const searchParams = new URLSearchParams();
+  if (query) {
+    for (const [key, value] of Object.entries(query)) {
+      if (value !== undefined && value !== null && value !== "") {
+        searchParams.append(key, String(value));
+      }
+    }
+  }
+  const fullUrl = searchParams.toString() ? `${url}?${searchParams}` : url;
+  return http.get(fullUrl, options);
+}
+
+/**
+ * POST /websites
+ */
+export async function postWebsiteCreate(
+  body: Types.WebsiteCreateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.WebsiteCreateResponse> {
+  return http.post("/websites", body, options);
+}
+
+/**
+ * GET /websites/{id}
+ */
+export async function getWebsiteShowById(
+  path: Types.WebsiteShowPathParams,
+  options?: HttpOptions,
+): Promise<Types.WebsiteShowResponse> {
+  const url = buildPath("GetWebsiteShowById", path);
+  return http.get(url, options);
+}
+
+/**
+ * PATCH /websites/{id}
+ */
+export async function patchWebsiteUpdateById(
+  path: Types.WebsiteUpdatePathParams,
+  body: Types.WebsiteUpdateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.WebsiteUpdateResponse> {
+  const url = buildPath("PatchWebsiteUpdateById", path);
+  return http.patch(url, body, options);
+}
+
+/**
+ * DELETE /websites/{id}
+ */
+export async function deleteWebsiteById(
+  path: Types.WebsiteDeletePathParams,
+  options?: HttpOptions,
+): Promise<Types.WebsiteDeleteResponse> {
+  const url = buildPath("DeleteWebsiteById", path);
+  return http.delete(url, options);
+}
+
+/**
+ * GET /websites/{websiteId}/pages
+ */
+export async function getWebsitePageList(
+  path: Types.WebsitePageListPathParams,
+  options?: HttpOptions,
+): Promise<Types.WebsitePageListResponse> {
+  const url = buildPath("GetWebsitePageList", path);
+  return http.get(url, options);
+}
+
+/**
+ * POST /websites/{websiteId}/pages
+ */
+export async function postWebsitePageCreate(
+  path: Types.WebsitePageCreatePathParams,
+  body: Types.WebsitePageCreateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.WebsitePageCreateResponse> {
+  const url = buildPath("PostWebsitePageCreate", path);
+  return http.post(url, body, options);
+}
+
+/**
+ * PATCH /websites/{websiteId}/pages/{id}
+ */
+export async function patchWebsitePageUpdateById(
+  path: Types.WebsitePageUpdatePathParams,
+  body: Types.WebsitePageUpdateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.WebsitePageUpdateResponse> {
+  const url = buildPath("PatchWebsitePageUpdateById", path);
+  return http.patch(url, body, options);
+}
+
+/**
+ * DELETE /websites/{websiteId}/pages/{id}
+ */
+export async function deleteWebsitePageById(
+  path: Types.WebsitePageDeletePathParams,
+  options?: HttpOptions,
+): Promise<Types.WebsitePageDeleteResponse> {
+  const url = buildPath("DeleteWebsitePageById", path);
+  return http.delete(url, options);
+}
+
+/**
+ * POST /websites/{websiteId}/chat
+ */
+export async function postWebsiteChatSend(
+  path: Types.WebsiteChatSendPathParams,
+  body: Types.WebsiteChatSendRequestBody,
+  options?: HttpOptions,
+): Promise<Types.WebsiteChatSendResponse> {
+  const url = buildPath("PostWebsiteChatSend", path);
+  return http.post(url, body, options);
+}
+
+/**
+ * GET /websites/{websiteId}/chat
+ */
+export async function getWebsiteChatList(
+  path: Types.WebsiteChatListPathParams,
+  query?: Types.WebsiteChatListQueryParams,
+  options?: HttpOptions,
+): Promise<Types.WebsiteChatListResponse> {
+  const baseUrl = buildPath("GetWebsiteChatList", path);
+  const searchParams = new URLSearchParams();
+  if (query) {
+    for (const [key, value] of Object.entries(query)) {
+      if (value !== undefined && value !== null && value !== "") {
+        searchParams.append(key, String(value));
+      }
+    }
+  }
+  const fullUrl = searchParams.toString()
+    ? `${baseUrl}?${searchParams}`
+    : baseUrl;
+  return http.get(fullUrl, options);
+}
+
+/**
+ * GET /websites/{websiteId}/pages/{pageId}/versions
+ */
+export async function getWebsitePageVersionList(
+  path: Types.WebsitePageVersionListPathParams,
+  options?: HttpOptions,
+): Promise<Types.WebsitePageVersionListResponse> {
+  const url = buildPath("GetWebsitePageVersionList", path);
+  return http.get(url, options);
+}
+
+/**
+ * POST /websites/{websiteId}/pages/{pageId}/versions/{versionId}/restore
+ */
+export async function postWebsitePageVersionRestore(
+  path: Types.WebsitePageVersionRestorePathParams,
+  options?: HttpOptions,
+): Promise<Types.WebsitePageVersionRestoreResponse> {
+  const url = buildPath("PostWebsitePageVersionRestore", path);
+  return http.post(url, {}, options);
+}

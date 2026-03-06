@@ -103,6 +103,21 @@ use App\Controllers\EmailTemplate\EmailTemplateDeleteController;
 use App\Controllers\EmailTemplate\EmailTemplatePlaceholdersController;
 use App\Controllers\EmailTemplate\EmailTemplatePreviewController;
 use App\Controllers\EmailTemplate\EmailTemplateGenerateController;
+use App\Controllers\Website\WebsiteListController;
+use App\Controllers\Website\WebsiteShowController;
+use App\Controllers\Website\WebsiteCreateController;
+use App\Controllers\Website\WebsiteUpdateController;
+use App\Controllers\Website\WebsiteDeleteController;
+use App\Controllers\Website\WebsiteChatSendController;
+use App\Controllers\Website\WebsiteChatListController;
+use App\Controllers\Website\WebsiteServeController;
+use App\Controllers\WebsitePage\WebsitePageListController;
+use App\Controllers\WebsitePage\WebsitePageShowController;
+use App\Controllers\WebsitePage\WebsitePageCreateController;
+use App\Controllers\WebsitePage\WebsitePageUpdateController;
+use App\Controllers\WebsitePage\WebsitePageDeleteController;
+use App\Controllers\WebsitePage\WebsitePageVersionListController;
+use App\Controllers\WebsitePage\WebsitePageVersionRestoreController;
 use App\Middleware\CombinedAuthMiddleware;
 use App\Middleware\RoleMiddleware;
 use BaseApi\Http\Middleware\RateLimitMiddleware;
@@ -919,6 +934,116 @@ $router->post('/email-templates/{id}/preview', [
 // ]);
 // 
 // This would match permissions like 'export.*' or 'export.csv'
+
+// ================================
+// Website Builder Endpoints
+// ================================
+
+$router->get('/websites', [
+    RateLimitMiddleware::class => ['limit' => '60/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    WebsiteListController::class,
+]);
+
+$router->post('/websites', [
+    RateLimitMiddleware::class => ['limit' => '20/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    WebsiteCreateController::class,
+]);
+
+$router->get('/websites/{id}', [
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    WebsiteShowController::class,
+]);
+
+$router->patch('/websites/{id}', [
+    RateLimitMiddleware::class => ['limit' => '30/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    WebsiteUpdateController::class,
+]);
+
+$router->delete('/websites/{id}', [
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['manager']],
+    WebsiteDeleteController::class,
+]);
+
+// Website Chat
+$router->post('/websites/{websiteId}/chat', [
+    RateLimitMiddleware::class => ['limit' => '10/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    WebsiteChatSendController::class,
+]);
+
+$router->get('/websites/{websiteId}/chat', [
+    RateLimitMiddleware::class => ['limit' => '60/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    WebsiteChatListController::class,
+]);
+
+// Website Pages
+$router->get('/websites/{websiteId}/pages', [
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    WebsitePageListController::class,
+]);
+
+$router->post('/websites/{websiteId}/pages', [
+    RateLimitMiddleware::class => ['limit' => '20/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    WebsitePageCreateController::class,
+]);
+
+$router->get('/websites/{websiteId}/pages/{id}', [
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    WebsitePageShowController::class,
+]);
+
+$router->patch('/websites/{websiteId}/pages/{id}', [
+    RateLimitMiddleware::class => ['limit' => '30/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    WebsitePageUpdateController::class,
+]);
+
+$router->delete('/websites/{websiteId}/pages/{id}', [
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    WebsitePageDeleteController::class,
+]);
+
+// Website Page Versions
+$router->get('/websites/{websiteId}/pages/{pageId}/versions', [
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    WebsitePageVersionListController::class,
+]);
+
+$router->post('/websites/{websiteId}/pages/{pageId}/versions/{versionId}/restore', [
+    RateLimitMiddleware::class => ['limit' => '10/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    WebsitePageVersionRestoreController::class,
+]);
+
+// Public Website Serving
+$router->get('/sites/{slug}', [
+    RateLimitMiddleware::class => ['limit' => '120/1m'],
+    WebsiteServeController::class,
+]);
+
+$router->get('/sites/{slug}/{pageSlug}', [
+    RateLimitMiddleware::class => ['limit' => '120/1m'],
+    WebsiteServeController::class,
+]);
 
 // ================================
 // Development Only

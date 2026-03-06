@@ -3536,3 +3536,356 @@ export function useDeleteContactRelationship(
 
   return { data, loading, error, mutate, reset };
 }
+
+// ================================
+// Website Builder Hooks
+// ================================
+
+export function useGetWebsiteList(
+  query?: Types.WebsiteListQueryParams,
+  options?: QueryOptions<Types.WebsiteListResponse>,
+  deps?: DependencyList,
+): QueryResult<Types.WebsiteListResponse> {
+  return useQueryHook(
+    () => Api.getWebsiteList(query, options),
+    options?.enabled ?? true,
+    [JSON.stringify(query), ...(deps || [])],
+    options,
+  );
+}
+
+export function useGetWebsiteShowById(
+  path: Types.WebsiteShowPathParams,
+  options?: QueryOptions<Types.WebsiteShowResponse>,
+  deps?: DependencyList,
+): QueryResult<Types.WebsiteShowResponse> {
+  return useQueryHook(
+    () => Api.getWebsiteShowById(path, options),
+    (options?.enabled ?? true) && !!path.id,
+    [path.id, ...(deps || [])],
+    options,
+  );
+}
+
+export function usePostWebsiteCreate(
+  options?: QueryOptions<Types.WebsiteCreateResponse>,
+): MutationResult<Types.WebsiteCreateResponse, { body: Types.WebsiteCreateRequestBody }> {
+  const [data, setData] = useState<Types.WebsiteCreateResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: { body: Types.WebsiteCreateRequestBody }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.postWebsiteCreate(variables.body, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => { setData(null); setError(null); }, []);
+  return { data, loading, error, mutate, reset };
+}
+
+export function usePatchWebsiteUpdateById(
+  options?: QueryOptions<Types.WebsiteUpdateResponse>,
+): MutationResult<
+  Types.WebsiteUpdateResponse,
+  { path: Types.WebsiteUpdatePathParams; body: Types.WebsiteUpdateRequestBody }
+> {
+  const [data, setData] = useState<Types.WebsiteUpdateResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: {
+      path: Types.WebsiteUpdatePathParams;
+      body: Types.WebsiteUpdateRequestBody;
+    }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.patchWebsiteUpdateById(variables.path, variables.body, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => { setData(null); setError(null); }, []);
+  return { data, loading, error, mutate, reset };
+}
+
+export function useDeleteWebsiteById(
+  options?: QueryOptions<Types.WebsiteDeleteResponse>,
+): MutationResult<Types.WebsiteDeleteResponse, { path: Types.WebsiteDeletePathParams }> {
+  const [data, setData] = useState<Types.WebsiteDeleteResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: { path: Types.WebsiteDeletePathParams }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.deleteWebsiteById(variables.path, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => { setData(null); setError(null); }, []);
+  return { data, loading, error, mutate, reset };
+}
+
+export function useGetWebsitePageList(
+  path: Types.WebsitePageListPathParams,
+  options?: QueryOptions<Types.WebsitePageListResponse>,
+  deps?: DependencyList,
+): QueryResult<Types.WebsitePageListResponse> {
+  return useQueryHook(
+    () => Api.getWebsitePageList(path, options),
+    (options?.enabled ?? true) && !!path.websiteId,
+    [path.websiteId, ...(deps || [])],
+    options,
+  );
+}
+
+export function usePostWebsitePageCreate(
+  options?: QueryOptions<Types.WebsitePageCreateResponse>,
+): MutationResult<
+  Types.WebsitePageCreateResponse,
+  { path: Types.WebsitePageCreatePathParams; body: Types.WebsitePageCreateRequestBody }
+> {
+  const [data, setData] = useState<Types.WebsitePageCreateResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: {
+      path: Types.WebsitePageCreatePathParams;
+      body: Types.WebsitePageCreateRequestBody;
+    }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.postWebsitePageCreate(variables.path, variables.body, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => { setData(null); setError(null); }, []);
+  return { data, loading, error, mutate, reset };
+}
+
+export function usePatchWebsitePageUpdateById(
+  options?: QueryOptions<Types.WebsitePageUpdateResponse>,
+): MutationResult<
+  Types.WebsitePageUpdateResponse,
+  { path: Types.WebsitePageUpdatePathParams; body: Types.WebsitePageUpdateRequestBody }
+> {
+  const [data, setData] = useState<Types.WebsitePageUpdateResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: {
+      path: Types.WebsitePageUpdatePathParams;
+      body: Types.WebsitePageUpdateRequestBody;
+    }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.patchWebsitePageUpdateById(variables.path, variables.body, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => { setData(null); setError(null); }, []);
+  return { data, loading, error, mutate, reset };
+}
+
+export function useDeleteWebsitePageById(
+  options?: QueryOptions<Types.WebsitePageDeleteResponse>,
+): MutationResult<Types.WebsitePageDeleteResponse, { path: Types.WebsitePageDeletePathParams }> {
+  const [data, setData] = useState<Types.WebsitePageDeleteResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: { path: Types.WebsitePageDeletePathParams }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.deleteWebsitePageById(variables.path, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => { setData(null); setError(null); }, []);
+  return { data, loading, error, mutate, reset };
+}
+
+export function usePostWebsiteChatSend(
+  options?: QueryOptions<Types.WebsiteChatSendResponse>,
+): MutationResult<
+  Types.WebsiteChatSendResponse,
+  { path: Types.WebsiteChatSendPathParams; body: Types.WebsiteChatSendRequestBody }
+> {
+  const [data, setData] = useState<Types.WebsiteChatSendResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: {
+      path: Types.WebsiteChatSendPathParams;
+      body: Types.WebsiteChatSendRequestBody;
+    }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.postWebsiteChatSend(variables.path, variables.body, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => { setData(null); setError(null); }, []);
+  return { data, loading, error, mutate, reset };
+}
+
+export function useGetWebsiteChatList(
+  path: Types.WebsiteChatListPathParams,
+  query?: Types.WebsiteChatListQueryParams,
+  options?: QueryOptions<Types.WebsiteChatListResponse>,
+  deps?: DependencyList,
+): QueryResult<Types.WebsiteChatListResponse> {
+  return useQueryHook(
+    () => Api.getWebsiteChatList(path, query, options),
+    (options?.enabled ?? true) && !!path.websiteId,
+    [path.websiteId, JSON.stringify(query), ...(deps || [])],
+    options,
+  );
+}
+
+export function useGetWebsitePageVersionList(
+  path: Types.WebsitePageVersionListPathParams,
+  options?: QueryOptions<Types.WebsitePageVersionListResponse>,
+  deps?: DependencyList,
+): QueryResult<Types.WebsitePageVersionListResponse> {
+  return useQueryHook(
+    () => Api.getWebsitePageVersionList(path, options),
+    (options?.enabled ?? true) && !!path.websiteId && !!path.pageId,
+    [path.websiteId, path.pageId, ...(deps || [])],
+    options,
+  );
+}
+
+export function usePostWebsitePageVersionRestore(
+  options?: QueryOptions<Types.WebsitePageVersionRestoreResponse>,
+): MutationResult<
+  Types.WebsitePageVersionRestoreResponse,
+  { path: Types.WebsitePageVersionRestorePathParams }
+> {
+  const [data, setData] = useState<Types.WebsitePageVersionRestoreResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: { path: Types.WebsitePageVersionRestorePathParams }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.postWebsitePageVersionRestore(variables.path, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => { setData(null); setError(null); }, []);
+  return { data, loading, error, mutate, reset };
+}

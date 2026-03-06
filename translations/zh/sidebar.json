@@ -18,6 +18,7 @@
     "sidebar.nav.tasks": "任务",
     "sidebar.nav.custom_fields": "自定义字段",
     "sidebar.nav.users": "用户",
+    "sidebar.nav.websites": "网站",
     "sidebar.section.admin": "系统管理",
     "sidebar.section.organize": "管理"
 }

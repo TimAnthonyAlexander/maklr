@@ -24,6 +24,8 @@ import { AcceptInvitePage } from "./pages/AcceptInvitePage";
 import { EmailTemplatesPage } from "./pages/EmailTemplatesPage";
 import { AuditLogPage } from "./pages/AuditLogPage";
 import { CustomFieldsPage } from "./pages/CustomFieldsPage";
+import { WebsitesPage } from "./pages/WebsitesPage";
+import { WebsiteEditorPage } from "./pages/WebsiteEditorPage";
 
 export default function App() {
   return (
@@ -65,6 +67,8 @@ export default function App() {
           <Route path="/documents" element={<DocumentsPage />} />
           <Route path="/audit-log" element={<AuditLogPage />} />
           <Route path="/custom-fields" element={<CustomFieldsPage />} />
+          <Route path="/websites" element={<WebsitesPage />} />
+          <Route path="/websites/:id" element={<WebsiteEditorPage />} />
           <Route path="/users" element={<UsersPage />} />
           <Route path="/users/:id" element={<UserDetailPage />} />
         </Route>

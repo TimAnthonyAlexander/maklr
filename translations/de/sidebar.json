@@ -18,6 +18,7 @@
     "sidebar.nav.tasks": "Aufgaben",
     "sidebar.nav.custom_fields": "Eigene Felder",
     "sidebar.nav.users": "Benutzer",
+    "sidebar.nav.websites": "Webseiten",
     "sidebar.section.admin": "Verwaltung",
     "sidebar.section.organize": "Organisieren"
 }

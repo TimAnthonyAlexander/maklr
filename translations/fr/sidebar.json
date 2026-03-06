@@ -18,6 +18,7 @@
     "sidebar.nav.tasks": "Tâches",
     "sidebar.nav.custom_fields": "Champs personnalisés",
     "sidebar.nav.users": "Utilisateurs",
+    "sidebar.nav.websites": "Sites Web",
     "sidebar.section.admin": "Administration",
     "sidebar.section.organize": "Organiser"
 }

@@ -20,7 +20,9 @@ use App\Services\SmtpSendService;
 use App\Services\BrochureService;
 use App\Services\CustomFieldValidationService;
 use App\Services\EmailDraftService;
+use App\Services\HtmlSanitizerService;
 use App\Services\OpenAIService;
+use App\Services\WebsiteLlmService;
 use BaseApi\Auth\UserProvider;
 
 /**
@@ -65,6 +67,8 @@ class AppServiceProvider extends ServiceProvider
         $container->singleton(CustomFieldValidationService::class);
         $container->singleton(OpenAIService::class);
         $container->singleton(EmailDraftService::class);
+        $container->singleton(HtmlSanitizerService::class);
+        $container->singleton(WebsiteLlmService::class);
 
         // Example: Register a custom service with manual configuration
         // $container->singleton(SomeService::class, function (ContainerInterface $c) {

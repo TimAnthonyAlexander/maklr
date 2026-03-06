@@ -18,6 +18,7 @@
     "sidebar.nav.tasks": "Taken",
     "sidebar.nav.custom_fields": "Aangepaste velden",
     "sidebar.nav.users": "Gebruikers",
+    "sidebar.nav.websites": "Websites",
     "sidebar.section.admin": "Beheer",
     "sidebar.section.organize": "Organiseren"
 }

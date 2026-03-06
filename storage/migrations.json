@@ -1818,6 +1818,186 @@
             "table": "custom_field_definition",
             "operation": "add_fk",
             "warning": null
+        },
+        {
+            "id": "mig_70254bd9d5bc",
+            "sql": "CREATE TABLE `website` (\n  `name` VARCHAR(255) NOT NULL DEFAULT '',\n  `slug` VARCHAR(100) NOT NULL DEFAULT '',\n  `description` TEXT,\n  `published` TINYINT(1) NOT NULL DEFAULT 0,\n  `user_id` VARCHAR(36),\n  `office_id` VARCHAR(36),\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_cf0a1ac04b7b",
+            "sql": "CREATE TABLE `website_chat_message` (\n  `role` VARCHAR(20) NOT NULL DEFAULT 'user',\n  `content` TEXT,\n  `website_id` VARCHAR(36),\n  `page_id` VARCHAR(36),\n  `user_id` VARCHAR(36),\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website_chat_message",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_7d08c06578fd",
+            "sql": "CREATE TABLE `website_page` (\n  `title` VARCHAR(255) NOT NULL DEFAULT '',\n  `slug` VARCHAR(100) NOT NULL DEFAULT '',\n  `html_content` MEDIUMTEXT,\n  `sort_order` INT NOT NULL DEFAULT 0,\n  `published` TINYINT(1) NOT NULL DEFAULT 0,\n  `website_id` VARCHAR(36),\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website_page",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_039fb7341fbb",
+            "sql": "CREATE TABLE `website_page_version` (\n  `page_id` VARCHAR(36),\n  `html_content` MEDIUMTEXT,\n  `version_number` INT NOT NULL DEFAULT 0,\n  `change_summary` VARCHAR(500),\n  `created_by_user_id` VARCHAR(36),\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website_page_version",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_76990e09071f",
+            "sql": "ALTER TABLE `website` ADD UNIQUE KEY `uniq_website_slug` (`slug`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_d219972396b7",
+            "sql": "ALTER TABLE `website` ADD INDEX `idx_website_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_f567a236f830",
+            "sql": "ALTER TABLE `website` ADD INDEX `idx_website_user_id` (`user_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_75a8ffba3f44",
+            "sql": "ALTER TABLE `website_chat_message` ADD INDEX `idx_website_chat_message_website_id` (`website_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website_chat_message",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_1f2def5900b0",
+            "sql": "ALTER TABLE `website_chat_message` ADD INDEX `idx_website_chat_message_page_id` (`page_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website_chat_message",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_f57f792f8fc2",
+            "sql": "ALTER TABLE `website_chat_message` ADD INDEX `idx_website_chat_message_website_id_created_at` (`website_id`, `created_at`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website_chat_message",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_3743056fc15d",
+            "sql": "ALTER TABLE `website_page` ADD UNIQUE KEY `uniq_website_page_website_id_slug` (`website_id`, `slug`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website_page",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_7b4d5323457a",
+            "sql": "ALTER TABLE `website_page` ADD INDEX `idx_website_page_website_id` (`website_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website_page",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_9d0c7c35759f",
+            "sql": "ALTER TABLE `website_page_version` ADD UNIQUE KEY `uniq_website_page_version_page_id_version_number` (`page_id`, `version_number`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website_page_version",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_72cd6e9e504c",
+            "sql": "ALTER TABLE `website_page_version` ADD INDEX `idx_website_page_version_page_id` (`page_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website_page_version",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_28a4af999c3c",
+            "sql": "ALTER TABLE `website` ADD CONSTRAINT `fk_website_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_a3baeda18dde",
+            "sql": "ALTER TABLE `website` ADD CONSTRAINT `fk_website_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_2ad4926a7825",
+            "sql": "ALTER TABLE `website_chat_message` ADD CONSTRAINT `fk_website_chat_message_website_id` FOREIGN KEY (`website_id`) REFERENCES `website` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website_chat_message",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_99516fb93149",
+            "sql": "ALTER TABLE `website_chat_message` ADD CONSTRAINT `fk_website_chat_message_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website_chat_message",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_2bbd2e89e0ef",
+            "sql": "ALTER TABLE `website_page` ADD CONSTRAINT `fk_website_page_website_id` FOREIGN KEY (`website_id`) REFERENCES `website` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website_page",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_9de684ea7071",
+            "sql": "ALTER TABLE `website_page_version` ADD CONSTRAINT `fk_website_page_version_page_id` FOREIGN KEY (`page_id`) REFERENCES `website_page` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T19:59:26+00:00",
+            "table": "website_page_version",
+            "operation": "add_fk",
+            "warning": null
         }
     ]
 }
