@@ -152,21 +152,21 @@ function KeyMetricsCard({ estate }: { estate: Estate }) {
           <Metric
             label="Total Area"
             value={estate.area_total}
-            suffix="m\u00B2"
+            suffix="m²"
           />
         </Grid>
         <Grid size={{ xs: 6, sm: 3 }}>
           <Metric
             label="Living Area"
             value={estate.area_living}
-            suffix="m\u00B2"
+            suffix="m²"
           />
         </Grid>
         <Grid size={{ xs: 6, sm: 3 }}>
           <Metric
             label="Plot Area"
             value={estate.area_plot}
-            suffix="m\u00B2"
+            suffix="m²"
           />
         </Grid>
         <Grid size={{ xs: 6, sm: 3 }}>
