@@ -160,6 +160,7 @@ PROMPT;
 
         $count = WebsiteChatMessage::query()
             ->qb()
+            ->select([])
             ->selectRaw('COUNT(*)', 'cnt')
             ->join('website', 'website_chat_message.website_id', '=', 'website.id')
             ->where('website.office_id', '=', $officeId)
