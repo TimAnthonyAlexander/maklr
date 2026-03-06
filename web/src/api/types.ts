@@ -1311,6 +1311,21 @@ export interface AuditLog {
   updated_at?: string | null;
 }
 
+export type EstateBulkAction = 'status_change' | 'assign' | 'archive';
+
+export interface PostEstateBulkActionRequestBody {
+  ids: string[];
+  action: EstateBulkAction;
+  status?: string;
+  assigned_user_id?: string | null;
+}
+
+export interface PostEstateBulkActionResponse {
+  updated: number;
+  skipped: number;
+  errors: string[];
+}
+
 export interface AuditLogListQueryParams {
   entity_type?: string;
   entity_id?: string;

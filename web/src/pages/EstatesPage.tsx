@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import {
   Box,
+  Checkbox,
   Typography,
   Button,
   Paper,
@@ -22,6 +23,7 @@ import type { EstateListQueryParams } from "../api/types";
 import { EstateStatusChip } from "../components/estates/EstateStatusChip";
 import { EstateFilters } from "../components/estates/EstateFilters";
 import { EstateForm } from "../components/estates/EstateForm";
+import { EstateBulkActionToolbar } from "../components/estates/EstateBulkActionToolbar";
 import { useTranslation } from "../contexts/LanguageContext";
 
 const priceFormatter = new Intl.NumberFormat("de-DE", {
@@ -82,6 +84,7 @@ export function EstatesPage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [formOpen, setFormOpen] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
   const filters = useMemo(
     () => parseFiltersFromParams(searchParams),
@@ -89,11 +92,12 @@ export function EstatesPage() {
   );
   const { data, loading, error, refetch } = useGetEstateList(filters);
 
-  const estates = data?.items ?? [];
+  const estates = useMemo(() => data?.items ?? [], [data?.items]);
   const pagination = data?.pagination;
 
   const handleFilterChange = useCallback(
     (newFilters: EstateListQueryParams) => {
+      setSelectedIds(new Set());
       setSearchParams(filtersToParams(newFilters));
     },
     [setSearchParams],
@@ -128,6 +132,39 @@ export function EstatesPage() {
     refetch();
   }, [refetch]);
 
+  const handleSelectAll = useCallback(() => {
+    if (selectedIds.size === estates.length && estates.length > 0) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(
+        new Set(estates.map((e) => e.id).filter(Boolean) as string[]),
+      );
+    }
+  }, [estates, selectedIds.size]);
+
+  const handleSelectOne = useCallback((id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }, []);
+
+  const handleClearSelection = useCallback(() => {
+    setSelectedIds(new Set());
+  }, []);
+
+  const handleBulkActionComplete = useCallback(() => {
+    refetch();
+  }, [refetch]);
+
+  const allSelected = estates.length > 0 && selectedIds.size === estates.length;
+  const someSelected = selectedIds.size > 0 && !allSelected;
+
   return (
     <Box sx={{ p: 3 }}>
       {/* Header */}
@@ -156,6 +193,13 @@ export function EstatesPage() {
         <EstateFilters filters={filters} onFilterChange={handleFilterChange} />
       </Box>
 
+      {/* Bulk Action Toolbar */}
+      <EstateBulkActionToolbar
+        selectedIds={Array.from(selectedIds)}
+        onClearSelection={handleClearSelection}
+        onActionComplete={handleBulkActionComplete}
+      />
+
       {/* Error */}
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
@@ -169,6 +213,13 @@ export function EstatesPage() {
           <Table>
             <TableHead>
               <TableRow>
+                <TableCell padding="checkbox">
+                  <Checkbox
+                    indeterminate={someSelected}
+                    checked={allSelected}
+                    onChange={handleSelectAll}
+                  />
+                </TableCell>
                 <TableCell>{t("estate.col_title")}</TableCell>
                 <TableCell>{t("estate.col_type")}</TableCell>
                 <TableCell>{t("estate.col_marketing")}</TableCell>
@@ -182,7 +233,7 @@ export function EstatesPage() {
               {loading &&
                 Array.from({ length: 5 }).map((_, i) => (
                   <TableRow key={i}>
-                    {Array.from({ length: 7 }).map((_, j) => (
+                    {Array.from({ length: 8 }).map((_, j) => (
                       <TableCell key={j}>
                         <Skeleton variant="text" />
                       </TableCell>
@@ -192,7 +243,7 @@ export function EstatesPage() {
 
               {!loading && estates.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={7}>
+                  <TableCell colSpan={8}>
                     <Box
                       sx={{
                         display: "flex",
@@ -225,9 +276,17 @@ export function EstatesPage() {
                   <TableRow
                     key={estate.id}
                     hover
+                    selected={!!estate.id && selectedIds.has(estate.id)}
                     onClick={() => estate.id && handleRowClick(estate.id)}
                     sx={{ cursor: "pointer" }}
                   >
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        checked={!!estate.id && selectedIds.has(estate.id)}
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={() => estate.id && handleSelectOne(estate.id)}
+                      />
+                    </TableCell>
                     <TableCell>
                       <Typography variant="body2" sx={{ fontWeight: 500 }}>
                         {estate.title}

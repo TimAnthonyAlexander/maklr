@@ -13,6 +13,7 @@ use App\Controllers\ApiTokenController;
 use App\Controllers\StreamController;
 use App\Controllers\TranslationController;
 use App\Controllers\UpdateLanguageController;
+use App\Controllers\Estate\EstateBulkActionController;
 use App\Controllers\Estate\EstateCreateController;
 use App\Controllers\Estate\EstateListController;
 use App\Controllers\Estate\EstateShowController;
@@ -257,6 +258,13 @@ $router->get('/estates', [
     CombinedAuthMiddleware::class,
     RoleMiddleware::class => ['roles' => ['agent']],
     EstateListController::class,
+]);
+
+$router->post('/estates/bulk-action', [
+    RateLimitMiddleware::class => ['limit' => '10/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    EstateBulkActionController::class,
 ]);
 
 $router->post('/estates', [

@@ -951,6 +951,50 @@ export function usePostEstateCreate(
 }
 
 /**
+ * React hook for POST /estates/bulk-action
+ * Returns a mutate function that must be called manually
+ */
+export function usePostEstateBulkAction(
+  options?: QueryOptions<Types.PostEstateBulkActionResponse>,
+): MutationResult<
+  Types.PostEstateBulkActionResponse,
+  { body: Types.PostEstateBulkActionRequestBody }
+> {
+  const [data, setData] = useState<Types.PostEstateBulkActionResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: { body: Types.PostEstateBulkActionRequestBody }) => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const result = await Api.postEstateBulkAction(variables.body, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+/**
  * React hook for PATCH /estates/{id}
  * Returns a mutate function that must be called manually
  */

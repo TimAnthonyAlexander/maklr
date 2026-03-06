@@ -1339,6 +1339,17 @@ export async function deleteContactRelationship(
 }
 
 /**
+ * POST /estates/bulk-action
+ * @tags Estates
+ */
+export async function postEstateBulkAction(
+  body: Types.PostEstateBulkActionRequestBody,
+  options?: HttpOptions,
+): Promise<Types.PostEstateBulkActionResponse> {
+  return http.post("/estates/bulk-action", body, options);
+}
+
+/**
  * GET /audit-logs
  * @tags AuditLog
  */
