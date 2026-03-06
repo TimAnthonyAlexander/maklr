@@ -1,4 +1,8 @@
 {
+    "__meta": {
+        "last_sync": "2026-03-05T20:28:35+00:00",
+        "needs_review": false
+    },
     "estate.add_estate": "Ajouter un bien",
     "estate.add_first_estate": "Ajoutez votre premier bien",
     "estate.archive_cancel": "Annuler",
@@ -6,6 +10,19 @@
     "estate.archive_description": "\"{title}\" sera archivé et n'apparaîtra plus dans les annonces actives. Vous pourrez le restaurer ultérieurement si nécessaire.",
     "estate.archive_loading": "Archivage...",
     "estate.archive_title": "Archiver ce bien ?",
+    "estate.bulk_archive": "Archives",
+    "estate.bulk_archive_confirm": "Archive {count} succession(s) ?",
+    "estate.bulk_archive_description": "Le(s) domaine(s) {count} sera(ont) archivé(s) et n'apparaîtra(ont) plus dans les listes actives.",
+    "estate.bulk_assign": "Affecter un agent",
+    "estate.bulk_cancel": "Annuler",
+    "estate.bulk_change_status": "Changement d'état",
+    "estate.bulk_confirm": "Confirmer",
+    "estate.bulk_error": "L'action a échoué",
+    "estate.bulk_select_agent": "Sélectionner un agent",
+    "estate.bulk_select_status": "Sélectionner le statut",
+    "estate.bulk_selected": "{count} sélectionné",
+    "estate.bulk_success": "{updated} domaine(s) mis à jour",
+    "estate.bulk_unassign": "Désaffecter",
     "estate.col_city": "Ville",
     "estate.col_created": "Créé",
     "estate.col_marketing": "Commercialisation",
@@ -67,11 +84,11 @@
     "estate.form_section_location": "Localisation",
     "estate.form_title_edit": "Modifier le bien",
     "estate.form_title_new": "Nouveau bien",
-    "estate.images_title": "Images ({count})",
     "estate.image_delete": "Supprimer",
     "estate.image_is_primary": "Photo principale",
     "estate.image_primary": "Principale",
     "estate.image_set_primary": "Définir comme principale",
+    "estate.images_title": "Images ({count})",
     "estate.link_contact": "Lier un contact",
     "estate.marketing_type_lease": "Bail",
     "estate.marketing_type_rent": "Location",
@@ -116,9 +133,5 @@
     "estate.upload_retry": "Réessayer les échecs",
     "estate.upload_too_large": "{name} : Fichier trop volumineux. La taille maximale est de 10 Mo.",
     "estate.upload_too_large_short": "{name} : Fichier trop volumineux. Maximum 10 Mo.",
-    "estate.upload_uploading": "Téléchargement...",
-    "__meta": {
-        "last_sync": "2026-03-05T20:28:35+00:00",
-        "needs_review": false
-    }
+    "estate.upload_uploading": "Téléchargement..."
 }

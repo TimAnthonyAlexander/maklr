@@ -1,4 +1,8 @@
 {
+    "__meta": {
+        "last_sync": "2026-03-05T20:28:33+00:00",
+        "needs_review": false
+    },
     "estate.add_estate": "Immobilie hinzufügen",
     "estate.add_first_estate": "Fügen Sie Ihre erste Immobilie hinzu",
     "estate.archive_cancel": "Abbrechen",
@@ -6,6 +10,19 @@
     "estate.archive_description": "\"{title}\" wird archiviert und erscheint nicht mehr in aktiven Listen. Sie können sie später bei Bedarf wiederherstellen.",
     "estate.archive_loading": "Wird archiviert...",
     "estate.archive_title": "Diese Immobilie archivieren?",
+    "estate.bulk_archive": "Archiv",
+    "estate.bulk_archive_confirm": "Archiv {count} Nachlass(e)?",
+    "estate.bulk_archive_description": "{count} Nachlässe werden archiviert und erscheinen nicht mehr in aktiven Angeboten.",
+    "estate.bulk_assign": "Agent zuweisen",
+    "estate.bulk_cancel": "Abbrechen",
+    "estate.bulk_change_status": "Status ändern",
+    "estate.bulk_confirm": "Bestätigen Sie",
+    "estate.bulk_error": "Aktion gescheitert",
+    "estate.bulk_select_agent": "Agent auswählen",
+    "estate.bulk_select_status": "Status auswählen",
+    "estate.bulk_selected": "{count} ausgewählt",
+    "estate.bulk_success": "{updated} Nachlass(e) aktualisiert",
+    "estate.bulk_unassign": "Aufheben der Zuweisung",
     "estate.col_city": "Stadt",
     "estate.col_created": "Erstellt",
     "estate.col_marketing": "Vermarktung",
@@ -67,11 +84,11 @@
     "estate.form_section_location": "Standort",
     "estate.form_title_edit": "Immobilie bearbeiten",
     "estate.form_title_new": "Neue Immobilie",
-    "estate.images_title": "Bilder ({count})",
     "estate.image_delete": "Löschen",
     "estate.image_is_primary": "Hauptbild",
     "estate.image_primary": "Hauptbild",
     "estate.image_set_primary": "Als Hauptbild festlegen",
+    "estate.images_title": "Bilder ({count})",
     "estate.link_contact": "Kontakt verknüpfen",
     "estate.marketing_type_lease": "Pacht",
     "estate.marketing_type_rent": "Miete",
@@ -116,9 +133,5 @@
     "estate.upload_retry": "Fehlgeschlagene erneut versuchen",
     "estate.upload_too_large": "{name}: Datei zu groß. Maximale Größe beträgt 10 MB.",
     "estate.upload_too_large_short": "{name}: Datei zu groß. Maximal 10 MB.",
-    "estate.upload_uploading": "Wird hochgeladen...",
-    "__meta": {
-        "last_sync": "2026-03-05T20:28:33+00:00",
-        "needs_review": false
-    }
+    "estate.upload_uploading": "Wird hochgeladen..."
 }

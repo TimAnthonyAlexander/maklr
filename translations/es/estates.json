@@ -1,4 +1,8 @@
 {
+    "__meta": {
+        "last_sync": "2026-03-05T20:28:37+00:00",
+        "needs_review": false
+    },
     "estate.add_estate": "Añadir inmueble",
     "estate.add_first_estate": "Añada su primer inmueble",
     "estate.archive_cancel": "Cancelar",
@@ -6,6 +10,19 @@
     "estate.archive_description": "\"{title}\" se archivará y ya no aparecerá en los listados activos. Puedes restaurarlo más adelante si es necesario.",
     "estate.archive_loading": "Archivando...",
     "estate.archive_title": "¿Archivar este inmueble?",
+    "estate.bulk_archive": "Archivo",
+    "estate.bulk_archive_confirm": "¿Archivar finca(s) {count}?",
+    "estate.bulk_archive_description": "Las propiedades {count} se archivarán y dejarán de aparecer en los listados activos.",
+    "estate.bulk_assign": "Asignar agente",
+    "estate.bulk_cancel": "Cancelar",
+    "estate.bulk_change_status": "Cambiar estado",
+    "estate.bulk_confirm": "Confirme",
+    "estate.bulk_error": "Acción fallida",
+    "estate.bulk_select_agent": "Seleccionar agente",
+    "estate.bulk_select_status": "Seleccionar estado",
+    "estate.bulk_selected": "{count} seleccionado",
+    "estate.bulk_success": "{updated} finca(s) actualizada(s)",
+    "estate.bulk_unassign": "Desasignar",
     "estate.col_city": "Ciudad",
     "estate.col_created": "Creado",
     "estate.col_marketing": "Comercialización",
@@ -67,11 +84,11 @@
     "estate.form_section_location": "Ubicación",
     "estate.form_title_edit": "Editar inmueble",
     "estate.form_title_new": "Nuevo inmueble",
-    "estate.images_title": "Imágenes ({count})",
     "estate.image_delete": "Eliminar",
     "estate.image_is_primary": "Imagen principal",
     "estate.image_primary": "Principal",
     "estate.image_set_primary": "Establecer como principal",
+    "estate.images_title": "Imágenes ({count})",
     "estate.link_contact": "Vincular contacto",
     "estate.marketing_type_lease": "Arrendamiento",
     "estate.marketing_type_rent": "Alquiler",
@@ -116,9 +133,5 @@
     "estate.upload_retry": "Reintentar fallidos",
     "estate.upload_too_large": "{name}: Archivo demasiado grande. El tamaño máximo es de 10 MB.",
     "estate.upload_too_large_short": "{name}: Archivo demasiado grande. Máximo 10 MB.",
-    "estate.upload_uploading": "Subiendo...",
-    "__meta": {
-        "last_sync": "2026-03-05T20:28:37+00:00",
-        "needs_review": false
-    }
+    "estate.upload_uploading": "Subiendo..."
 }
