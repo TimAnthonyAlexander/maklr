@@ -332,11 +332,6 @@ class BrochureService
             font-size: 10pt;
             padding: 3px 0;
         }
-        .features-list li:before {
-            content: "\2022  ";
-            color: {$primary};
-            font-weight: bold;
-        }
         .grid-table {
             width: 100%;
             border-collapse: collapse;
@@ -455,9 +450,9 @@ class BrochureService
         }
 
         if ($estate->floor !== null) {
-            $floor = (string) $estate->floor;
+            $floor = $estate->floor === 0 ? 'Ground Floor' : (string) $estate->floor;
             if ($estate->floors_total !== null) {
-                $floor .= ' / ' . $estate->floors_total;
+                $floor .= ' / ' . $estate->floors_total . ' Floors';
             }
 
             $rows[] = ['Floor', $floor];
@@ -537,7 +532,7 @@ class BrochureService
         }
 
         $items = array_map(
-            fn(string $f): string => '<li>' . htmlspecialchars($f, ENT_QUOTES, 'UTF-8') . '</li>',
+            fn(string $f): string => '<li>• ' . htmlspecialchars($f, ENT_QUOTES, 'UTF-8') . '</li>',
             $features,
         );
 
