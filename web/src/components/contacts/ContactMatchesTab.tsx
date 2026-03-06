@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useGetContactMatchesById } from "../../api/hooks";
 import type { EstateMatchResult } from "../../api/types";
+import { MatchExplainButton } from "../matches/MatchExplainButton";
 
 interface ContactMatchesTabProps {
   contactId: string;
@@ -35,7 +36,7 @@ function ScoreBadge({ score }: { score: number }) {
   );
 }
 
-function MatchRow({ match }: { match: EstateMatchResult }) {
+function MatchRow({ match, contactId }: { match: EstateMatchResult; contactId: string }) {
   const navigate = useNavigate();
   const estate = match.estate;
   const location = [estate.city, estate.zip].filter(Boolean).join(", ");
@@ -82,6 +83,11 @@ function MatchRow({ match }: { match: EstateMatchResult }) {
           <Chip key={m} label={m} size="small" color="error" variant="outlined" />
         ))}
       </Box>
+      <MatchExplainButton
+        estateId={estate.id!}
+        contactId={contactId}
+        profileId={match.profile_id}
+      />
     </Paper>
   );
 }
@@ -152,7 +158,7 @@ export function ContactMatchesTab({
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
         {items.map((match) => (
-          <MatchRow key={match.estate.id} match={match} />
+          <MatchRow key={match.estate.id} match={match} contactId={contactId} />
         ))}
       </Box>
     </Box>

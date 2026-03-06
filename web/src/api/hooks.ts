@@ -2464,6 +2464,47 @@ export function useGetEstateMatchesById(
 }
 
 /**
+ * React hook for POST /matches/explain
+ * Returns a mutate function that must be called manually
+ */
+export function usePostMatchExplain(
+  options?: QueryOptions<Types.MatchExplanation>,
+): MutationResult<Types.MatchExplanation, { body: Types.MatchExplainRequest }> {
+  const [data, setData] = useState<Types.MatchExplanation | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: { body: Types.MatchExplainRequest }) => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const result = await Api.postMatchExplain(variables.body, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+/**
  * React hook for GET /estates/{id}/contacts
  * Auto-fetches on mount and when dependencies change
  */

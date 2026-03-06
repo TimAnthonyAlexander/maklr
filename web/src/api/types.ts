@@ -531,6 +531,20 @@ export interface EstateMatchesResponse {
   total: number;
 }
 
+// --- Match Explain types ---
+
+export interface MatchExplainRequest {
+  estate_id: string;
+  contact_id: string;
+  profile_id: string;
+}
+
+export interface MatchExplanation {
+  strong_fits: string[];
+  stretches: string[];
+  suggested_pitch: string;
+}
+
 // --- Contact types ---
 
 export interface Contact {

@@ -951,6 +951,17 @@ export async function getEstateMatchesById(
 }
 
 /**
+ * POST /matches/explain
+ * @tags Matching
+ */
+export async function postMatchExplain(
+  body: Types.MatchExplainRequest,
+  options?: HttpOptions,
+): Promise<Types.MatchExplanation> {
+  return http.post("/matches/explain", body, options);
+}
+
+/**
  * GET /estates/{id}/contacts
  * @tags Estates
  */

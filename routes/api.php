@@ -70,6 +70,7 @@ use App\Controllers\Contact\ContactCreateController;
 use App\Controllers\Contact\ContactUpdateController;
 use App\Controllers\Contact\ContactDeleteController;
 use App\Controllers\Contact\ContactMatchController;
+use App\Controllers\Match\MatchExplainController;
 use App\Controllers\Contact\ContactRelationshipCreateController;
 use App\Controllers\Contact\ContactRelationshipDeleteController;
 use App\Controllers\Document\DocumentListController;
@@ -636,6 +637,13 @@ $router->delete('/contacts/{id}', [
     CombinedAuthMiddleware::class,
     RoleMiddleware::class => ['roles' => ['manager']],
     ContactDeleteController::class,
+]);
+
+$router->post('/matches/explain', [
+    RateLimitMiddleware::class => ['limit' => '20/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    MatchExplainController::class,
 ]);
 
 $router->get('/contacts/{id}/matches', [

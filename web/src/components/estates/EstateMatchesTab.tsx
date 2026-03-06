@@ -10,6 +10,7 @@ import {
 import { useGetEstateMatchesById } from "../../api/hooks";
 import type { ContactMatchResult } from "../../api/types";
 import { getContactDisplayName } from "../../utils/contactHelpers";
+import { MatchExplainButton } from "../matches/MatchExplainButton";
 
 interface EstateMatchesTabProps {
   estateId: string;
@@ -36,7 +37,7 @@ const STAGE_COLORS: Record<string, "default" | "success" | "warning" | "error" |
   lost: "default",
 };
 
-function ContactMatchRow({ match }: { match: ContactMatchResult }) {
+function ContactMatchRow({ match, estateId }: { match: ContactMatchResult; estateId: string }) {
   const navigate = useNavigate();
   const contact = match.contact;
   const displayName = getContactDisplayName(contact);
@@ -92,6 +93,11 @@ function ContactMatchRow({ match }: { match: ContactMatchResult }) {
           <Chip key={m} label={m} size="small" color="error" variant="outlined" />
         ))}
       </Box>
+      <MatchExplainButton
+        estateId={estateId}
+        contactId={contact.id!}
+        profileId={match.profile_id}
+      />
     </Paper>
   );
 }
@@ -134,7 +140,7 @@ export function EstateMatchesTab({ estateId }: EstateMatchesTabProps) {
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
         {items.map((match) => (
-          <ContactMatchRow key={match.contact.id} match={match} />
+          <ContactMatchRow key={match.contact.id} match={match} estateId={estateId} />
         ))}
       </Box>
     </Box>
