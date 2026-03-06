@@ -61,6 +61,7 @@
     "email.scope": "Portée",
     "email.search_contact": "Recherche de contacts...",
     "email.search_estate": "Recherche de domaines...",
+    "email.filter_unread": "Afficher les non lus uniquement",
     "email.search_placeholder": "Rechercher des e-mails...",
     "email.select_contact": "Sélectionner un contact",
     "email.select_estate": "Sélectionner un bien",

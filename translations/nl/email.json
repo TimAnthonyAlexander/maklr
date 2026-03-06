@@ -61,6 +61,7 @@
     "email.scope": "Bereik",
     "email.search_contact": "Contacten zoeken...",
     "email.search_estate": "Zoek landgoederen...",
+    "email.filter_unread": "Alleen ongelezen tonen",
     "email.search_placeholder": "E-mails zoeken...",
     "email.select_contact": "Contact selecteren",
     "email.select_estate": "Object selecteren",

@@ -61,6 +61,7 @@
     "email.scope": "Ámbito",
     "email.search_contact": "Buscar contactos...",
     "email.search_estate": "Buscar fincas...",
+    "email.filter_unread": "Mostrar solo no leídos",
     "email.search_placeholder": "Buscar correos...",
     "email.select_contact": "Seleccionar contacto",
     "email.select_estate": "Seleccionar propiedad",

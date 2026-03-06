@@ -1,11 +1,13 @@
-import { useMemo } from "react";
 import {
   Box,
   Typography,
   TextField,
   Skeleton,
   InputAdornment,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
+import MarkunreadOutlinedIcon from "@mui/icons-material/MarkunreadOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import CallMadeIcon from "@mui/icons-material/CallMade";
 import CallReceivedIcon from "@mui/icons-material/CallReceived";
@@ -54,6 +56,8 @@ interface EmailListProps {
   searchQuery: string;
   onSearchChange: (q: string) => void;
   onSelect: (id: string) => void;
+  unreadOnly: boolean;
+  onToggleUnreadOnly: () => void;
 }
 
 export function EmailList({
@@ -63,9 +67,10 @@ export function EmailList({
   searchQuery,
   onSearchChange,
   onSelect,
+  unreadOnly,
+  onToggleUnreadOnly,
 }: EmailListProps) {
   const { t } = useTranslation();
-  const filteredEmails = useMemo(() => emails, [emails]);
 
   return (
     <Box
@@ -79,8 +84,8 @@ export function EmailList({
         height: "100%",
       }}
     >
-      {/* Search */}
-      <Box sx={{ p: 1.5 }}>
+      {/* Search + Filter */}
+      <Box sx={{ p: 1.5, display: "flex", gap: 0.5, alignItems: "center" }}>
         <TextField
           size="small"
           fullWidth
@@ -103,6 +108,20 @@ export function EmailList({
             },
           }}
         />
+        <Tooltip title={t("email.filter_unread")}>
+          <IconButton
+            size="small"
+            onClick={onToggleUnreadOnly}
+            sx={{
+              color: unreadOnly ? "primary.main" : "text.secondary",
+              bgcolor: unreadOnly ? "rgba(0,0,0,0.05)" : "transparent",
+              borderRadius: 2,
+              flexShrink: 0,
+            }}
+          >
+            <MarkunreadOutlinedIcon sx={{ fontSize: 20 }} />
+          </IconButton>
+        </Tooltip>
       </Box>
 
       {/* List */}
@@ -124,7 +143,7 @@ export function EmailList({
             </Box>
           ))}
 
-        {!loading && filteredEmails.length === 0 && (
+        {!loading && emails.length === 0 && (
           <Box
             sx={{
               display: "flex",
@@ -140,7 +159,7 @@ export function EmailList({
         )}
 
         {!loading &&
-          filteredEmails.map((email) => (
+          emails.map((email) => (
             <Box
               key={email.id}
               onClick={() => email.id && onSelect(email.id)}

@@ -61,6 +61,7 @@
     "email.scope": "Bereich",
     "email.search_contact": "Kontakte suchen...",
     "email.search_estate": "Immobilien suchen...",
+    "email.filter_unread": "Nur ungelesene anzeigen",
     "email.search_placeholder": "E-Mails suchen...",
     "email.select_contact": "Kontakt auswählen",
     "email.select_estate": "Immobilie auswählen",

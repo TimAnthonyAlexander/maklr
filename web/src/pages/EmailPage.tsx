@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { Box, Snackbar, Alert } from "@mui/material";
 import type { EmailAccount, EmailMessage } from "../api/types";
 import { useTranslation } from "../contexts/LanguageContext";
@@ -59,6 +59,43 @@ export function EmailPage() {
     } = useGetEmailList(emailQuery);
     const emails = useMemo(() => emailsData?.items ?? [], [emailsData]);
 
+    const [unreadOnly, setUnreadOnly] = useState(false);
+
+    // Track a version that only bumps on triggers that should recalculate the filter:
+    // - folder change, filter toggle, or fresh server data (but NOT optimistic read marks)
+    const serverDataRef = useRef(emailsData);
+    const filterVersionRef = useRef(0);
+
+    // Detect actual server data changes (refetch) vs optimistic setData updates.
+    // When handleSelectEmail calls setData, it sets the flag to skip version bump.
+    const skipNextVersionBump = useRef(false);
+
+    useEffect(() => {
+        if (emailsData !== serverDataRef.current) {
+            serverDataRef.current = emailsData;
+            if (skipNextVersionBump.current) {
+                skipNextVersionBump.current = false;
+            } else {
+                filterVersionRef.current += 1;
+            }
+        }
+    }, [emailsData]);
+
+    // Snapshot the visible email IDs, only recalculated on filter/folder/server changes
+    const visibleEmailIds = useMemo(() => {
+        if (!unreadOnly) return null; // null = show all, no filtering
+        return new Set(emails.filter((e) => !e.read).map((e) => e.id));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [unreadOnly, selectedFolder, filterVersionRef.current]);
+
+    const displayEmails = useMemo(
+        () =>
+            visibleEmailIds === null
+                ? emails
+                : emails.filter((e) => visibleEmailIds.has(e.id)),
+        [emails, visibleEmailIds],
+    );
+
     const showSnackbar = useCallback(
         (message: string, severity: "success" | "error") => {
             setSnackbar({ message, severity });
@@ -85,10 +122,11 @@ export function EmailPage() {
         (id: string) => {
             setSelectedEmailId(id);
             if (emailsData) {
-                const updated = emailsData.items.some(
+                const isUnread = emailsData.items.some(
                     (e) => e.id === id && e.read === false,
                 );
-                if (updated) {
+                if (isUnread) {
+                    skipNextVersionBump.current = true;
                     setEmailsData({
                         ...emailsData,
                         items: emailsData.items.map((e) =>
@@ -145,12 +183,14 @@ export function EmailPage() {
                     unreadInboxCount={unreadInboxCount}
                 />
                 <EmailList
-                    emails={emails}
+                    emails={displayEmails}
                     loading={emailsLoading}
                     selectedId={selectedEmailId}
                     searchQuery={searchQuery}
                     onSearchChange={setSearchQuery}
                     onSelect={handleSelectEmail}
+                    unreadOnly={unreadOnly}
+                    onToggleUnreadOnly={() => setUnreadOnly((v) => !v)}
                 />
                 <EmailDetail
                     emailId={selectedEmailId}

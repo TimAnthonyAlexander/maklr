@@ -61,6 +61,7 @@
     "email.scope": "范围",
     "email.search_contact": "搜索联系人...",
     "email.search_estate": "搜索房地产...",
+    "email.filter_unread": "仅显示未读",
     "email.search_placeholder": "搜索邮件...",
     "email.select_contact": "选择联系人",
     "email.select_estate": "选择房产",

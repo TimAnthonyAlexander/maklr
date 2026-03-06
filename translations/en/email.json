@@ -61,6 +61,7 @@
     "email.scope": "Scope",
     "email.search_contact": "Search contacts...",
     "email.search_estate": "Search estates...",
+    "email.filter_unread": "Show unread only",
     "email.search_placeholder": "Search emails...",
     "email.select_contact": "Select contact",
     "email.select_estate": "Select estate",
