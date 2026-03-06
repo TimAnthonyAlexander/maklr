@@ -1363,6 +1363,21 @@ export interface PostEmailTemplateGenerateResponse {
   body_text: string;
 }
 
+// --- Email Draft Generate ---
+
+export interface PostEmailDraftGenerateRequestBody {
+  intent: string;
+  contact_id?: string | null;
+  estate_id?: string | null;
+  context_notes?: string | null;
+}
+
+export interface PostEmailDraftGenerateResponse {
+  subject: string;
+  body_html: string;
+  body_text: string;
+}
+
 // --- Custom Field Definition types ---
 
 export type CustomFieldType = 'text' | 'number' | 'select' | 'boolean' | 'date' | 'textarea';

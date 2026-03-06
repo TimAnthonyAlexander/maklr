@@ -94,6 +94,7 @@ use App\Controllers\Email\EmailUpdateController;
 use App\Controllers\Email\EmailDeleteController;
 use App\Controllers\Email\EmailSyncController;
 use App\Controllers\Email\EmailCreateTaskController;
+use App\Controllers\Email\EmailDraftGenerateController;
 use App\Controllers\EmailTemplate\EmailTemplateListController;
 use App\Controllers\EmailTemplate\EmailTemplateShowController;
 use App\Controllers\EmailTemplate\EmailTemplateCreateController;
@@ -789,6 +790,13 @@ $router->post('/emails', [
     CombinedAuthMiddleware::class,
     RoleMiddleware::class => ['roles' => ['agent']],
     EmailSendController::class,
+]);
+
+$router->post('/emails/generate-draft', [
+    RateLimitMiddleware::class => ['limit' => '10/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    EmailDraftGenerateController::class,
 ]);
 
 $router->get('/emails/{id}', [

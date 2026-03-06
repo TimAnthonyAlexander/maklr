@@ -97,5 +97,19 @@
     "email.to_placeholder": "recipient@example.com",
     "email.unlink_contact": "Unlink Contact",
     "email.unlink_estate": "Unlink Estate",
-    "email.username": "Username"
+    "email.username": "Username",
+    "email.draft_with_ai": "Draft with AI",
+    "email.ai_draft_title": "Draft with AI",
+    "email.ai_draft_intent": "Email Intent",
+    "email.ai_draft_intent_follow_up_viewing": "Follow-up after viewing",
+    "email.ai_draft_intent_price_update": "Price update",
+    "email.ai_draft_intent_new_listing_match": "New listing match",
+    "email.ai_draft_intent_document_request": "Document request",
+    "email.ai_draft_intent_viewing_invitation": "Viewing invitation",
+    "email.ai_draft_intent_general_follow_up": "General follow-up",
+    "email.ai_draft_intent_custom": "Custom",
+    "email.ai_draft_context_notes": "Additional context",
+    "email.ai_draft_context_notes_placeholder": "Add any details the AI should know...",
+    "email.ai_draft_generating": "Generating...",
+    "email.ai_draft_generate": "Generate Draft"
 }

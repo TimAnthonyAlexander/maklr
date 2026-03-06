@@ -1329,6 +1329,19 @@ export async function postEmailTemplateGenerate(
   return http.post(url, body, options);
 }
 
+/**
+ * POST /emails/generate-draft
+ * @tags Emails
+ */
+export async function postEmailDraftGenerate(
+  body: Types.PostEmailDraftGenerateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.PostEmailDraftGenerateResponse> {
+  const url = "/emails/generate-draft";
+
+  return http.post(url, body, options);
+}
+
 export async function postEmailTemplatePreviewById(
   path: Types.EmailTemplateByIdPathParams,
   body: Types.PostEmailTemplatePreviewRequestBody,

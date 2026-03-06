@@ -14,7 +14,7 @@ import {
   InputLabel,
   Alert,
 } from "@mui/material";
-import { X, Send } from "lucide-react";
+import { X, Send, Sparkles } from "lucide-react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
@@ -34,6 +34,7 @@ import type {
   Estate,
 } from "../../api/types";
 import { useTranslation } from "../../contexts/LanguageContext";
+import { AiDraftDialog } from "./AiDraftDialog";
 
 interface EmailComposeProps {
   open: boolean;
@@ -73,6 +74,7 @@ export function EmailCompose({
   const [selectedEstate, setSelectedEstate] = useState<Estate | null>(null);
   const [contactSearch, setContactSearch] = useState("");
   const [estateSearch, setEstateSearch] = useState("");
+  const [aiDraftOpen, setAiDraftOpen] = useState(false);
 
   const sendMutation = usePostEmailSend();
   const { data: templateData } = useGetEmailTemplateList(
@@ -83,14 +85,14 @@ export function EmailCompose({
 
   const { data: contactData, loading: contactsLoading } = useGetContactList(
     { q: contactSearch, per_page: 10 },
-    { enabled: open && !!selectedTemplate },
+    { enabled: open },
     [contactSearch],
   );
   const contactOptions = contactData?.items ?? [];
 
   const { data: estateData, loading: estatesLoading } = useGetEstateList(
     { q: estateSearch, per_page: 10 },
-    { enabled: open && !!selectedTemplate },
+    { enabled: open },
     [estateSearch],
   );
   const estateOptions = estateData?.items ?? [];
@@ -323,78 +325,98 @@ export function EmailCompose({
               </Box>
             )}
 
-            {/* Contact/Estate pickers (shown when template selected) */}
-            {selectedTemplate && (
-              <Box sx={{ display: "flex", gap: 1 }}>
-                <Autocomplete
-                  size="small"
-                  fullWidth
-                  options={contactOptions}
-                  value={selectedContact}
-                  getOptionLabel={(option) =>
-                    [option.first_name, option.last_name].filter(Boolean).join(" ") ||
-                    option.company_name ||
-                    option.email ||
-                    ""
-                  }
-                  isOptionEqualToValue={(option, value) => option.id === value.id}
-                  onInputChange={(_, value, reason) => {
-                    if (reason === "input") setContactSearch(value);
-                  }}
-                  onChange={(_, value) => setSelectedContact(value)}
-                  loading={contactsLoading}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label={t("email.select_contact")}
-                      placeholder={t("email.search_contact")}
-                      slotProps={{
-                        input: {
-                          ...params.InputProps,
-                          endAdornment: (
-                            <>
-                              {contactsLoading && <CircularProgress size={18} />}
-                              {params.InputProps.endAdornment}
-                            </>
-                          ),
-                        },
-                      }}
-                    />
-                  )}
-                />
-                <Autocomplete
-                  size="small"
-                  fullWidth
-                  options={estateOptions}
-                  value={selectedEstate}
-                  getOptionLabel={(option) => option.title ?? ""}
-                  isOptionEqualToValue={(option, value) => option.id === value.id}
-                  onInputChange={(_, value, reason) => {
-                    if (reason === "input") setEstateSearch(value);
-                  }}
-                  onChange={(_, value) => setSelectedEstate(value)}
-                  loading={estatesLoading}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label={t("email.select_estate")}
-                      placeholder={t("email.search_estate")}
-                      slotProps={{
-                        input: {
-                          ...params.InputProps,
-                          endAdornment: (
-                            <>
-                              {estatesLoading && <CircularProgress size={18} />}
-                              {params.InputProps.endAdornment}
-                            </>
-                          ),
-                        },
-                      }}
-                    />
-                  )}
-                />
-              </Box>
-            )}
+            {/* Contact/Estate pickers */}
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <Autocomplete
+                size="small"
+                fullWidth
+                options={contactOptions}
+                value={selectedContact}
+                getOptionLabel={(option) =>
+                  [option.first_name, option.last_name].filter(Boolean).join(" ") ||
+                  option.company_name ||
+                  option.email ||
+                  ""
+                }
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                onInputChange={(_, value, reason) => {
+                  if (reason === "input") setContactSearch(value);
+                }}
+                onChange={(_, value) => setSelectedContact(value)}
+                loading={contactsLoading}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label={t("email.select_contact")}
+                    placeholder={t("email.search_contact")}
+                    slotProps={{
+                      input: {
+                        ...params.InputProps,
+                        endAdornment: (
+                          <>
+                            {contactsLoading && <CircularProgress size={18} />}
+                            {params.InputProps.endAdornment}
+                          </>
+                        ),
+                      },
+                    }}
+                  />
+                )}
+              />
+              <Autocomplete
+                size="small"
+                fullWidth
+                options={estateOptions}
+                value={selectedEstate}
+                getOptionLabel={(option) => option.title ?? ""}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                onInputChange={(_, value, reason) => {
+                  if (reason === "input") setEstateSearch(value);
+                }}
+                onChange={(_, value) => setSelectedEstate(value)}
+                loading={estatesLoading}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label={t("email.select_estate")}
+                    placeholder={t("email.search_estate")}
+                    slotProps={{
+                      input: {
+                        ...params.InputProps,
+                        endAdornment: (
+                          <>
+                            {estatesLoading && <CircularProgress size={18} />}
+                            {params.InputProps.endAdornment}
+                          </>
+                        ),
+                      },
+                    }}
+                  />
+                )}
+              />
+            </Box>
+
+            {/* Draft with AI */}
+            <Button
+              variant="outlined"
+              size="small"
+              startIcon={<Sparkles size={16} />}
+              disabled={!selectedContact && !selectedEstate}
+              onClick={() => setAiDraftOpen(true)}
+            >
+              {t("email.draft_with_ai")}
+            </Button>
+            <AiDraftDialog
+              open={aiDraftOpen}
+              onClose={() => setAiDraftOpen(false)}
+              contactId={selectedContact?.id}
+              estateId={selectedEstate?.id}
+              onGenerated={(result) => {
+                setSubject(result.subject);
+                editor?.commands.setContent(result.body_html);
+                setAiDraftOpen(false);
+              }}
+            />
 
             <TextField
               size="small"
