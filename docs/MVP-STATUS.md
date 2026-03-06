@@ -8,7 +8,6 @@ Last updated: 2026-03-06
 
 | Feature | Scope |
 |---|---|
-| **Estate bulk actions** | Checkboxes, bulk status change/assign/delete |
 | **PDF brochure generation** | Pick a PDF engine, template, controller |
 | **Record ownership scope** | own/team/all filter on all tenant queries |
 | **Contact merge duplicates** | Duplicate detection + merge logic |
@@ -39,6 +38,7 @@ Last updated: 2026-03-06
 | **Estate: agent assignment** | Auto-assign + patchable + filter |
 | **Estate: quick search** (title/external_id/city) | Works; owner name not yet included |
 | **Contact: file attachments** | Via document system |
+| **Estate bulk actions** | `POST /estates/bulk-action` endpoint + `EstateBulkActionToolbar` with fixed bottom bar; supports status change, assign agent, archive |
 
 ---
 
@@ -62,8 +62,8 @@ No merge controller, service, or route exists.
 ### Estate Custom Fields — PARTIAL
 Both `Estate` and `Contact` models have `custom_fields` JSON columns with getter/setter methods. Neither `EstateUpdateController` nor `ContactUpdateController` include `custom_fields` in `PATCHABLE_FIELDS`. No frontend UI to view or edit custom fields.
 
-### Estate Bulk Actions — NOT DONE
-No bulk action endpoints or UI. No row checkboxes in the table.
+### Estate Bulk Actions — DONE
+`EstateBulkActionController` handles three actions via `POST /estates/bulk-action`: status change, assign agent, and archive. Office-scoped with audit + activity logging. Frontend: row checkboxes with select-all in `EstatesPage`, fixed bottom toolbar (`EstateBulkActionToolbar`) with confirmation dialogs for each action. Selection clears on filter/page change and after action completion. Translations in en/nl/zh.
 
 ### PDF Brochure Generation — NOT DONE
 No PDF generation endpoint, controller, service, or library exists. `DocumentService` only handles file storage paths.
@@ -84,9 +84,8 @@ No scope filter field exists on User. All list controllers scope by `office_id` 
 
 ## Suggested Priority Order (remaining items)
 
-1. **Estate bulk actions** — productivity feature for managing large portfolios
-2. **PDF brochure** — needs engine decision first (dompdf, wkhtmltopdf, etc.)
-3. **Custom fields UI** — model layer exists, needs controller + UI wiring
-4. **Quick search improvements** — add street/zip/owner name to estate search
-5. **Record ownership scope** — architectural, affects all list queries
-6. **Merge duplicates** — nice-to-have, can ship without
+1. **PDF brochure** — needs engine decision first (dompdf, wkhtmltopdf, etc.)
+2. **Custom fields UI** — model layer exists, needs controller + UI wiring
+3. **Quick search improvements** — add street/zip/owner name to estate search
+4. **Record ownership scope** — architectural, affects all list queries
+5. **Merge duplicates** — nice-to-have, can ship without

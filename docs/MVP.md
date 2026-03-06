@@ -23,14 +23,14 @@ The core entity. Everything revolves around properties.
 - [x] Marketing types: sale, rent, lease
 - [x] Status lifecycle: draft > active > reserved > sold/rented > archived
 - [x] Image/floor plan/video uploads with reordering
-- [ ] Virtual tour URL field
-- [ ] Geo data with map pin (Leaflet/OSM)
+- [x] Virtual tour URL field
+- [x] Geo data with map pin (Leaflet/OSM)
 - [x] Owner link (contact reference)
-- [ ] Agent assignment
+- [x] Agent assignment
 - [ ] Custom fields (user-defined, per property type)
 - [x] Filters and saved views ("working lists")
-- [ ] Quick search (address, owner name, external ID)
-- [ ] Bulk actions (status change, assign, delete)
+- [~] Quick search (address, owner name, external ID) — title/external_id/city work; street/zip/owner name not yet
+- [x] Bulk actions (status change, assign, archive)
 - [x] Activity log tab (auto-populated from all modules)
 
 **[P2] Multi-Property**
@@ -58,12 +58,12 @@ Second core entity. Buyers, sellers, tenants, landlords, service providers.
 - [x] Full CRUD (persons + companies)
 - [x] Contact types: buyer, seller, tenant, landlord, notary, agent, misc
 - [ ] Custom fields per type
-- [ ] Relationship links between contacts (e.g. spouse, employer, referral)
-- [ ] Search profiles: what is this contact looking for? (type, price range, area, rooms, location radius)
-- [ ] Matching engine: run a contact's search profile against active estates, or run an estate against all search profiles
+- [x] Relationship links between contacts (e.g. spouse, employer, referral)
+- [x] Search profiles: what is this contact looking for? (type, price range, area, rooms, location radius)
+- [x] Matching engine: run a contact's search profile against active estates, or run an estate against all search profiles
 - [x] Pipeline / qualification stages (cold > warm > hot > deal > lost)
 - [x] GDPR: consent flag, consent date, data deletion request handling
-- [ ] File attachments
+- [x] File attachments (via document system)
 - [x] Filters and saved views
 - [x] Activity log tab
 - [ ] Merge duplicates
@@ -100,7 +100,7 @@ Unified timeline. The agent's logbook. Every interaction documented.
 - [x] Appointment CRUD
 - [x] Link to estate, contacts, users
 - [x] Day/week/month view in React
-- [ ] Conflict detection per user
+- [x] Conflict detection per user
 - [x] Types: viewing, meeting, handover, internal, other
 
 **[P2]**
@@ -135,7 +135,7 @@ Unified timeline. The agent's logbook. Every interaction documented.
 - [x] Send and receive within the app
 - [x] Auto-match incoming/outgoing emails to contacts (by email address)
 - [x] Auto-archive matched emails to activity log
-- [ ] Email templates with placeholder variables (estate fields, contact fields)
+- [x] Email templates with placeholder variables (estate fields, contact fields)
 - [x] File attachments
 
 **[P2]**
@@ -175,7 +175,7 @@ Unified timeline. The agent's logbook. Every interaction documented.
 - [x] Multi-office support (user belongs to office)
   - **Rule:** All tenant-owned data (estates, contacts, tasks, calendar, etc.) MUST be scoped by `office_id` in every query. Never use `Model::find($id)` alone — always add `->where('office_id', '=', $officeId)`. On create, set `office_id` from the authenticated user. Never allow `office_id` to be patched.
 - [x] API key auth for external consumers
-- [ ] Audit log (who changed what, when)
+- [x] Audit log (who changed what, when)
 
 ---
 
@@ -277,12 +277,12 @@ For embedding property listings on agent websites.
 Ship this. Nothing else.
 
 - [x] Estates
-- [ ] Contacts + matching
+- [~] Contacts + matching — done except merge duplicates and custom fields
 - [x] Activity Log
 - [x] Calendar
 - [x] Tasks
 - [x] Email (IMAP/SMTP)
-- [ ] Documents + basic PDF brochure
+- [~] Documents + basic PDF brochure — file storage done, PDF brochure not started
 - [x] Users & Auth (RBAC, audit log)
 - [x] React frontend for all of the above
 
