@@ -6,3 +6,5 @@ storage/logs/*.log
 # Rector cache
 var/cache/rector
 .phpunit.cache
+
+docs/competitive-gap-analysis.md
