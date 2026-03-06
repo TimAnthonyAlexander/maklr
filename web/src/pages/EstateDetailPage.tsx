@@ -11,9 +11,8 @@ import {
   Alert,
   Menu,
   MenuItem,
-  Chip,
-  Grid,
   IconButton,
+  Grid,
 } from "@mui/material";
 import { ArrowLeft, Pencil, Trash2, FileText } from "lucide-react";
 import {
@@ -22,7 +21,7 @@ import {
   useDeleteEstateById,
 } from "../api/hooks";
 import type { Estate, EstateImage } from "../api/types";
-import { getEstateImageUrl, getEstateBrochureUrl } from "../api/client";
+import { getEstateBrochureUrl } from "../api/client";
 import { EstateImagesTab } from "../components/estates/EstateImagesTab";
 import { useAuth } from "../contexts/AuthContext";
 import { useTranslation } from "../contexts/LanguageContext";
@@ -37,245 +36,15 @@ import { EntityDocumentsTab } from "../components/documents/EntityDocumentsTab";
 import { EntityActivityTimeline } from "../components/activity/ActivityTimeline";
 import { EstateContactsTab } from "../components/estates/EstateContactsTab";
 import { EstateMatchesTab } from "../components/estates/EstateMatchesTab";
-import { EstateLocationMap } from "../components/estates/EstateLocationMap";
-
-const priceFormatter = new Intl.NumberFormat("de-DE", {
-  style: "currency",
-  currency: "EUR",
-  maximumFractionDigits: 0,
-});
+import { EstateImageGallery } from "../components/estates/EstateImageGallery";
+import { EstateDescriptionCard } from "../components/estates/EstateDescriptionCard";
+import { EstateKeyMetricsCard } from "../components/estates/EstateKeyMetricsCard";
+import { EstateLocationCard } from "../components/estates/EstateLocationCard";
+import { EstateFeaturesCard } from "../components/estates/EstateFeaturesCard";
 
 const STATUSES = ["draft", "active", "reserved", "sold", "rented", "archived"];
 
 const ESTATE_TABS = ["images", "documents", "matches"] as const;
-
-interface MetricProps {
-  label: string;
-  value: string | number | null | undefined;
-  suffix?: string;
-}
-
-function Metric({ label, value, suffix }: MetricProps) {
-  const isEmpty = value == null || value === "";
-  return (
-    <Box>
-      <Typography variant="caption" color="text.secondary">
-        {label}
-      </Typography>
-      <Typography
-        variant="body1"
-        sx={{
-          fontWeight: 500,
-          color: isEmpty ? "text.disabled" : "text.primary",
-        }}
-      >
-        {isEmpty ? "\u2014" : `${value}${suffix ? ` ${suffix}` : ""}`}
-      </Typography>
-    </Box>
-  );
-}
-
-function ImageGallery({
-  estate,
-  images,
-}: {
-  estate: Estate;
-  images: EstateImage[];
-}) {
-  const sortedImages = [...images].sort(
-    (a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0),
-  );
-
-  if (sortedImages.length === 0 || !estate.id) return null;
-
-  return (
-    <Grid container spacing={1.5}>
-      {sortedImages.map((img) => (
-        <Grid size={{ xs: 6, sm: 4, md: 3 }} key={img.id}>
-          <Box
-            component="img"
-            src={getEstateImageUrl(estate.id!, img.id ?? "")}
-            alt={img.alt_text ?? img.title ?? img.file_name ?? ""}
-            sx={{
-              width: "100%",
-              aspectRatio: "4/3",
-              objectFit: "cover",
-              display: "block",
-              borderRadius: 2,
-              border: "1px solid",
-              borderColor: "divider",
-            }}
-          />
-        </Grid>
-      ))}
-    </Grid>
-  );
-}
-
-function DescriptionCard({ estate }: { estate: Estate }) {
-  const { t } = useTranslation();
-  return (
-    <Paper variant="outlined" sx={{ p: 3 }}>
-      <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
-        {t("estate.detail_description")}
-      </Typography>
-      {estate.description ? (
-        <Typography variant="body2" sx={{ whiteSpace: "pre-wrap" }}>
-          {estate.description}
-        </Typography>
-      ) : (
-        <Typography variant="body2" sx={{ color: "text.disabled" }}>
-          {"\u2014"}
-        </Typography>
-      )}
-    </Paper>
-  );
-}
-
-function KeyMetricsCard({ estate }: { estate: Estate }) {
-  const { t } = useTranslation();
-  return (
-    <Paper variant="outlined" sx={{ p: 3 }}>
-      <Typography variant="subtitle2" sx={{ mb: 2, fontWeight: 600 }}>
-        {t("estate.detail_key_metrics")}
-      </Typography>
-      <Grid container spacing={3}>
-        <Grid size={{ xs: 6, sm: 3 }}>
-          <Metric
-            label={t("estate.field_price")}
-            value={
-              estate.price != null ? priceFormatter.format(estate.price) : null
-            }
-          />
-        </Grid>
-        <Grid size={{ xs: 6, sm: 3 }}>
-          <Metric
-            label={t("estate.label_total_area")}
-            value={estate.area_total}
-            suffix="m²"
-          />
-        </Grid>
-        <Grid size={{ xs: 6, sm: 3 }}>
-          <Metric
-            label={t("estate.label_living_area")}
-            value={estate.area_living}
-            suffix="m²"
-          />
-        </Grid>
-        <Grid size={{ xs: 6, sm: 3 }}>
-          <Metric
-            label={t("estate.label_plot_area")}
-            value={estate.area_plot}
-            suffix="m²"
-          />
-        </Grid>
-        <Grid size={{ xs: 6, sm: 3 }}>
-          <Metric label={t("estate.field_rooms")} value={estate.rooms} />
-        </Grid>
-        <Grid size={{ xs: 6, sm: 3 }}>
-          <Metric label={t("estate.field_bedrooms")} value={estate.bedrooms} />
-        </Grid>
-        <Grid size={{ xs: 6, sm: 3 }}>
-          <Metric label={t("estate.field_bathrooms")} value={estate.bathrooms} />
-        </Grid>
-        <Grid size={{ xs: 6, sm: 3 }}>
-          <Metric label={t("estate.field_parking_spaces")} value={estate.parking_spaces} />
-        </Grid>
-        <Grid size={{ xs: 6, sm: 3 }}>
-          <Metric label={t("estate.field_year_built")} value={estate.year_built} />
-        </Grid>
-        <Grid size={{ xs: 6, sm: 3 }}>
-          <Metric label={t("estate.field_floor")} value={estate.floor} />
-        </Grid>
-        <Grid size={{ xs: 6, sm: 3 }}>
-          <Metric label={t("estate.field_floors_total")} value={estate.floors_total} />
-        </Grid>
-        <Grid size={{ xs: 6, sm: 3 }}>
-          <Metric label={t("estate.field_external_id")} value={estate.external_id} />
-        </Grid>
-      </Grid>
-    </Paper>
-  );
-}
-
-function LocationCard({ estate }: { estate: Estate }) {
-  const { t } = useTranslation();
-  const streetLine = [estate.street, estate.house_number]
-    .filter(Boolean)
-    .join(" ");
-  const cityLine = [estate.zip, estate.city].filter(Boolean).join(" ");
-
-  return (
-    <Paper variant="outlined" sx={{ p: 3 }}>
-      <Typography variant="subtitle2" sx={{ mb: 2, fontWeight: 600 }}>
-        {t("estate.form_section_location")}
-      </Typography>
-      <Grid container spacing={3}>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <Metric label={t("estate.field_street")} value={streetLine || null} />
-        </Grid>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <Metric label={t("estate.field_city")} value={cityLine || null} />
-        </Grid>
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <Metric label={t("estate.field_country")} value={estate.country} />
-        </Grid>
-      </Grid>
-      {estate.latitude != null && estate.longitude != null && (
-        <Box sx={{ mt: 2, borderRadius: 3, overflow: "hidden" }}>
-          <EstateLocationMap
-            latitude={estate.latitude}
-            longitude={estate.longitude}
-            title={estate.title}
-          />
-        </Box>
-      )}
-    </Paper>
-  );
-}
-
-function FeaturesCard({ estate }: { estate: Estate }) {
-  const { t } = useTranslation();
-  const booleanFeatures = [
-    { key: "furnished" as const, labelKey: "estate.field_furnished" },
-    { key: "balcony" as const, labelKey: "estate.field_balcony" },
-    { key: "garden" as const, labelKey: "estate.field_garden" },
-    { key: "elevator" as const, labelKey: "estate.field_elevator" },
-    { key: "cellar" as const, labelKey: "estate.field_cellar" },
-  ];
-
-  return (
-    <Paper variant="outlined" sx={{ p: 3 }}>
-      <Typography variant="subtitle2" sx={{ mb: 2, fontWeight: 600 }}>
-        {t("estate.form_section_features")}
-      </Typography>
-      <Grid container spacing={3} sx={{ mb: 2 }}>
-        <Grid size={{ xs: 6, sm: 4 }}>
-          <Metric label={t("estate.field_heating_type")} value={estate.heating_type} />
-        </Grid>
-        <Grid size={{ xs: 6, sm: 4 }}>
-          <Metric label={t("estate.field_energy_rating")} value={estate.energy_rating} />
-        </Grid>
-        <Grid size={{ xs: 6, sm: 4 }}>
-          <Metric label={t("estate.field_condition")} value={estate.condition} />
-        </Grid>
-      </Grid>
-      <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 2 }}>
-        {booleanFeatures.map(({ key, labelKey }) => (
-          <Chip
-            key={key}
-            label={t(labelKey)}
-            size="small"
-            variant={estate[key] ? "filled" : "outlined"}
-            color={estate[key] ? "primary" : "default"}
-            sx={{ opacity: estate[key] ? 1 : 0.5 }}
-          />
-        ))}
-      </Box>
-      <Metric label={t("estate.label_virtual_tour")} value={estate.virtual_tour_url} />
-    </Paper>
-  );
-}
 
 export function EstateDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -462,22 +231,13 @@ export function EstateDetailPage() {
         {/* Main content */}
         <Grid size={{ xs: 12, lg: 8 }}>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-            {/* Image Gallery */}
-            <ImageGallery estate={estate} images={images} />
+            <EstateImageGallery estate={estate} images={images} />
+            <EstateDescriptionCard estate={estate} />
+            <EstateKeyMetricsCard estate={estate} />
+            <EstateLocationCard estate={estate} />
+            <EstateFeaturesCard estate={estate} />
 
-            {/* Description */}
-            <DescriptionCard estate={estate} />
-
-            {/* Key Metrics */}
-            <KeyMetricsCard estate={estate} />
-
-            {/* Location */}
-            <LocationCard estate={estate} />
-
-            {/* Features */}
-            <FeaturesCard estate={estate} />
-
-            {/* Images / Documents Tabs */}
+            {/* Images / Documents / Matches Tabs */}
             <Paper variant="outlined" sx={{ px: 3 }}>
               <Tabs value={tab} onChange={handleTabChange}>
                 <Tab label={t("estate.tab_images")} />
@@ -524,12 +284,10 @@ export function EstateDetailPage() {
               gap: 3,
             }}
           >
-            {/* Contacts */}
             <Paper variant="outlined" sx={{ p: 3 }}>
               {id && <EstateContactsTab estateId={id} />}
             </Paper>
 
-            {/* Activity */}
             <Paper variant="outlined" sx={{ p: 3 }}>
               <Typography variant="subtitle2" sx={{ mb: 2, fontWeight: 600 }}>
                 {t("estate.detail_activity")}
