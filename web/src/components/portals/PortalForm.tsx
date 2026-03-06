@@ -9,7 +9,6 @@ import {
   Alert,
   FormControlLabel,
   Switch,
-  MenuItem,
 } from "@mui/material";
 import { X } from "lucide-react";
 import { usePostPortalCreate, usePatchPortalUpdateById } from "../../api/hooks";
@@ -25,7 +24,6 @@ interface PortalFormProps {
 
 interface FormState {
   name: string;
-  portal_type: "ftp" | "api";
   ftp_host: string;
   ftp_port: string;
   ftp_username: string;
@@ -33,15 +31,12 @@ interface FormState {
   ftp_path: string;
   ftp_passive: boolean;
   ftp_ssl: boolean;
-  api_url: string;
-  api_key: string;
   provider_id: string;
 }
 
 function portalToFormState(portal?: Portal | null): FormState {
   return {
     name: portal?.name ?? "",
-    portal_type: portal?.portal_type ?? "ftp",
     ftp_host: portal?.ftp_host ?? "",
     ftp_port: portal?.ftp_port != null ? String(portal.ftp_port) : "21",
     ftp_username: portal?.ftp_username ?? "",
@@ -49,8 +44,6 @@ function portalToFormState(portal?: Portal | null): FormState {
     ftp_path: portal?.ftp_path ?? "/",
     ftp_passive: portal?.ftp_passive ?? true,
     ftp_ssl: portal?.ftp_ssl ?? true,
-    api_url: portal?.api_url ?? "",
-    api_key: "",
     provider_id: portal?.provider_id ?? "",
   };
 }
@@ -78,25 +71,17 @@ export function PortalForm({ open, onClose, portal, onSuccess }: PortalFormProps
     try {
       const body: Record<string, unknown> = {
         name: form.name,
-        portal_type: form.portal_type,
+        portal_type: "ftp",
         provider_id: form.provider_id || null,
+        ftp_host: form.ftp_host || null,
+        ftp_port: form.ftp_port ? Number(form.ftp_port) : null,
+        ftp_username: form.ftp_username || null,
+        ftp_path: form.ftp_path || "/",
+        ftp_passive: form.ftp_passive,
+        ftp_ssl: form.ftp_ssl,
       };
-
-      if (form.portal_type === "ftp") {
-        body.ftp_host = form.ftp_host || null;
-        body.ftp_port = form.ftp_port ? Number(form.ftp_port) : null;
-        body.ftp_username = form.ftp_username || null;
-        body.ftp_path = form.ftp_path || "/";
-        body.ftp_passive = form.ftp_passive;
-        body.ftp_ssl = form.ftp_ssl;
-        if (form.ftp_password) {
-          body.ftp_password = form.ftp_password;
-        }
-      } else {
-        body.api_url = form.api_url || null;
-        if (form.api_key) {
-          body.api_key = form.api_key;
-        }
+      if (form.ftp_password) {
+        body.ftp_password = form.ftp_password;
       }
 
       if (isEdit) {
@@ -169,20 +154,6 @@ export function PortalForm({ open, onClose, portal, onSuccess }: PortalFormProps
           />
 
           <TextField
-            label={t("portal.field.portal_type")}
-            value={form.portal_type}
-            onChange={(e) =>
-              updateField("portal_type", e.target.value as "ftp" | "api")
-            }
-            select
-            fullWidth
-            size="small"
-          >
-            <MenuItem value="ftp">FTP</MenuItem>
-            <MenuItem value="api">API</MenuItem>
-          </TextField>
-
-          <TextField
             label={t("portal.field.provider_id")}
             value={form.provider_id}
             onChange={(e) => updateField("provider_id", e.target.value)}
@@ -191,87 +162,62 @@ export function PortalForm({ open, onClose, portal, onSuccess }: PortalFormProps
             helperText={t("portal.field.provider_id_help")}
           />
 
-          {form.portal_type === "ftp" && (
-            <>
-              <TextField
-                label={t("portal.field.ftp_host")}
-                value={form.ftp_host}
-                onChange={(e) => updateField("ftp_host", e.target.value)}
-                fullWidth
-                size="small"
+          <TextField
+            label={t("portal.field.ftp_host")}
+            value={form.ftp_host}
+            onChange={(e) => updateField("ftp_host", e.target.value)}
+            fullWidth
+            size="small"
+          />
+          <TextField
+            label={t("portal.field.ftp_port")}
+            value={form.ftp_port}
+            onChange={(e) => updateField("ftp_port", e.target.value)}
+            fullWidth
+            size="small"
+            type="number"
+          />
+          <TextField
+            label={t("portal.field.ftp_username")}
+            value={form.ftp_username}
+            onChange={(e) => updateField("ftp_username", e.target.value)}
+            fullWidth
+            size="small"
+          />
+          <TextField
+            label={t("portal.field.ftp_password")}
+            value={form.ftp_password}
+            onChange={(e) => updateField("ftp_password", e.target.value)}
+            fullWidth
+            size="small"
+            type="password"
+            placeholder={isEdit ? t("portal.field.ftp_password_placeholder") : ""}
+          />
+          <TextField
+            label={t("portal.field.ftp_path")}
+            value={form.ftp_path}
+            onChange={(e) => updateField("ftp_path", e.target.value)}
+            fullWidth
+            size="small"
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={form.ftp_passive}
+                onChange={(e) => updateField("ftp_passive", e.target.checked)}
               />
-              <TextField
-                label={t("portal.field.ftp_port")}
-                value={form.ftp_port}
-                onChange={(e) => updateField("ftp_port", e.target.value)}
-                fullWidth
-                size="small"
-                type="number"
+            }
+            label={t("portal.field.ftp_passive")}
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={form.ftp_ssl}
+                onChange={(e) => updateField("ftp_ssl", e.target.checked)}
               />
-              <TextField
-                label={t("portal.field.ftp_username")}
-                value={form.ftp_username}
-                onChange={(e) => updateField("ftp_username", e.target.value)}
-                fullWidth
-                size="small"
-              />
-              <TextField
-                label={t("portal.field.ftp_password")}
-                value={form.ftp_password}
-                onChange={(e) => updateField("ftp_password", e.target.value)}
-                fullWidth
-                size="small"
-                type="password"
-                placeholder={isEdit ? t("portal.field.ftp_password_placeholder") : ""}
-              />
-              <TextField
-                label={t("portal.field.ftp_path")}
-                value={form.ftp_path}
-                onChange={(e) => updateField("ftp_path", e.target.value)}
-                fullWidth
-                size="small"
-              />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={form.ftp_passive}
-                    onChange={(e) => updateField("ftp_passive", e.target.checked)}
-                  />
-                }
-                label={t("portal.field.ftp_passive")}
-              />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={form.ftp_ssl}
-                    onChange={(e) => updateField("ftp_ssl", e.target.checked)}
-                  />
-                }
-                label={t("portal.field.ftp_ssl")}
-              />
-            </>
-          )}
-
-          {form.portal_type === "api" && (
-            <>
-              <TextField
-                label={t("portal.field.api_url")}
-                value={form.api_url}
-                onChange={(e) => updateField("api_url", e.target.value)}
-                fullWidth
-                size="small"
-              />
-              <TextField
-                label={t("portal.field.api_key")}
-                value={form.api_key}
-                onChange={(e) => updateField("api_key", e.target.value)}
-                fullWidth
-                size="small"
-                type="password"
-                placeholder={isEdit ? t("portal.field.api_key_placeholder") : ""}
-              />
-            </>
-          )}
+            }
+            label={t("portal.field.ftp_ssl")}
+          />
         </Box>
 
         <Box

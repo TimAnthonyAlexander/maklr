@@ -285,10 +285,6 @@ export function PortalDetailPage() {
                   </>
                 )}
 
-                {portal.portal_type === "api" && (
-                  <DetailField label={t("portal.field.api_url")} value={portal.api_url} />
-                )}
-
                 <DetailField
                   label={t("portal.col_last_sync")}
                   value={
