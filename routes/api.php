@@ -59,6 +59,10 @@ use App\Controllers\Appointment\AppointmentDeleteController;
 use App\Controllers\Activity\ActivityListController;
 use App\Controllers\Activity\ActivityCreateController;
 use App\Controllers\AuditLog\AuditLogListController;
+use App\Controllers\CustomField\CustomFieldDefinitionListController;
+use App\Controllers\CustomField\CustomFieldDefinitionCreateController;
+use App\Controllers\CustomField\CustomFieldDefinitionUpdateController;
+use App\Controllers\CustomField\CustomFieldDefinitionDeleteController;
 use App\Controllers\Contact\ContactListController;
 use App\Controllers\Contact\ContactShowController;
 use App\Controllers\Contact\ContactCreateController;
@@ -556,6 +560,37 @@ $router->get('/audit-logs', [
     CombinedAuthMiddleware::class,
     RoleMiddleware::class => ['roles' => ['manager']],
     AuditLogListController::class,
+]);
+
+// ================================
+// Custom Field Definition Endpoints
+// ================================
+
+$router->get('/custom-fields', [
+    RateLimitMiddleware::class => ['limit' => '60/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    CustomFieldDefinitionListController::class,
+]);
+
+$router->post('/custom-fields', [
+    RateLimitMiddleware::class => ['limit' => '30/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['manager']],
+    CustomFieldDefinitionCreateController::class,
+]);
+
+$router->patch('/custom-fields/{id}', [
+    RateLimitMiddleware::class => ['limit' => '30/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['manager']],
+    CustomFieldDefinitionUpdateController::class,
+]);
+
+$router->delete('/custom-fields/{id}', [
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['manager']],
+    CustomFieldDefinitionDeleteController::class,
 ]);
 
 // ================================

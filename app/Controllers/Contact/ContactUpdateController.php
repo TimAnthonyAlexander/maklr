@@ -6,6 +6,7 @@ use App\Models\Contact;
 use App\Services\ActivityService;
 use App\Services\AuditLogService;
 use App\Services\CacheHelper;
+use App\Services\CustomFieldValidationService;
 use BaseApi\Controllers\Controller;
 use BaseApi\Http\JsonResponse;
 use BaseApi\Http\Validation\ValidationException;
@@ -59,6 +60,8 @@ class ContactUpdateController extends Controller
     public ?string $office_id = null;
 
     public ?array $search_profiles = null;
+
+    public ?array $custom_fields = null;
 
     private const array ENTITY_TYPES = ['person', 'company'];
 
@@ -121,10 +124,26 @@ class ContactUpdateController extends Controller
             }
         }
 
+        // Validate custom fields if provided
+        if ($this->custom_fields !== null) {
+            /** @var CustomFieldValidationService $cfValidator */
+            $cfValidator = $this->make(CustomFieldValidationService::class);
+            $cfErrors = $cfValidator->validate($this->custom_fields, 'contact', $officeId ?? '');
+            if ($cfErrors !== []) {
+                return JsonResponse::validationError($cfErrors);
+            }
+        }
+
         // Handle search_profiles separately (not a simple field)
         $oldSearchProfiles = $contact->getSearchProfiles();
         if ($this->search_profiles !== null) {
             $contact->setSearchProfiles($this->search_profiles);
+        }
+
+        // Handle custom_fields separately
+        $oldCustomFields = $contact->getCustomFields();
+        if ($this->custom_fields !== null) {
+            $contact->setCustomFields($this->custom_fields);
         }
 
         $contact->save();
@@ -144,7 +163,16 @@ class ContactUpdateController extends Controller
             }
         }
 
-        $changes = AuditLogService::computeChanges($oldData, $newData, array_merge(self::PATCHABLE_FIELDS, ['search_profiles']));
+        // Include custom_fields in audit diff
+        if ($this->custom_fields !== null) {
+            $newCustomFields = $contact->getCustomFields();
+            if ($oldCustomFields !== $newCustomFields) {
+                $oldData['custom_fields'] = $oldCustomFields;
+                $newData['custom_fields'] = $newCustomFields;
+            }
+        }
+
+        $changes = AuditLogService::computeChanges($oldData, $newData, array_merge(self::PATCHABLE_FIELDS, ['search_profiles', 'custom_fields']));
 
         /** @var AuditLogService $auditLog */
         $auditLog = $this->make(AuditLogService::class);

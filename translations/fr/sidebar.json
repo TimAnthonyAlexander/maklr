@@ -16,6 +16,7 @@
     "sidebar.nav.email_templates": "Modèles",
     "sidebar.nav.estates": "Biens",
     "sidebar.nav.tasks": "Tâches",
+    "sidebar.nav.custom_fields": "Champs personnalisés",
     "sidebar.nav.users": "Utilisateurs",
     "sidebar.section.admin": "Administration",
     "sidebar.section.organize": "Organiser"

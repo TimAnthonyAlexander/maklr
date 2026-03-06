@@ -13,6 +13,7 @@ import {
   LayoutTemplate,
   ShieldCheck,
   ClipboardList,
+  SlidersHorizontal,
   ChevronsLeft,
   ChevronsRight,
   LogOut,
@@ -68,6 +69,12 @@ const adminItems: NavItem[] = [
     translationKey: "sidebar.nav.users",
     path: "/users",
     icon: ShieldCheck,
+    roles: ["admin", "manager"],
+  },
+  {
+    translationKey: "sidebar.nav.custom_fields",
+    path: "/custom-fields",
+    icon: SlidersHorizontal,
     roles: ["admin", "manager"],
   },
 ];

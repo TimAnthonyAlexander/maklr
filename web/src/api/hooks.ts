@@ -2945,6 +2945,180 @@ export function usePostEmailTemplatePreviewById(
   return { data, loading, error, mutate, reset };
 }
 
+// --- Custom Field Definition hooks ---
+
+/**
+ * React hook for GET /custom-fields
+ * Auto-fetches on mount and when dependencies change
+ */
+export function useGetCustomFieldDefinitionList(
+  query?: Types.CustomFieldDefinitionListQueryParams,
+  options?: QueryOptions<Types.CustomFieldDefinitionListResponse>,
+  deps?: DependencyList,
+): QueryResult<Types.CustomFieldDefinitionListResponse> {
+  return useQueryHook(
+    () => Api.getCustomFieldDefinitionList(query, options),
+    options?.enabled ?? true,
+    [JSON.stringify(query), ...(deps || [])],
+    options,
+  );
+}
+
+/**
+ * React hook for POST /custom-fields
+ * Returns a mutate function that must be called manually
+ */
+export function usePostCustomFieldDefinitionCreate(
+  options?: QueryOptions<Types.PostCustomFieldDefinitionCreateResponse>,
+): MutationResult<
+  Types.PostCustomFieldDefinitionCreateResponse,
+  { body: Types.PostCustomFieldDefinitionCreateRequestBody }
+> {
+  const [data, setData] =
+    useState<Types.PostCustomFieldDefinitionCreateResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: {
+      body: Types.PostCustomFieldDefinitionCreateRequestBody;
+    }) => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const result = await Api.postCustomFieldDefinitionCreate(
+          variables.body,
+          options,
+        );
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+/**
+ * React hook for PATCH /custom-fields/{id}
+ * Returns a mutate function that must be called manually
+ */
+export function usePatchCustomFieldDefinitionUpdateById(
+  options?: QueryOptions<Types.PatchCustomFieldDefinitionUpdateResponse>,
+): MutationResult<
+  Types.PatchCustomFieldDefinitionUpdateResponse,
+  {
+    path: Types.CustomFieldDefinitionByIdPathParams;
+    body: Types.PatchCustomFieldDefinitionUpdateRequestBody;
+  }
+> {
+  const [data, setData] =
+    useState<Types.PatchCustomFieldDefinitionUpdateResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: {
+      path: Types.CustomFieldDefinitionByIdPathParams;
+      body: Types.PatchCustomFieldDefinitionUpdateRequestBody;
+    }) => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const result = await Api.patchCustomFieldDefinitionUpdateById(
+          variables.path,
+          variables.body,
+          options,
+        );
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+/**
+ * React hook for DELETE /custom-fields/{id}
+ * Returns a mutate function that must be called manually
+ */
+export function useDeleteCustomFieldDefinitionById(
+  options?: QueryOptions<Types.DeleteCustomFieldDefinitionResponse>,
+): MutationResult<
+  Types.DeleteCustomFieldDefinitionResponse,
+  { path: Types.CustomFieldDefinitionByIdPathParams }
+> {
+  const [data, setData] =
+    useState<Types.DeleteCustomFieldDefinitionResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: {
+      path: Types.CustomFieldDefinitionByIdPathParams;
+    }) => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const result = await Api.deleteCustomFieldDefinitionById(
+          variables.path,
+          options,
+        );
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
 /**
  * React hook for GET /audit-logs
  * Auto-fetches on mount and when dependencies change

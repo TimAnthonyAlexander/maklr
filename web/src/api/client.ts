@@ -1357,6 +1357,70 @@ export async function postEstateBulkAction(
   return http.post("/estates/bulk-action", body, options);
 }
 
+// --- Custom Field Definitions ---
+
+/**
+ * GET /custom-fields
+ * @tags CustomFields
+ */
+export async function getCustomFieldDefinitionList(
+  query?: Types.CustomFieldDefinitionListQueryParams,
+  options?: HttpOptions,
+): Promise<Types.CustomFieldDefinitionListResponse> {
+  const url = "/custom-fields";
+  const searchParams = new URLSearchParams();
+  if (query) {
+    for (const [key, value] of Object.entries(query)) {
+      if (value !== undefined && value !== null && value !== "") {
+        searchParams.append(key, String(value));
+      }
+    }
+  }
+  const fullUrl = searchParams.toString() ? `${url}?${searchParams}` : url;
+
+  return http.get(fullUrl, options);
+}
+
+/**
+ * POST /custom-fields
+ * @tags CustomFields
+ */
+export async function postCustomFieldDefinitionCreate(
+  body: Types.PostCustomFieldDefinitionCreateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.PostCustomFieldDefinitionCreateResponse> {
+  const url = "/custom-fields";
+
+  return http.post(url, body, options);
+}
+
+/**
+ * PATCH /custom-fields/{id}
+ * @tags CustomFields
+ */
+export async function patchCustomFieldDefinitionUpdateById(
+  path: Types.CustomFieldDefinitionByIdPathParams,
+  body: Types.PatchCustomFieldDefinitionUpdateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.PatchCustomFieldDefinitionUpdateResponse> {
+  const url = buildPath("PatchCustomFieldDefinitionUpdateById", path);
+
+  return http.patch(url, body, options);
+}
+
+/**
+ * DELETE /custom-fields/{id}
+ * @tags CustomFields
+ */
+export async function deleteCustomFieldDefinitionById(
+  path: Types.CustomFieldDefinitionByIdPathParams,
+  options?: HttpOptions,
+): Promise<Types.DeleteCustomFieldDefinitionResponse> {
+  const url = buildPath("DeleteCustomFieldDefinitionById", path);
+
+  return http.delete(url, options);
+}
+
 /**
  * GET /audit-logs
  * @tags AuditLog

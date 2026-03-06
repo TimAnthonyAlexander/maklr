@@ -18,11 +18,12 @@ import {
   ToggleButton,
 } from "@mui/material";
 import { X, User, Building2 } from "lucide-react";
-import type { Contact, PostContactCreateRequestBody } from "../../api/types";
+import type { Contact, PostContactCreateRequestBody, PatchContactUpdateByIdRequestBody } from "../../api/types";
 import {
   usePostContactCreate,
   usePatchContactUpdateById,
 } from "../../api/hooks";
+import { CustomFieldsSection } from "../custom-fields/CustomFieldsSection";
 
 interface ContactFormProps {
   open: boolean;
@@ -53,6 +54,7 @@ interface FormState {
   notes: string;
   gdpr_consent: boolean;
   gdpr_consent_date: string;
+  custom_fields: Record<string, unknown>;
 }
 
 function contactToFormState(contact?: Contact | null): FormState {
@@ -74,6 +76,7 @@ function contactToFormState(contact?: Contact | null): FormState {
     notes: contact?.notes ?? "",
     gdpr_consent: contact?.gdpr_consent ?? false,
     gdpr_consent_date: contact?.gdpr_consent_date ?? "",
+    custom_fields: (contact?.custom_fields as Record<string, unknown>) ?? {},
   };
 }
 
@@ -104,7 +107,7 @@ function formStateToBody(form: FormState): PostContactCreateRequestBody {
 function computeDiff(
   original: FormState,
   current: FormState,
-): Partial<PostContactCreateRequestBody> {
+): PatchContactUpdateByIdRequestBody {
   const originalBody = formStateToBody(original);
   const currentBody = formStateToBody(current);
   const diff: Record<string, unknown> = {};
@@ -117,7 +120,14 @@ function computeDiff(
     }
   }
 
-  return diff as Partial<PostContactCreateRequestBody>;
+  if (
+    JSON.stringify(current.custom_fields) !==
+    JSON.stringify(original.custom_fields)
+  ) {
+    diff.custom_fields = current.custom_fields;
+  }
+
+  return diff as PatchContactUpdateByIdRequestBody;
 }
 
 const SALUTATION_OPTIONS = [
@@ -456,6 +466,15 @@ export function ContactForm({
               slotProps={{ inputLabel: { shrink: true } }}
             />
           )}
+
+          <Divider />
+
+          {/* Custom Fields */}
+          <CustomFieldsSection
+            entityType="contact"
+            values={form.custom_fields}
+            onChange={(values) => updateField("custom_fields", values)}
+          />
         </Box>
 
         <Box

@@ -17,9 +17,10 @@ import {
   Collapse,
 } from "@mui/material";
 import { X, ChevronDown, ChevronUp } from "lucide-react";
-import type { Estate, PostEstateCreateRequestBody } from "../../api/types";
+import type { Estate, PostEstateCreateRequestBody, PatchEstateUpdateByIdRequestBody } from "../../api/types";
 import { usePostEstateCreate, usePatchEstateUpdateById } from "../../api/hooks";
 import { useTranslation } from "../../contexts/LanguageContext";
+import { CustomFieldsSection } from "../custom-fields/CustomFieldsSection";
 
 interface EstateFormProps {
   open: boolean;
@@ -62,6 +63,7 @@ interface FormState {
   latitude: string;
   longitude: string;
   virtual_tour_url: string;
+  custom_fields: Record<string, unknown>;
 }
 
 function estateToFormState(estate?: Estate | null): FormState {
@@ -101,6 +103,7 @@ function estateToFormState(estate?: Estate | null): FormState {
     latitude: estate?.latitude != null ? String(estate.latitude) : "",
     longitude: estate?.longitude != null ? String(estate.longitude) : "",
     virtual_tour_url: estate?.virtual_tour_url ?? "",
+    custom_fields: (estate?.custom_fields as Record<string, unknown>) ?? {},
   };
 }
 
@@ -148,7 +151,7 @@ function formStateToBody(form: FormState): PostEstateCreateRequestBody {
 function computeDiff(
   original: FormState,
   current: FormState,
-): PostEstateCreateRequestBody {
+): PatchEstateUpdateByIdRequestBody {
   const originalBody = formStateToBody(original);
   const currentBody = formStateToBody(current);
   const diff: Record<string, unknown> = {};
@@ -161,7 +164,14 @@ function computeDiff(
     }
   }
 
-  return diff as PostEstateCreateRequestBody;
+  if (
+    JSON.stringify(current.custom_fields) !==
+    JSON.stringify(original.custom_fields)
+  ) {
+    diff.custom_fields = current.custom_fields;
+  }
+
+  return diff as PatchEstateUpdateByIdRequestBody;
 }
 
 interface SectionProps {
@@ -218,6 +228,7 @@ export function EstateForm({
     details: !!isEdit,
     features: false,
     links: false,
+    customFields: false,
   });
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -641,6 +652,19 @@ export function EstateForm({
               size="small"
               value={form.virtual_tour_url}
               onChange={(e) => updateField("virtual_tour_url", e.target.value)}
+            />
+          </Section>
+
+          {/* Custom Fields */}
+          <Section
+            title={t("custom_fields.card_title")}
+            open={sections.customFields}
+            onToggle={() => toggleSection("customFields")}
+          >
+            <CustomFieldsSection
+              entityType="estate"
+              values={form.custom_fields}
+              onChange={(values) => updateField("custom_fields", values)}
             />
           </Section>
         </Box>

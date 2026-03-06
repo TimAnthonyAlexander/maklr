@@ -350,7 +350,9 @@ export interface PatchEstateUpdateByIdPathParams {
 }
 
 export type PatchEstateUpdateByIdRequestBody =
-  Partial<PostEstateCreateRequestBody>;
+  Partial<PostEstateCreateRequestBody> & {
+    custom_fields?: Record<string, unknown> | null;
+  };
 
 export type PatchEstateUpdateByIdResponse = Envelope<Estate>;
 
@@ -660,6 +662,7 @@ export type PatchContactUpdateByIdRequestBody =
     gdpr_deletion_requested?: boolean;
     gdpr_deletion_requested_at?: string | null;
     search_profiles?: SearchProfile[];
+    custom_fields?: Record<string, unknown>;
   };
 
 export type PatchContactUpdateByIdResponse = Envelope<Contact>;
@@ -1294,6 +1297,68 @@ export interface EmailTemplatePreviewResponse {
   body_html: string | null;
   body_text: string | null;
 }
+
+// --- Custom Field Definition types ---
+
+export type CustomFieldType = 'text' | 'number' | 'select' | 'boolean' | 'date' | 'textarea';
+export type CustomFieldEntityType = 'estate' | 'contact' | 'both';
+
+export interface CustomFieldDefinition {
+  id?: string;
+  name?: string;
+  label?: string;
+  field_type?: CustomFieldType;
+  entity_type?: CustomFieldEntityType;
+  options?: string[] | null;
+  required?: boolean;
+  sort_order?: number;
+  active?: boolean;
+  office_id?: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+
+export interface CustomFieldDefinitionListQueryParams {
+  entity_type?: string;
+  active?: string;
+  page?: number;
+  per_page?: number;
+}
+
+export interface CustomFieldDefinitionListResponse {
+  items: CustomFieldDefinition[];
+  pagination: PaginationMeta;
+}
+
+export interface CustomFieldDefinitionByIdPathParams {
+  id: string;
+  [key: string]: string | number | null;
+}
+
+export interface PostCustomFieldDefinitionCreateRequestBody {
+  name: string;
+  label: string;
+  field_type: CustomFieldType;
+  entity_type: CustomFieldEntityType;
+  options?: string[] | null;
+  required?: boolean;
+  sort_order?: number;
+}
+
+export type PostCustomFieldDefinitionCreateResponse = Envelope<CustomFieldDefinition>;
+
+export interface PatchCustomFieldDefinitionUpdateRequestBody {
+  label?: string;
+  field_type?: CustomFieldType;
+  entity_type?: CustomFieldEntityType;
+  options?: string[] | null;
+  required?: boolean;
+  sort_order?: number;
+  active?: boolean;
+}
+
+export type PatchCustomFieldDefinitionUpdateResponse = Envelope<CustomFieldDefinition>;
+export type DeleteCustomFieldDefinitionResponse = Envelope<{ message: string }>;
 
 // --- AuditLog types ---
 

@@ -12,6 +12,7 @@
     "sidebar.nav.estates": "Estates",
     "sidebar.nav.tasks": "Tasks",
     "sidebar.nav.audit_log": "Audit Log",
+    "sidebar.nav.custom_fields": "Custom Fields",
     "sidebar.nav.users": "Users",
     "sidebar.section.admin": "Admin",
     "sidebar.section.organize": "Organize"

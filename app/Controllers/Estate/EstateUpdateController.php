@@ -6,6 +6,7 @@ use App\Models\Estate;
 use App\Services\ActivityService;
 use App\Services\AuditLogService;
 use App\Services\CacheHelper;
+use App\Services\CustomFieldValidationService;
 use BaseApi\Controllers\Controller;
 use BaseApi\Http\JsonResponse;
 use BaseApi\Http\Validation\ValidationException;
@@ -88,6 +89,8 @@ class EstateUpdateController extends Controller
 
     public ?string $office_id = null;
 
+    public ?array $custom_fields = null;
+
     private const array PROPERTY_TYPES = ['apartment', 'house', 'commercial', 'land', 'garage'];
 
     private const array MARKETING_TYPES = ['sale', 'rent', 'lease'];
@@ -134,6 +137,16 @@ class EstateUpdateController extends Controller
             return JsonResponse::validationError($validationException->errors());
         }
 
+        // Validate custom fields if provided
+        if ($this->custom_fields !== null) {
+            /** @var CustomFieldValidationService $cfValidator */
+            $cfValidator = $this->make(CustomFieldValidationService::class);
+            $cfErrors = $cfValidator->validate($this->custom_fields, 'estate', $officeId ?? '');
+            if ($cfErrors !== []) {
+                return JsonResponse::validationError($cfErrors);
+            }
+        }
+
         // Snapshot old values for audit
         $oldData = [];
         foreach (self::PATCHABLE_FIELDS as $field) {
@@ -147,6 +160,12 @@ class EstateUpdateController extends Controller
             }
         }
 
+        // Handle custom_fields separately
+        $oldCustomFields = $estate->getCustomFields();
+        if ($this->custom_fields !== null) {
+            $estate->setCustomFields($this->custom_fields);
+        }
+
         $estate->save();
 
         // Compute diff for audit
@@ -155,7 +174,16 @@ class EstateUpdateController extends Controller
             $newData[$field] = $estate->{$field};
         }
 
-        $changes = AuditLogService::computeChanges($oldData, $newData, self::PATCHABLE_FIELDS);
+        // Include custom_fields in audit diff
+        if ($this->custom_fields !== null) {
+            $newCustomFields = $estate->getCustomFields();
+            if ($oldCustomFields !== $newCustomFields) {
+                $oldData['custom_fields'] = $oldCustomFields;
+                $newData['custom_fields'] = $newCustomFields;
+            }
+        }
+
+        $changes = AuditLogService::computeChanges($oldData, $newData, array_merge(self::PATCHABLE_FIELDS, ['custom_fields']));
 
         /** @var AuditLogService $auditLog */
         $auditLog = $this->make(AuditLogService::class);

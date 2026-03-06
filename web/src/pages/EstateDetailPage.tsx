@@ -41,6 +41,7 @@ import { EstateDescriptionCard } from "../components/estates/EstateDescriptionCa
 import { EstateKeyMetricsCard } from "../components/estates/EstateKeyMetricsCard";
 import { EstateLocationCard } from "../components/estates/EstateLocationCard";
 import { EstateFeaturesCard } from "../components/estates/EstateFeaturesCard";
+import { CustomFieldsCard } from "../components/custom-fields/CustomFieldsCard";
 
 const STATUSES = ["draft", "active", "reserved", "sold", "rented", "archived"];
 
@@ -236,6 +237,10 @@ export function EstateDetailPage() {
             <EstateKeyMetricsCard estate={estate} />
             <EstateLocationCard estate={estate} />
             <EstateFeaturesCard estate={estate} />
+            <CustomFieldsCard
+              entityType="estate"
+              values={estate.custom_fields as Record<string, unknown>}
+            />
 
             {/* Images / Documents / Matches Tabs */}
             <Paper variant="outlined" sx={{ px: 3 }}>

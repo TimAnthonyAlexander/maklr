@@ -29,6 +29,7 @@ import { getContactDisplayName } from "../utils/contactHelpers";
 import { SearchProfilesTab } from "../components/contacts/SearchProfilesTab";
 import { ContactMatchesTab } from "../components/contacts/ContactMatchesTab";
 import { ContactRelationshipsTab } from "../components/contacts/ContactRelationshipsTab";
+import { CustomFieldsCard } from "../components/custom-fields/CustomFieldsCard";
 
 const dateFormatter = new Intl.DateTimeFormat("de-DE", {
   day: "2-digit",
@@ -331,6 +332,12 @@ export function ContactDetailPage() {
 
             {/* Notes */}
             <NotesCard contact={contact} />
+
+            {/* Custom Fields */}
+            <CustomFieldsCard
+              entityType="contact"
+              values={contact.custom_fields as Record<string, unknown>}
+            />
 
             {/* Documents / Search Profiles / Matches Tabs */}
             <Paper variant="outlined" sx={{ px: 3 }}>

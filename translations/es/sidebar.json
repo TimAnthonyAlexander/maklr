@@ -16,6 +16,7 @@
     "sidebar.nav.email_templates": "Plantillas",
     "sidebar.nav.estates": "Inmuebles",
     "sidebar.nav.tasks": "Tareas",
+    "sidebar.nav.custom_fields": "Campos personalizados",
     "sidebar.nav.users": "Usuarios",
     "sidebar.section.admin": "Administración",
     "sidebar.section.organize": "Organizar"

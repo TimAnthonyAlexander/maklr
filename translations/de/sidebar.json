@@ -16,6 +16,7 @@
     "sidebar.nav.email_templates": "Vorlagen",
     "sidebar.nav.estates": "Immobilien",
     "sidebar.nav.tasks": "Aufgaben",
+    "sidebar.nav.custom_fields": "Eigene Felder",
     "sidebar.nav.users": "Benutzer",
     "sidebar.section.admin": "Verwaltung",
     "sidebar.section.organize": "Organisieren"

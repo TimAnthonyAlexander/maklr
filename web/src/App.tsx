@@ -23,6 +23,7 @@ import { OnboardingPage } from "./pages/OnboardingPage";
 import { AcceptInvitePage } from "./pages/AcceptInvitePage";
 import { EmailTemplatesPage } from "./pages/EmailTemplatesPage";
 import { AuditLogPage } from "./pages/AuditLogPage";
+import { CustomFieldsPage } from "./pages/CustomFieldsPage";
 
 export default function App() {
   return (
@@ -63,6 +64,7 @@ export default function App() {
           <Route path="/email-templates" element={<EmailTemplatesPage />} />
           <Route path="/documents" element={<DocumentsPage />} />
           <Route path="/audit-log" element={<AuditLogPage />} />
+          <Route path="/custom-fields" element={<CustomFieldsPage />} />
           <Route path="/users" element={<UsersPage />} />
           <Route path="/users/:id" element={<UserDetailPage />} />
         </Route>

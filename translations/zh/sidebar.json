@@ -16,6 +16,7 @@
     "sidebar.nav.email_templates": "模板",
     "sidebar.nav.estates": "房产",
     "sidebar.nav.tasks": "任务",
+    "sidebar.nav.custom_fields": "自定义字段",
     "sidebar.nav.users": "用户",
     "sidebar.section.admin": "系统管理",
     "sidebar.section.organize": "管理"
