@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useRef, useEffect } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { Box, Snackbar, Alert } from "@mui/material";
 import type { EmailAccount, EmailMessage } from "../api/types";
 import { useTranslation } from "../contexts/LanguageContext";
@@ -55,9 +55,17 @@ export function EmailPage() {
         data: emailsData,
         loading: emailsLoading,
         refetch: refetchEmails,
-        setData: setEmailsData,
     } = useGetEmailList(emailQuery);
     const emails = useMemo(() => emailsData?.items ?? [], [emailsData]);
+
+    // Track emails the user has opened this session (for visual read state only).
+    // Kept separate from emailsData so clicking an email never mutates the list data.
+    const [localReadIds, setLocalReadIds] = useState<Set<string>>(new Set());
+
+    // Clear local read tracking when server data refreshes (it already reflects read state)
+    useEffect(() => {
+        setLocalReadIds(new Set());
+    }, [emailsData]);
 
     const [unreadOnly, setUnreadOnly] = useState(
         () => localStorage.getItem("email_unread_filter") === "true",
@@ -71,40 +79,25 @@ export function EmailPage() {
         });
     }, []);
 
-    // Track a version that only bumps on triggers that should recalculate the filter:
-    // - folder change, filter toggle, or fresh server data (but NOT optimistic read marks)
-    const serverDataRef = useRef(emailsData);
-    const filterVersionRef = useRef(0);
-
-    // Detect actual server data changes (refetch) vs optimistic setData updates.
-    // When handleSelectEmail calls setData, it sets the flag to skip version bump.
-    const skipNextVersionBump = useRef(false);
-
-    useEffect(() => {
-        if (emailsData !== serverDataRef.current) {
-            serverDataRef.current = emailsData;
-            if (skipNextVersionBump.current) {
-                skipNextVersionBump.current = false;
-            } else {
-                filterVersionRef.current += 1;
-            }
-        }
-    }, [emailsData]);
-
-    // Snapshot the visible email IDs, only recalculated on filter/folder/server changes
+    // Snapshot which emails to show when unread filter is active.
+    // Recalculates on: initial data load, filter toggle, folder switch, server refetch.
+    // Does NOT recalculate when an email is clicked (emails reference is stable).
     const visibleEmailIds = useMemo(() => {
-        if (!unreadOnly) return null; // null = show all, no filtering
+        if (!unreadOnly) return null;
         return new Set(emails.filter((e) => !e.read).map((e) => e.id));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [unreadOnly, selectedFolder, filterVersionRef.current]);
+    }, [unreadOnly, selectedFolder, emails]);
 
-    const displayEmails = useMemo(
-        () =>
-            visibleEmailIds === null
-                ? emails
-                : emails.filter((e) => visibleEmailIds.has(e.id)),
-        [emails, visibleEmailIds],
-    );
+    // Merge server data with local read marks, then apply the unread filter
+    const displayEmails = useMemo(() => {
+        const base = visibleEmailIds === null
+            ? emails
+            : emails.filter((e) => visibleEmailIds.has(e.id));
+
+        if (localReadIds.size === 0) return base;
+        return base.map((e) =>
+            localReadIds.has(e.id) && !e.read ? { ...e, read: true } : e,
+        );
+    }, [emails, visibleEmailIds, localReadIds]);
 
     const showSnackbar = useCallback(
         (message: string, severity: "success" | "error") => {
@@ -131,22 +124,14 @@ export function EmailPage() {
     const handleSelectEmail = useCallback(
         (id: string) => {
             setSelectedEmailId(id);
-            if (emailsData) {
-                const isUnread = emailsData.items.some(
-                    (e) => e.id === id && e.read === false,
-                );
-                if (isUnread) {
-                    skipNextVersionBump.current = true;
-                    setEmailsData({
-                        ...emailsData,
-                        items: emailsData.items.map((e) =>
-                            e.id === id ? { ...e, read: true } : e,
-                        ),
-                    });
-                }
-            }
+            setLocalReadIds((prev) => {
+                if (prev.has(id)) return prev;
+                const next = new Set(prev);
+                next.add(id);
+                return next;
+            });
         },
-        [emailsData, setEmailsData, setSelectedEmailId],
+        [setSelectedEmailId],
     );
 
     const handleCompose = useCallback(() => {
