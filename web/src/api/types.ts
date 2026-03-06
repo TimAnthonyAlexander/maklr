@@ -1688,3 +1688,144 @@ export interface WebsitePageVersionRestoreResponse {
   message: string;
   page: WebsitePage;
 }
+
+// ================================
+// Portal Syndication Types
+// ================================
+
+export interface Portal {
+  id?: string;
+  name?: string;
+  portal_type?: 'ftp' | 'api';
+  ftp_host?: string | null;
+  ftp_port?: number | null;
+  ftp_username?: string | null;
+  ftp_path?: string | null;
+  ftp_passive?: boolean;
+  ftp_ssl?: boolean;
+  api_url?: string | null;
+  provider_id?: string | null;
+  active?: boolean;
+  last_sync_at?: string | null;
+  last_error?: string | null;
+  office_id?: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+
+export interface PortalListResponse {
+  items: Portal[];
+  pagination: PaginationMeta;
+}
+
+export interface PostPortalCreateRequestBody {
+  name: string;
+  portal_type: 'ftp' | 'api';
+  ftp_host?: string | null;
+  ftp_port?: number | null;
+  ftp_username?: string | null;
+  ftp_password?: string | null;
+  ftp_path?: string | null;
+  ftp_passive?: boolean;
+  ftp_ssl?: boolean;
+  api_url?: string | null;
+  api_key?: string | null;
+  provider_id?: string | null;
+}
+
+export type PostPortalCreateResponse = Envelope<Portal>;
+
+export interface PatchPortalUpdateRequestBody {
+  name?: string;
+  portal_type?: 'ftp' | 'api';
+  ftp_host?: string | null;
+  ftp_port?: number | null;
+  ftp_username?: string | null;
+  ftp_password?: string | null;
+  ftp_path?: string | null;
+  ftp_passive?: boolean;
+  ftp_ssl?: boolean;
+  api_url?: string | null;
+  api_key?: string | null;
+  provider_id?: string | null;
+  active?: boolean;
+}
+
+export type PatchPortalUpdateResponse = Envelope<Portal>;
+
+export interface PortalByIdPathParams {
+  id: string;
+  [key: string]: string | number | null;
+}
+
+export interface PortalTestResponse {
+  success: boolean;
+  error?: string | null;
+}
+
+export interface SyncResult {
+  success: boolean;
+  estates_synced: number;
+  estates_failed: number;
+  error: string | null;
+  sync_log_id: string;
+}
+
+export interface SyncLog {
+  id?: string;
+  portal_id?: string;
+  estate_id?: string | null;
+  action?: string;
+  status?: 'started' | 'success' | 'failed';
+  error_message?: string | null;
+  details?: Record<string, unknown> | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+
+export interface SyncLogListResponse {
+  items: SyncLog[];
+  pagination: PaginationMeta;
+}
+
+export interface EstateSyndication {
+  id?: string;
+  estate_id?: string;
+  portal_id?: string;
+  enabled?: boolean;
+  sync_status?: 'pending' | 'syncing' | 'synced' | 'error';
+  last_synced_at?: string | null;
+  last_error?: string | null;
+  external_id?: string | null;
+  portal?: Portal;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+
+export interface EstateSyndicationListResponse {
+  items: EstateSyndication[];
+}
+
+export interface PatchEstateSyndicationUpdateRequestBody {
+  enabled?: boolean;
+}
+
+export interface EstateSyndicationByIdPathParams {
+  id: string;
+  syndicationId: string;
+  [key: string]: string | number | null;
+}
+
+export interface PostEstateSyndicationBulkRequestBody {
+  portal_ids: string[];
+  enabled: boolean;
+}
+
+export interface EstateSyndicationBulkResponse {
+  items: EstateSyndication[];
+}
+
+export interface FeedbackImportResponse {
+  imported: number;
+  errors: string[];
+}

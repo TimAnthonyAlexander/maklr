@@ -23,6 +23,7 @@
         "stripe/stripe-php": "^18.0",
         "symfony/mailer": "^7.1",
         "symfony/mime": "^7.1",
+        "ujamii/openimmo": "^2.1",
         "webklex/php-imap": "^6.2"
     },
     "require-dev": {

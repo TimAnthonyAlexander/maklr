@@ -3889,3 +3889,410 @@ export function usePostWebsitePageVersionRestore(
   const reset = useCallback(() => { setData(null); setError(null); }, []);
   return { data, loading, error, mutate, reset };
 }
+
+// ================================
+// Portal Syndication
+// ================================
+
+/**
+ * React hook for GET /portals
+ * Auto-fetches on mount and when dependencies change
+ */
+export function useGetPortalList(
+  query?: Record<string, string>,
+  options?: QueryOptions<Types.PortalListResponse>,
+  deps?: DependencyList,
+): QueryResult<Types.PortalListResponse> {
+  return useQueryHook(
+    () => Api.getPortalList(query, options),
+    options?.enabled ?? true,
+    [JSON.stringify(query), ...(deps || [])],
+    options,
+  );
+}
+
+/**
+ * React hook for GET /portals/{id}
+ * Auto-fetches on mount and when dependencies change
+ */
+export function useGetPortalById(
+  path: Types.PortalByIdPathParams,
+  options?: QueryOptions<Types.Portal>,
+  deps?: DependencyList,
+): QueryResult<Types.Portal> {
+  return useQueryHook(
+    () => Api.getPortalById(path, options),
+    options?.enabled ?? true,
+    [path.id, ...(deps || [])],
+    options,
+  );
+}
+
+/**
+ * React hook for POST /portals
+ * Returns a mutate function to trigger the request
+ */
+export function usePostPortalCreate(
+  options?: QueryOptions<Types.PostPortalCreateResponse>,
+): MutationResult<
+  Types.PostPortalCreateResponse,
+  { body: Types.PostPortalCreateRequestBody }
+> {
+  const [data, setData] = useState<Types.PostPortalCreateResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: { body: Types.PostPortalCreateRequestBody }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.postPortalCreate(variables.body, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+    setLoading(false);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+/**
+ * React hook for PATCH /portals/{id}
+ * Returns a mutate function to trigger the request
+ */
+export function usePatchPortalUpdateById(
+  options?: QueryOptions<Types.PatchPortalUpdateResponse>,
+): MutationResult<
+  Types.PatchPortalUpdateResponse,
+  {
+    path: Types.PortalByIdPathParams;
+    body: Types.PatchPortalUpdateRequestBody;
+  }
+> {
+  const [data, setData] =
+    useState<Types.PatchPortalUpdateResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: {
+      path: Types.PortalByIdPathParams;
+      body: Types.PatchPortalUpdateRequestBody;
+    }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.patchPortalUpdateById(
+          variables.path,
+          variables.body,
+          options,
+        );
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+    setLoading(false);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+/**
+ * React hook for DELETE /portals/{id}
+ * Returns a mutate function to trigger the request
+ */
+export function useDeletePortalById(
+  options?: QueryOptions<void>,
+): MutationResult<void, { path: Types.PortalByIdPathParams }> {
+  const [data, setData] = useState<void | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: { path: Types.PortalByIdPathParams }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.deletePortalById(variables.path, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+    setLoading(false);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+/**
+ * React hook for POST /portals/{id}/test
+ * Returns a mutate function to trigger the request
+ */
+export function usePostPortalTestById(
+  options?: QueryOptions<Types.PortalTestResponse>,
+): MutationResult<
+  Types.PortalTestResponse,
+  { path: Types.PortalByIdPathParams }
+> {
+  const [data, setData] = useState<Types.PortalTestResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: { path: Types.PortalByIdPathParams }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.postPortalTestById(variables.path, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+    setLoading(false);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+/**
+ * React hook for POST /portals/{id}/sync
+ * Returns a mutate function to trigger the request
+ */
+export function usePostPortalSyncById(
+  options?: QueryOptions<Types.SyncResult>,
+): MutationResult<Types.SyncResult, { path: Types.PortalByIdPathParams }> {
+  const [data, setData] = useState<Types.SyncResult | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: { path: Types.PortalByIdPathParams }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.postPortalSyncById(variables.path, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+    setLoading(false);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+/**
+ * React hook for GET /portals/{id}/sync-logs
+ * Auto-fetches on mount and when dependencies change
+ */
+export function useGetPortalSyncLogs(
+  path: Types.PortalByIdPathParams,
+  query?: Record<string, string>,
+  options?: QueryOptions<Types.SyncLogListResponse>,
+  deps?: DependencyList,
+): QueryResult<Types.SyncLogListResponse> {
+  return useQueryHook(
+    () => Api.getPortalSyncLogs(path, query, options),
+    options?.enabled ?? true,
+    [path.id, JSON.stringify(query), ...(deps || [])],
+    options,
+  );
+}
+
+/**
+ * React hook for GET /estates/{id}/syndications
+ * Auto-fetches on mount and when dependencies change
+ */
+export function useGetEstateSyndications(
+  path: { id: string; [key: string]: string | number | null },
+  options?: QueryOptions<Types.EstateSyndicationListResponse>,
+  deps?: DependencyList,
+): QueryResult<Types.EstateSyndicationListResponse> {
+  return useQueryHook(
+    () => Api.getEstateSyndications(path, options),
+    options?.enabled ?? true,
+    [path.id, ...(deps || [])],
+    options,
+  );
+}
+
+/**
+ * React hook for PATCH /estates/{id}/syndications/{syndicationId}
+ * Returns a mutate function to trigger the request
+ */
+export function usePatchEstateSyndicationUpdate(
+  options?: QueryOptions<Types.EstateSyndication>,
+): MutationResult<
+  Types.EstateSyndication,
+  {
+    path: Types.EstateSyndicationByIdPathParams;
+    body: Types.PatchEstateSyndicationUpdateRequestBody;
+  }
+> {
+  const [data, setData] = useState<Types.EstateSyndication | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: {
+      path: Types.EstateSyndicationByIdPathParams;
+      body: Types.PatchEstateSyndicationUpdateRequestBody;
+    }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.patchEstateSyndicationUpdate(
+          variables.path,
+          variables.body,
+          options,
+        );
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+    setLoading(false);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+/**
+ * React hook for POST /estates/{id}/syndications/bulk
+ * Returns a mutate function to trigger the request
+ */
+export function usePostEstateSyndicationBulk(
+  options?: QueryOptions<Types.EstateSyndicationBulkResponse>,
+): MutationResult<
+  Types.EstateSyndicationBulkResponse,
+  {
+    path: { id: string; [key: string]: string | number | null };
+    body: Types.PostEstateSyndicationBulkRequestBody;
+  }
+> {
+  const [data, setData] =
+    useState<Types.EstateSyndicationBulkResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const mutate = useCallback(
+    async (variables: {
+      path: { id: string; [key: string]: string | number | null };
+      body: Types.PostEstateSyndicationBulkRequestBody;
+    }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.postEstateSyndicationBulk(
+          variables.path,
+          variables.body,
+          options,
+        );
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+    setLoading(false);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}

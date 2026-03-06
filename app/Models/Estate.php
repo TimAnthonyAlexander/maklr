@@ -182,4 +182,9 @@ class Estate extends BaseModel
     {
         return $this->hasMany(Email::class);
     }
+
+    public function syndications(): HasMany
+    {
+        return $this->hasMany(EstateSyndication::class);
+    }
 }

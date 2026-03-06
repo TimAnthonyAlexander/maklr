@@ -1689,3 +1689,165 @@ export async function postWebsitePageVersionRestore(
   const url = buildPath("PostWebsitePageVersionRestore", path);
   return http.post(url, {}, options);
 }
+
+// ================================
+// Portal Syndication
+// ================================
+
+/**
+ * GET /portals
+ * @tags Portal
+ */
+export async function getPortalList(
+  query?: Record<string, string>,
+  options?: HttpOptions,
+): Promise<Types.PortalListResponse> {
+  const baseUrl = buildPath("GetPortalList");
+  const searchParams = new URLSearchParams();
+  if (query) {
+    for (const [key, value] of Object.entries(query)) {
+      if (value !== undefined && value !== null && value !== "") {
+        searchParams.append(key, String(value));
+      }
+    }
+  }
+  const fullUrl = searchParams.toString()
+    ? `${baseUrl}?${searchParams}`
+    : baseUrl;
+  return http.get(fullUrl, options);
+}
+
+/**
+ * GET /portals/{id}
+ * @tags Portal
+ */
+export async function getPortalById(
+  path: Types.PortalByIdPathParams,
+  options?: HttpOptions,
+): Promise<Types.Portal> {
+  const url = buildPath("GetPortalShowById", path);
+  return http.get(url, options);
+}
+
+/**
+ * POST /portals
+ * @tags Portal
+ */
+export async function postPortalCreate(
+  body: Types.PostPortalCreateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.PostPortalCreateResponse> {
+  const url = buildPath("PostPortalCreate");
+  return http.post(url, body, options);
+}
+
+/**
+ * PATCH /portals/{id}
+ * @tags Portal
+ */
+export async function patchPortalUpdateById(
+  path: Types.PortalByIdPathParams,
+  body: Types.PatchPortalUpdateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.PatchPortalUpdateResponse> {
+  const url = buildPath("PatchPortalUpdateById", path);
+  return http.patch(url, body, options);
+}
+
+/**
+ * DELETE /portals/{id}
+ * @tags Portal
+ */
+export async function deletePortalById(
+  path: Types.PortalByIdPathParams,
+  options?: HttpOptions,
+): Promise<void> {
+  const url = buildPath("DeletePortalById", path);
+  return http.delete(url, options);
+}
+
+/**
+ * POST /portals/{id}/test
+ * @tags Portal
+ */
+export async function postPortalTestById(
+  path: Types.PortalByIdPathParams,
+  options?: HttpOptions,
+): Promise<Types.PortalTestResponse> {
+  const url = buildPath("PostPortalTestById", path);
+  return http.post(url, {}, options);
+}
+
+/**
+ * POST /portals/{id}/sync
+ * @tags Portal
+ */
+export async function postPortalSyncById(
+  path: Types.PortalByIdPathParams,
+  options?: HttpOptions,
+): Promise<Types.SyncResult> {
+  const url = buildPath("PostPortalSyncById", path);
+  return http.post(url, {}, options);
+}
+
+/**
+ * GET /portals/{id}/sync-logs
+ * @tags Portal
+ */
+export async function getPortalSyncLogs(
+  path: Types.PortalByIdPathParams,
+  query?: Record<string, string>,
+  options?: HttpOptions,
+): Promise<Types.SyncLogListResponse> {
+  const baseUrl = buildPath("GetPortalSyncLogs", path);
+  const searchParams = new URLSearchParams();
+  if (query) {
+    for (const [key, value] of Object.entries(query)) {
+      if (value !== undefined && value !== null && value !== "") {
+        searchParams.append(key, String(value));
+      }
+    }
+  }
+  const fullUrl = searchParams.toString()
+    ? `${baseUrl}?${searchParams}`
+    : baseUrl;
+  return http.get(fullUrl, options);
+}
+
+/**
+ * GET /estates/{id}/syndications
+ * @tags Portal
+ */
+export async function getEstateSyndications(
+  path: { id: string; [key: string]: string | number | null },
+  options?: HttpOptions,
+): Promise<Types.EstateSyndicationListResponse> {
+  const url = buildPath("GetEstateSyndications", path);
+  return http.get(url, options);
+}
+
+/**
+ * PATCH /estates/{id}/syndications/{syndicationId}
+ * @tags Portal
+ */
+export async function patchEstateSyndicationUpdate(
+  path: Types.EstateSyndicationByIdPathParams,
+  body: Types.PatchEstateSyndicationUpdateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.EstateSyndication> {
+  const url = buildPath("PatchEstateSyndicationUpdate", path);
+  return http.patch(url, body, options);
+}
+
+/**
+ * POST /estates/{id}/syndications/bulk
+ * @tags Portal
+ */
+export async function postEstateSyndicationBulk(
+  path: { id: string; [key: string]: string | number | null },
+  body: Types.PostEstateSyndicationBulkRequestBody,
+  options?: HttpOptions,
+): Promise<Types.EstateSyndicationBulkResponse> {
+  const url = buildPath("PostEstateSyndicationBulk", path);
+  return http.post(url, body, options);
+}

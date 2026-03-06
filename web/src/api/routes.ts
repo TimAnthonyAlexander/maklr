@@ -102,6 +102,17 @@ export const Routes = {
   GetWebsiteChatList: "/websites/{websiteId}/chat",
   GetWebsitePageVersionList: "/websites/{websiteId}/pages/{pageId}/versions",
   PostWebsitePageVersionRestore: "/websites/{websiteId}/pages/{pageId}/versions/{versionId}/restore",
+  GetPortalList: "/portals",
+  PostPortalCreate: "/portals",
+  GetPortalShowById: "/portals/{id}",
+  PatchPortalUpdateById: "/portals/{id}",
+  DeletePortalById: "/portals/{id}",
+  PostPortalTestById: "/portals/{id}/test",
+  PostPortalSyncById: "/portals/{id}/sync",
+  GetPortalSyncLogs: "/portals/{id}/sync-logs",
+  GetEstateSyndications: "/estates/{id}/syndications",
+  PatchEstateSyndicationUpdate: "/estates/{id}/syndications/{syndicationId}",
+  PostEstateSyndicationBulk: "/estates/{id}/syndications/bulk",
 } as const;
 
 export type RouteKey = keyof typeof Routes;

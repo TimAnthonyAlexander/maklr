@@ -35,6 +35,7 @@ class WebsitePageDeleteController extends Controller
         if (!$page instanceof WebsitePage) {
             return JsonResponse::notFound('Page not found');
         }
+
         $pageId = $page->id;
 
         $page->delete();

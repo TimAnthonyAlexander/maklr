@@ -1998,6 +1998,240 @@
             "table": "website_page_version",
             "operation": "add_fk",
             "warning": null
+        },
+        {
+            "id": "mig_e95ae7b9d900",
+            "sql": "CREATE TABLE `estate_syndication` (\n  `estate_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `portal_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `enabled` TINYINT(1) NOT NULL DEFAULT 1,\n  `sync_status` VARCHAR(20) NOT NULL DEFAULT 'pending',\n  `last_synced_at` DATETIME,\n  `last_error` TEXT,\n  `external_id` VARCHAR(255),\n  `office_id` VARCHAR(36),\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "estate_syndication",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_e0ba499d7c98",
+            "sql": "CREATE TABLE `portal` (\n  `name` VARCHAR(100) NOT NULL DEFAULT '',\n  `portal_type` VARCHAR(20) NOT NULL DEFAULT 'ftp',\n  `ftp_host` VARCHAR(255),\n  `ftp_port` INT,\n  `ftp_username` VARCHAR(255),\n  `ftp_password_encrypted` TEXT,\n  `ftp_path` VARCHAR(500),\n  `ftp_passive` TINYINT(1) NOT NULL DEFAULT 1,\n  `ftp_ssl` TINYINT(1) NOT NULL DEFAULT 0,\n  `api_url` VARCHAR(2048),\n  `api_key_encrypted` TEXT,\n  `provider_id` VARCHAR(100),\n  `active` TINYINT(1) NOT NULL DEFAULT 1,\n  `last_sync_at` DATETIME,\n  `last_error` TEXT,\n  `office_id` VARCHAR(36),\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "portal",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_a8c78772094d",
+            "sql": "CREATE TABLE `sync_log` (\n  `portal_id` VARCHAR(36) NOT NULL DEFAULT '',\n  `estate_id` VARCHAR(36),\n  `action` VARCHAR(50) NOT NULL DEFAULT '',\n  `status` VARCHAR(20) NOT NULL DEFAULT 'started',\n  `error_message` TEXT,\n  `details` JSON,\n  `office_id` VARCHAR(36),\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "sync_log",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_95f16754d571",
+            "sql": "ALTER TABLE `website_page` MODIFY COLUMN `html_content` MEDIUMTEXT",
+            "destructive": true,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "website_page",
+            "operation": "modify_column",
+            "warning": null
+        },
+        {
+            "id": "mig_49b83ddcaaf5",
+            "sql": "ALTER TABLE `website_page_version` MODIFY COLUMN `html_content` MEDIUMTEXT",
+            "destructive": true,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "website_page_version",
+            "operation": "modify_column",
+            "warning": null
+        },
+        {
+            "id": "mig_2366db5cbb46",
+            "sql": "ALTER TABLE `estate_syndication` ADD INDEX `idx_estate_syndication_estate_id` (`estate_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "estate_syndication",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_8ec339afdde5",
+            "sql": "ALTER TABLE `estate_syndication` ADD INDEX `idx_estate_syndication_portal_id` (`portal_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "estate_syndication",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_214f3969bb6b",
+            "sql": "ALTER TABLE `estate_syndication` ADD INDEX `idx_estate_syndication_sync_status` (`sync_status`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "estate_syndication",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_b29d1f6bdce2",
+            "sql": "ALTER TABLE `estate_syndication` ADD INDEX `idx_estate_syndication_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "estate_syndication",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_1240afcf4b85",
+            "sql": "ALTER TABLE `estate_syndication` ADD UNIQUE KEY `uniq_estate_syndication_estate_id_portal_id` (`estate_id`, `portal_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "estate_syndication",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_d89446aed4f7",
+            "sql": "ALTER TABLE `portal` ADD INDEX `idx_portal_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "portal",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_6cd831880b8c",
+            "sql": "ALTER TABLE `portal` ADD INDEX `idx_portal_active` (`active`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "portal",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_c316ca39ea62",
+            "sql": "ALTER TABLE `portal` ADD INDEX `idx_portal_portal_type` (`portal_type`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "portal",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_d7110df62188",
+            "sql": "ALTER TABLE `portal` ADD INDEX `idx_portal_office_id_active` (`office_id`, `active`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "portal",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_1d92e2087091",
+            "sql": "ALTER TABLE `sync_log` ADD INDEX `idx_sync_log_portal_id` (`portal_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "sync_log",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_078ce0d1e12e",
+            "sql": "ALTER TABLE `sync_log` ADD INDEX `idx_sync_log_estate_id` (`estate_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "sync_log",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_de8f0f49def1",
+            "sql": "ALTER TABLE `sync_log` ADD INDEX `idx_sync_log_status` (`status`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "sync_log",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_b576802dbddb",
+            "sql": "ALTER TABLE `sync_log` ADD INDEX `idx_sync_log_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "sync_log",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_182a0bb701a3",
+            "sql": "ALTER TABLE `sync_log` ADD INDEX `idx_sync_log_portal_id_status` (`portal_id`, `status`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "sync_log",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_f50a45121084",
+            "sql": "ALTER TABLE `estate_syndication` ADD CONSTRAINT `fk_estate_syndication_estate_id` FOREIGN KEY (`estate_id`) REFERENCES `estate` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "estate_syndication",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_a2f65da65fb0",
+            "sql": "ALTER TABLE `estate_syndication` ADD CONSTRAINT `fk_estate_syndication_portal_id` FOREIGN KEY (`portal_id`) REFERENCES `portal` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "estate_syndication",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_41058587dcf2",
+            "sql": "ALTER TABLE `estate_syndication` ADD CONSTRAINT `fk_estate_syndication_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "estate_syndication",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_5750bcdfb9c6",
+            "sql": "ALTER TABLE `portal` ADD CONSTRAINT `fk_portal_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "portal",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_840457d1e9a7",
+            "sql": "ALTER TABLE `sync_log` ADD CONSTRAINT `fk_sync_log_portal_id` FOREIGN KEY (`portal_id`) REFERENCES `portal` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "sync_log",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_bb75c199a47e",
+            "sql": "ALTER TABLE `sync_log` ADD CONSTRAINT `fk_sync_log_estate_id` FOREIGN KEY (`estate_id`) REFERENCES `estate` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "sync_log",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_683775a89a47",
+            "sql": "ALTER TABLE `sync_log` ADD CONSTRAINT `fk_sync_log_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T22:23:38+00:00",
+            "table": "sync_log",
+            "operation": "add_fk",
+            "warning": null
         }
     ]
 }

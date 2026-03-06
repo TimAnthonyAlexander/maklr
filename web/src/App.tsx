@@ -26,6 +26,8 @@ import { AuditLogPage } from "./pages/AuditLogPage";
 import { CustomFieldsPage } from "./pages/CustomFieldsPage";
 import { WebsitesPage } from "./pages/WebsitesPage";
 import { WebsiteEditorPage } from "./pages/WebsiteEditorPage";
+import { PortalsPage } from "./pages/PortalsPage";
+import { PortalDetailPage } from "./pages/PortalDetailPage";
 
 export default function App() {
   return (
@@ -69,6 +71,8 @@ export default function App() {
           <Route path="/custom-fields" element={<CustomFieldsPage />} />
           <Route path="/websites" element={<WebsitesPage />} />
           <Route path="/websites/:id" element={<WebsiteEditorPage />} />
+          <Route path="/portals" element={<PortalsPage />} />
+          <Route path="/portals/:id" element={<PortalDetailPage />} />
           <Route path="/users" element={<UsersPage />} />
           <Route path="/users/:id" element={<UserDetailPage />} />
         </Route>

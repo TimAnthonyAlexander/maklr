@@ -22,6 +22,11 @@ use App\Services\CustomFieldValidationService;
 use App\Services\EmailDraftService;
 use App\Services\HtmlSanitizerService;
 use App\Services\OpenAIService;
+use App\Services\OpenImmo\FeedbackImportService;
+use App\Services\OpenImmo\FtpSyncService;
+use App\Services\OpenImmo\OpenImmoExportService;
+use App\Services\OpenImmo\OpenImmoMapperService;
+use App\Services\OpenImmo\SyndicationService;
 use App\Services\WebsiteLlmService;
 use BaseApi\Auth\UserProvider;
 
@@ -69,6 +74,13 @@ class AppServiceProvider extends ServiceProvider
         $container->singleton(EmailDraftService::class);
         $container->singleton(HtmlSanitizerService::class);
         $container->singleton(WebsiteLlmService::class);
+
+        // OpenImmo syndication services
+        $container->singleton(OpenImmoMapperService::class);
+        $container->singleton(OpenImmoExportService::class);
+        $container->singleton(FtpSyncService::class);
+        $container->singleton(SyndicationService::class);
+        $container->singleton(FeedbackImportService::class);
 
         // Example: Register a custom service with manual configuration
         // $container->singleton(SomeService::class, function (ContainerInterface $c) {

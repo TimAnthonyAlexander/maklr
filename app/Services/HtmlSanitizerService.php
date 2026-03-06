@@ -124,6 +124,7 @@ final class HtmlSanitizerService
                 return true;
             }
         }
+
         // Allow data: URIs only for images
         return str_starts_with($lower, 'data:') && !str_starts_with($lower, 'data:image/');
     }

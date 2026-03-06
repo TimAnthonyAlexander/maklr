@@ -11,6 +11,7 @@ import {
   Mail,
   FileText,
   Globe,
+  Radio,
   LayoutTemplate,
   ShieldCheck,
   ClipboardList,
@@ -61,6 +62,11 @@ const organizeItems: NavItem[] = [
     translationKey: "sidebar.nav.websites",
     path: "/websites",
     icon: Globe,
+  },
+  {
+    translationKey: "sidebar.nav.portals",
+    path: "/portals",
+    icon: Radio,
   },
 ];
 

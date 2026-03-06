@@ -37,9 +37,17 @@ final class OpenAIService
     /**
      * Enable cost tracking for this request
      */
-    public function withService(string $service = '', string $userId = ''): self
+    public function withService(string $serviceName, ?string $userId = null): self
     {
-        return clone $this;
+        $clone = clone $this;
+        $clone->options['metadata'] = array_merge(
+            $clone->options['metadata'] ?? [],
+            array_filter([
+                'service' => $serviceName,
+                'user_id' => $userId,
+            ]),
+        );
+        return $clone;
     }
 
     /**

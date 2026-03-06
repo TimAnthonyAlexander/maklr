@@ -1,5 +1,17 @@
 <?php
 
+use App\Controllers\Portal\PortalListController;
+use App\Controllers\Portal\PortalCreateController;
+use App\Controllers\Portal\PortalShowController;
+use App\Controllers\Portal\PortalUpdateController;
+use App\Controllers\Portal\PortalDeleteController;
+use App\Controllers\Portal\PortalTestController;
+use App\Controllers\Portal\PortalSyncController;
+use App\Controllers\Portal\PortalSyncLogController;
+use App\Controllers\Portal\FeedbackImportController;
+use App\Controllers\Syndication\EstateSyndicationListController;
+use App\Controllers\Syndication\EstateSyndicationUpdateController;
+use App\Controllers\Syndication\EstateSyndicationBulkController;
 use BaseApi\App;
 use App\Controllers\HealthController;
 use App\Controllers\LoginController;
@@ -1043,6 +1055,94 @@ $router->get('/sites/{slug}', [
 $router->get('/sites/{slug}/{pageSlug}', [
     RateLimitMiddleware::class => ['limit' => '120/1m'],
     WebsiteServeController::class,
+]);
+
+// ================================
+// Portal Syndication Endpoints
+// ================================
+
+$router->get('/portals', [
+    RateLimitMiddleware::class => ['limit' => '60/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    PortalListController::class,
+]);
+
+$router->post('/portals', [
+    RateLimitMiddleware::class => ['limit' => '10/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['manager']],
+    PortalCreateController::class,
+]);
+
+$router->get('/portals/{id}', [
+    RateLimitMiddleware::class => ['limit' => '60/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    PortalShowController::class,
+]);
+
+$router->patch('/portals/{id}', [
+    RateLimitMiddleware::class => ['limit' => '30/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['manager']],
+    PortalUpdateController::class,
+]);
+
+$router->delete('/portals/{id}', [
+    RateLimitMiddleware::class => ['limit' => '10/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['manager']],
+    PortalDeleteController::class,
+]);
+
+$router->post('/portals/{id}/test', [
+    RateLimitMiddleware::class => ['limit' => '5/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['manager']],
+    PortalTestController::class,
+]);
+
+$router->post('/portals/{id}/sync', [
+    RateLimitMiddleware::class => ['limit' => '2/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    PortalSyncController::class,
+]);
+
+$router->get('/portals/{id}/sync-logs', [
+    RateLimitMiddleware::class => ['limit' => '60/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    PortalSyncLogController::class,
+]);
+
+$router->post('/portals/{id}/feedback', [
+    RateLimitMiddleware::class => ['limit' => '5/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['manager']],
+    FeedbackImportController::class,
+]);
+
+$router->get('/estates/{id}/syndications', [
+    RateLimitMiddleware::class => ['limit' => '60/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    EstateSyndicationListController::class,
+]);
+
+$router->patch('/estates/{id}/syndications/{syndicationId}', [
+    RateLimitMiddleware::class => ['limit' => '30/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    EstateSyndicationUpdateController::class,
+]);
+
+$router->post('/estates/{id}/syndications/bulk', [
+    RateLimitMiddleware::class => ['limit' => '10/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    EstateSyndicationBulkController::class,
 ]);
 
 // ================================
