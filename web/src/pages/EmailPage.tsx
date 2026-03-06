@@ -59,7 +59,17 @@ export function EmailPage() {
     } = useGetEmailList(emailQuery);
     const emails = useMemo(() => emailsData?.items ?? [], [emailsData]);
 
-    const [unreadOnly, setUnreadOnly] = useState(false);
+    const [unreadOnly, setUnreadOnly] = useState(
+        () => localStorage.getItem("email_unread_filter") === "true",
+    );
+
+    const handleToggleUnreadOnly = useCallback(() => {
+        setUnreadOnly((v) => {
+            const next = !v;
+            localStorage.setItem("email_unread_filter", String(next));
+            return next;
+        });
+    }, []);
 
     // Track a version that only bumps on triggers that should recalculate the filter:
     // - folder change, filter toggle, or fresh server data (but NOT optimistic read marks)
@@ -190,7 +200,7 @@ export function EmailPage() {
                     onSearchChange={setSearchQuery}
                     onSelect={handleSelectEmail}
                     unreadOnly={unreadOnly}
-                    onToggleUnreadOnly={() => setUnreadOnly((v) => !v)}
+                    onToggleUnreadOnly={handleToggleUnreadOnly}
                 />
                 <EmailDetail
                     emailId={selectedEmailId}
