@@ -116,8 +116,8 @@ Roles (admin, manager, agent, readonly, api_user). Per-module RBAC, multi-office
 **Multi-Property** `[ ]`
 Master properties with child units for complexes and new builds.
 
-**Portal Syndication** `[ ]`
-OpenImmo XML export, per-portal publish toggles, FTP/API push with sync status.
+**Portal Syndication** `[x]`
+OpenImmo XML export to German real estate portals (ImmobilienScout24, Immowelt, etc.). Portal management with encrypted FTP/API credentials, per-estate publish toggles with sync status tracking, bulk enable/disable, sync logs, and feedback XML import for lead enquiries. Full frontend with portal list/detail pages, estate syndication tab, and sidebar navigation.
 
 **Workflow Automation** `[ ]`
 Step-based workflow builder with triggers, conditions, and actions. Automate acquisition, lead nurturing, and after-sales sequences.

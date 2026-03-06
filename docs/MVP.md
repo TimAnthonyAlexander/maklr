@@ -39,10 +39,10 @@ The core entity. Everything revolves around properties.
 - [ ] Inherit shared data from master, override per unit
 
 **[P2] Portal Syndication**
-- [ ] OpenImmo XML export
-- [ ] Per-portal publish toggle per property
-- [ ] FTP/API push with sync status and error log
-- [ ] Portal enquiry import (email parsing)
+- [x] OpenImmo XML export
+- [x] Per-portal publish toggle per property
+- [x] FTP/API push with sync status and error log
+- [x] Portal enquiry import (feedback XML parsing)
 
 **[P3]**
 - [ ] Estate tracking portal (read-only owner view with marketing stats)
@@ -288,7 +288,7 @@ Ship this. Nothing else.
 
 ### Explicitly NOT in MVP
 
-- No portal syndication
+- ~~No portal syndication~~ (shipped as P2)
 - No workflow automation
 - No invoicing
 - No dashboards
