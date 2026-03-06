@@ -128,6 +128,14 @@ class Estate extends BaseModel
         ['city', 'property_type'],
     ];
 
+    public function toArray(bool $includeRelations = false): array
+    {
+        $data = parent::toArray($includeRelations);
+        $data['custom_fields'] = $this->getCustomFields();
+
+        return $data;
+    }
+
     public function ownerContact(): BelongsTo
     {
         return $this->belongsTo(Contact::class, 'owner_contact_id');

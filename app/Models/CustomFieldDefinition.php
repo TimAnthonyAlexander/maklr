@@ -56,6 +56,14 @@ class CustomFieldDefinition extends BaseModel
         $this->options = $options === [] ? null : (json_encode($options) ?: null);
     }
 
+    public function toArray(bool $includeRelations = false): array
+    {
+        $data = parent::toArray($includeRelations);
+        $data['options'] = $this->getOptions();
+
+        return $data;
+    }
+
     public function office(): BelongsTo
     {
         return $this->belongsTo(Office::class);

@@ -73,6 +73,14 @@ class Activity extends BaseModel
         ['contact_id', 'created_at'],
     ];
 
+    public function toArray(bool $includeRelations = false): array
+    {
+        $data = parent::toArray($includeRelations);
+        $data['metadata'] = $this->getMetadata();
+
+        return $data;
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

@@ -68,6 +68,14 @@ class AuditLog extends BaseModel
         ['office_id', 'created_at'],
     ];
 
+    public function toArray(bool $includeRelations = false): array
+    {
+        $data = parent::toArray($includeRelations);
+        $data['changes'] = $this->getChanges();
+
+        return $data;
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

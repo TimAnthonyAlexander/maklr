@@ -58,19 +58,10 @@ export function SearchProfilesTab({
   contact,
   onProfilesUpdated,
 }: SearchProfilesTabProps) {
-  const profiles = useMemo(() => {
-    const raw = contact.search_profiles;
-    if (Array.isArray(raw)) return raw;
-    if (typeof raw === "string" && raw.length > 0) {
-      try {
-        const parsed: unknown = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed : [];
-      } catch {
-        return [];
-      }
-    }
-    return [];
-  }, [contact.search_profiles]);
+  const profiles = useMemo(
+    () => contact.search_profiles ?? [],
+    [contact.search_profiles],
+  );
   const [formOpen, setFormOpen] = useState(false);
   const [editingProfile, setEditingProfile] = useState<SearchProfile | null>(
     null,
