@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router";
 import {
   Box,
@@ -87,6 +87,7 @@ export function EstateDetailPage() {
     [searchParams, setSearchParams],
   );
 
+  const tabsRef = useRef<HTMLDivElement>(null);
   const [formOpen, setFormOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [brochureOpen, setBrochureOpen] = useState(false);
@@ -240,7 +241,7 @@ export function EstateDetailPage() {
             />
 
             {/* Images / Documents / Matches Tabs */}
-            <Paper variant="outlined" sx={{ px: 3 }}>
+            <Paper ref={tabsRef} variant="outlined" sx={{ px: 3 }}>
               <Tabs value={tab} onChange={handleTabChange}>
                 <Tab label={t("estate.tab_images")} />
                 <Tab label={t("estate.tab_documents")} />
@@ -318,11 +319,14 @@ export function EstateDetailPage() {
         images={images}
         onCreated={() => {
           setBrochureOpen(false);
-          // Switch to documents tab
+          refetch();
           setTab(1);
           const newParams = new URLSearchParams(searchParams);
           newParams.set("tab", "documents");
           setSearchParams(newParams, { replace: true });
+          setTimeout(() => {
+            tabsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 100);
         }}
       />
 
