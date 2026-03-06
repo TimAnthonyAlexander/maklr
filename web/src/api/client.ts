@@ -1390,6 +1390,36 @@ export async function postEstateBulkAction(
   return http.post("/estates/bulk-action", body, options);
 }
 
+// --- Brochure AI Content ---
+
+/**
+ * POST /estates/{id}/brochure/generate-content
+ * @tags Estates
+ */
+export async function postBrochureContentGenerate(
+  estateId: string,
+  body: Types.PostBrochureContentGenerateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.PostBrochureContentGenerateResponse> {
+  const url = `/estates/${encodeURIComponent(estateId)}/brochure/generate-content`;
+
+  return http.post(url, body, options);
+}
+
+/**
+ * POST /estates/{id}/brochure
+ * @tags Estates
+ */
+export async function postBrochureCreate(
+  estateId: string,
+  body: Types.PostBrochureCreateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.PostBrochureCreateResponse> {
+  const url = `/estates/${encodeURIComponent(estateId)}/brochure`;
+
+  return http.post(url, body, options);
+}
+
 // --- Custom Field Definitions ---
 
 /**

@@ -154,5 +154,19 @@
     "estate.ai_generating": "Generating...",
     "estate.ai_generate": "Generate",
     "estate.ai_generate_description": "AI Generate",
-    "estate.ai_overwrite_confirm": "The description field already has content. Overwrite it with the generated text?"
+    "estate.ai_overwrite_confirm": "The description field already has content. Overwrite it with the generated text?",
+    "estate.brochure_generate_title": "Generate Brochure",
+    "estate.brochure_tone": "Tone",
+    "estate.brochure_regenerate": "Regenerate",
+    "estate.brochure_headline": "Headline",
+    "estate.brochure_description": "Description",
+    "estate.brochure_highlights": "Highlights",
+    "estate.brochure_add_highlight": "Add Highlight",
+    "estate.brochure_location_summary": "Location Summary",
+    "estate.brochure_call_to_action": "Call to Action",
+    "estate.brochure_fact_sheet": "Fact Sheet",
+    "estate.brochure_select_images": "Select Images",
+    "estate.brochure_cancel": "Cancel",
+    "estate.brochure_create_pdf": "Create PDF",
+    "estate.brochure_creating_pdf": "Creating PDF..."
 }

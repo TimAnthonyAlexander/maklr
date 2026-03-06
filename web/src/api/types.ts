@@ -1322,6 +1322,35 @@ export interface PostEstateDescriptionGenerateResponse {
   description: string;
 }
 
+// --- Brochure AI Content types ---
+
+export interface BrochureContent {
+  headline: string;
+  description: string;
+  highlights: string[];
+  location_summary: string;
+  call_to_action: string;
+}
+
+export interface PostBrochureContentGenerateRequestBody {
+  tone: string;
+}
+
+export type PostBrochureContentGenerateResponse = BrochureContent;
+
+export interface PostBrochureCreateRequestBody {
+  headline: string;
+  description: string;
+  highlights: string[];
+  location_summary: string;
+  call_to_action: string;
+  image_ids: string[];
+}
+
+export type PostBrochureCreateResponse = Document;
+
+// --- Email Template types ---
+
 export interface PostEmailTemplateGenerateRequestBody {
   description: string;
   tone?: string;

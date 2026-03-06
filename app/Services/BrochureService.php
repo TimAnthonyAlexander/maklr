@@ -42,6 +42,193 @@ class BrochureService
         return $dompdf->output() ?: '';
     }
 
+    /**
+     * Generate a PDF brochure with custom AI-generated content.
+     *
+     * @param array<string, mixed> $content Brochure content (headline, description, highlights, location_summary, call_to_action)
+     * @param array<EstateImage> $images
+     * @return string Raw PDF bytes
+     */
+    public function generateWithContent(Estate $estate, array $content, array $images, ?User $user, ?Office $office): string
+    {
+        $html = $this->buildHtmlWithContent($estate, $content, $images, $user, $office);
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', false);
+        $options->set('defaultFont', 'Helvetica');
+
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return $dompdf->output() ?: '';
+    }
+
+    /**
+     * @param array<string, mixed> $content
+     * @param array<EstateImage> $images
+     */
+    private function buildHtmlWithContent(Estate $estate, array $content, array $images, ?User $user, ?Office $office): string
+    {
+        $gallery = [];
+        $floorPlans = [];
+
+        foreach ($images as $image) {
+            if ($image->category === 'floor_plan') {
+                $floorPlans[] = $image;
+            } else {
+                $gallery[] = $image;
+            }
+        }
+
+        usort($gallery, fn(EstateImage $a, EstateImage $b): int => $a->sort_order <=> $b->sort_order);
+        usort($floorPlans, fn(EstateImage $a, EstateImage $b): int => $a->sort_order <=> $b->sort_order);
+
+        $gallery = array_slice($gallery, 0, self::MAX_GALLERY_IMAGES);
+
+        $heroImage = $gallery[0] ?? null;
+        $gridImages = array_slice($gallery, 1, 5);
+
+        $heroDataUri = $heroImage !== null ? $this->imageToDataUri($heroImage) : null;
+        $gridDataUris = array_map(fn(EstateImage $estateImage): ?string => $this->imageToDataUri($estateImage), $gridImages);
+        $floorPlanDataUris = array_map(fn(EstateImage $estateImage): ?string => $this->imageToDataUri($estateImage), $floorPlans);
+
+        $hasFloorPlans = array_filter($floorPlanDataUris, fn($uri): bool => $uri !== null) !== [];
+        $totalPages = $hasFloorPlans ? 3 : 2;
+
+        $styles = $this->buildStyles();
+        $page1 = $this->buildContentPage1($estate, $content, $heroDataUri, 1, $totalPages);
+        $page2 = $this->buildContentPage2($estate, $content, $gridDataUris, $user, $office, 2, $totalPages);
+        $page3 = $this->buildPage3($floorPlanDataUris, 3, $totalPages);
+
+        return <<<HTML
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <style>{$styles}</style>
+        </head>
+        <body>
+            {$page1}
+            {$page2}
+            {$page3}
+        </body>
+        </html>
+        HTML;
+    }
+
+    /**
+     * @param array<string, mixed> $content
+     */
+    private function buildContentPage1(Estate $estate, array $content, ?string $heroDataUri, int $pageNum, int $totalPages): string
+    {
+        $address = $this->buildAddress($estate);
+        $price = $this->formatPrice($estate->price, $estate->marketing_type);
+        $headline = htmlspecialchars((string) ($content['headline'] ?? $estate->title), ENT_QUOTES, 'UTF-8');
+        $addressHtml = htmlspecialchars($address, ENT_QUOTES, 'UTF-8');
+
+        $heroHtml = '';
+        if ($heroDataUri !== null) {
+            $heroHtml = '<div class="hero-image"><img src="' . $heroDataUri . '" /></div>';
+        } else {
+            $heroHtml = '<div class="hero-placeholder"></div>';
+        }
+
+        $facts = $this->buildKeyFacts($estate);
+        $footer = $this->buildFooter($estate, $pageNum, $totalPages);
+
+        return <<<HTML
+        <div class="page">
+            <div class="header-bar"></div>
+            {$heroHtml}
+            <div class="title-block">
+                <h1>{$headline}</h1>
+                <p class="address">{$addressHtml}</p>
+                <p class="price">{$price}</p>
+            </div>
+            <table class="facts-table">
+                {$facts}
+            </table>
+            {$footer}
+        </div>
+        HTML;
+    }
+
+    /**
+     * @param array<string, mixed> $content
+     * @param array<string|null> $gridDataUris
+     */
+    private function buildContentPage2(Estate $estate, array $content, array $gridDataUris, ?User $user, ?Office $office, int $pageNum, int $totalPages): string
+    {
+        $description = '';
+        $descText = (string) ($content['description'] ?? '');
+        if ($descText !== '') {
+            $descHtml = htmlspecialchars($descText, ENT_QUOTES, 'UTF-8');
+            $description = '<div class="section"><h2>Description</h2><p>' . nl2br($descHtml) . '</p></div>';
+        }
+
+        /** @var array<string> $highlights */
+        $highlights = $content['highlights'] ?? [];
+        $highlightsHtml = '';
+        if ($highlights !== []) {
+            $items = array_map(
+                fn(string $h): string => '<li>' . htmlspecialchars($h, ENT_QUOTES, 'UTF-8') . '</li>',
+                $highlights,
+            );
+            $highlightsHtml = '<div class="section"><h2>Highlights</h2><ul class="features-list">' . implode('', $items) . '</ul></div>';
+        }
+
+        $locationSummary = (string) ($content['location_summary'] ?? '');
+        $locationHtml = '';
+        if ($locationSummary !== '') {
+            $locText = htmlspecialchars($locationSummary, ENT_QUOTES, 'UTF-8');
+            $locationHtml = '<div class="section"><h2>Location</h2><p>' . nl2br($locText) . '</p></div>';
+        }
+
+        $callToAction = (string) ($content['call_to_action'] ?? '');
+        $ctaHtml = '';
+        if ($callToAction !== '') {
+            $ctaText = htmlspecialchars($callToAction, ENT_QUOTES, 'UTF-8');
+            $ctaHtml = '<div class="section cta-block"><p>' . nl2br($ctaText) . '</p></div>';
+        }
+
+        $gridHtml = '';
+        if ($gridDataUris !== []) {
+            $gridHtml = '<div class="image-grid"><table class="grid-table"><tr>';
+            $cellCount = 0;
+            foreach ($gridDataUris as $gridDataUri) {
+                if ($gridDataUri === null) {
+                    continue;
+                }
+
+                if ($cellCount > 0 && $cellCount % 3 === 0) {
+                    $gridHtml .= '</tr><tr>';
+                }
+
+                $gridHtml .= '<td class="grid-cell"><img src="' . $gridDataUri . '" /></td>';
+                $cellCount++;
+            }
+
+            $gridHtml .= '</tr></table></div>';
+        }
+
+        $agentHtml = $this->buildAgentBlock($user, $office);
+        $footer = $this->buildFooter($estate, $pageNum, $totalPages);
+
+        return <<<HTML
+        <div class="page">
+            {$description}
+            {$highlightsHtml}
+            {$locationHtml}
+            {$gridHtml}
+            {$ctaHtml}
+            {$agentHtml}
+            {$footer}
+        </div>
+        HTML;
+    }
+
     private function buildHtml(Estate $estate, array $images, ?User $user, ?Office $office): string
     {
         $gallery = [];
@@ -372,6 +559,18 @@ class BrochureService
             font-size: 9pt;
             color: {$accent};
             margin: 0 0 2px 0;
+        }
+        .cta-block {
+            margin-top: 15px;
+            padding: 12px 15px;
+            background-color: #F5F5F5;
+            border-left: 3px solid {$primary};
+        }
+        .cta-block p {
+            font-size: 10pt;
+            font-style: italic;
+            color: {$primary};
+            margin: 0;
         }
         .floor-plan-image {
             margin: 15px 0;

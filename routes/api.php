@@ -27,6 +27,8 @@ use App\Controllers\Estate\EstateImageUpdateController;
 use App\Controllers\Estate\EstateImageDeleteController;
 use App\Controllers\Estate\EstateImageServeController;
 use App\Controllers\Estate\EstateBrochureController;
+use App\Controllers\Estate\BrochureContentGenerateController;
+use App\Controllers\Estate\BrochureCreateController;
 use App\Controllers\Estate\EstateDescriptionGenerateController;
 use App\Controllers\Estate\EstateMatchController;
 use App\Controllers\Office\OfficeListController;
@@ -367,6 +369,20 @@ $router->get('/estates/{id}/brochure', [
     CombinedAuthMiddleware::class,
     RoleMiddleware::class => ['roles' => ['agent']],
     EstateBrochureController::class,
+]);
+
+$router->post('/estates/{id}/brochure/generate-content', [
+    RateLimitMiddleware::class => ['limit' => '10/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    BrochureContentGenerateController::class,
+]);
+
+$router->post('/estates/{id}/brochure', [
+    RateLimitMiddleware::class => ['limit' => '10/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    BrochureCreateController::class,
 ]);
 
 // ================================

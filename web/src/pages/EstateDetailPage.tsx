@@ -21,7 +21,7 @@ import {
   useDeleteEstateById,
 } from "../api/hooks";
 import type { Estate, EstateImage } from "../api/types";
-import { getEstateBrochureUrl } from "../api/client";
+
 import { EstateImagesTab } from "../components/estates/EstateImagesTab";
 import { useAuth } from "../contexts/AuthContext";
 import { useTranslation } from "../contexts/LanguageContext";
@@ -30,6 +30,7 @@ import {
   PropertyTypeLabel,
   MarketingTypeLabel,
 } from "../components/estates/EstateStatusChip";
+import { BrochureGenerateDialog } from "../components/estates/BrochureGenerateDialog";
 import { EstateForm } from "../components/estates/EstateForm";
 import { EstateDeleteDialog } from "../components/estates/EstateDeleteDialog";
 import { EntityDocumentsTab } from "../components/documents/EntityDocumentsTab";
@@ -88,6 +89,7 @@ export function EstateDetailPage() {
 
   const [formOpen, setFormOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [brochureOpen, setBrochureOpen] = useState(false);
   const [statusAnchor, setStatusAnchor] = useState<HTMLElement | null>(null);
 
   const canDelete = user?.role === "admin" || user?.role === "manager";
@@ -191,12 +193,7 @@ export function EstateDetailPage() {
           >
             {t("estate.change_status")}
           </Button>
-          <IconButton
-            component="a"
-            href={getEstateBrochureUrl(estate.id)}
-            target="_blank"
-            size="small"
-          >
+          <IconButton size="small" onClick={() => setBrochureOpen(true)}>
             <FileText size={20} />
           </IconButton>
           <IconButton size="small" onClick={() => setFormOpen(true)}>
@@ -311,6 +308,22 @@ export function EstateDetailPage() {
         onClose={() => setFormOpen(false)}
         estate={estate}
         onSuccess={handleFormSuccess}
+      />
+
+      {/* Brochure dialog */}
+      <BrochureGenerateDialog
+        open={brochureOpen}
+        onClose={() => setBrochureOpen(false)}
+        estate={estate}
+        images={images}
+        onCreated={() => {
+          setBrochureOpen(false);
+          // Switch to documents tab
+          setTab(1);
+          const newParams = new URLSearchParams(searchParams);
+          newParams.set("tab", "documents");
+          setSearchParams(newParams, { replace: true });
+        }}
       />
 
       {/* Delete dialog */}

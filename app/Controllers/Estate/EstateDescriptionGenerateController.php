@@ -9,6 +9,7 @@ use RuntimeException;
 
 class EstateDescriptionGenerateController extends Controller
 {
+    use EstateContextTrait;
     /** @var array<string, mixed> */
     public array $estate_data = [];
 
@@ -118,63 +119,4 @@ PROMPT;
         }
     }
 
-    /**
-     * @param array<string, mixed> $data
-     */
-    private function buildEstateContext(array $data): string
-    {
-        $lines = [];
-
-        $fields = [
-            'property_type' => 'Property Type',
-            'marketing_type' => 'Marketing Type',
-            'title' => 'Title',
-            'rooms' => 'Rooms',
-            'bedrooms' => 'Bedrooms',
-            'bathrooms' => 'Bathrooms',
-            'area_total' => 'Total Area (m²)',
-            'area_living' => 'Living Area (m²)',
-            'area_plot' => 'Plot Area (m²)',
-            'floor' => 'Floor',
-            'floors_total' => 'Total Floors',
-            'year_built' => 'Year Built',
-            'parking_spaces' => 'Parking Spaces',
-            'heating_type' => 'Heating Type',
-            'energy_rating' => 'Energy Rating',
-            'condition' => 'Condition',
-            'street' => 'Street',
-            'house_number' => 'House Number',
-            'zip' => 'ZIP',
-            'city' => 'City',
-            'country' => 'Country',
-        ];
-
-        foreach ($fields as $key => $label) {
-            $value = $data[$key] ?? null;
-            if ($value !== null && $value !== '') {
-                $lines[] = "{$label}: {$value}";
-            }
-        }
-
-        $booleanFields = [
-            'furnished' => 'Furnished',
-            'balcony' => 'Balcony',
-            'garden' => 'Garden',
-            'elevator' => 'Elevator',
-            'cellar' => 'Cellar',
-        ];
-
-        $features = [];
-        foreach ($booleanFields as $key => $label) {
-            if (!empty($data[$key])) {
-                $features[] = $label;
-            }
-        }
-
-        if ($features !== []) {
-            $lines[] = 'Features: ' . implode(', ', $features);
-        }
-
-        return implode("\n", $lines);
-    }
 }

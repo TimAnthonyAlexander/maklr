@@ -1001,6 +1001,110 @@ export function usePostEstateDescriptionGenerate(
 }
 
 /**
+ * React hook for POST /estates/{id}/brochure/generate-content
+ */
+export function usePostBrochureContentGenerate(
+  options?: QueryOptions<Types.PostBrochureContentGenerateResponse>,
+): MutationResult<
+  Types.PostBrochureContentGenerateResponse,
+  { estateId: string; body: Types.PostBrochureContentGenerateRequestBody }
+> {
+  const [data, setData] =
+    useState<Types.PostBrochureContentGenerateResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
+
+  const mutate = useCallback(
+    async (variables: {
+      estateId: string;
+      body: Types.PostBrochureContentGenerateRequestBody;
+    }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.postBrochureContentGenerate(
+          variables.estateId,
+          variables.body,
+          optionsRef.current,
+        );
+        setData(result);
+        optionsRef.current?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        optionsRef.current?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+/**
+ * React hook for POST /estates/{id}/brochure
+ */
+export function usePostBrochureCreate(
+  options?: QueryOptions<Types.PostBrochureCreateResponse>,
+): MutationResult<
+  Types.PostBrochureCreateResponse,
+  { estateId: string; body: Types.PostBrochureCreateRequestBody }
+> {
+  const [data, setData] =
+    useState<Types.PostBrochureCreateResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
+
+  const mutate = useCallback(
+    async (variables: {
+      estateId: string;
+      body: Types.PostBrochureCreateRequestBody;
+    }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.postBrochureCreate(
+          variables.estateId,
+          variables.body,
+          optionsRef.current,
+        );
+        setData(result);
+        optionsRef.current?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        optionsRef.current?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+/**
  * React hook for POST /estates/bulk-action
  * Returns a mutate function that must be called manually
  */
