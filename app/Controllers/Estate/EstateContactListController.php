@@ -36,6 +36,11 @@ class EstateContactListController extends Controller
 
         $result = $modelQuery->paginate($page, $perPage, 50, true);
 
+        $result->data = array_map(
+            static fn($model) => $model->toArray(true),
+            $result->data,
+        );
+
         return JsonResponse::paginated($result);
     }
 }
