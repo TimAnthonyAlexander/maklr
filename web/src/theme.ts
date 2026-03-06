@@ -4,8 +4,8 @@ import { colors } from "./theme/colors";
 export const theme = createTheme({
     palette: {
         primary: {
-            main: colors.brand.sage,
-            dark: "#8A7864",
+            main: colors.brand.slate,
+            dark: "#5A748F",
             contrastText: "#FFFFFF",
         },
         secondary: {
