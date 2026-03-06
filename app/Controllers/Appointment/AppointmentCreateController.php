@@ -25,6 +25,8 @@ class AppointmentCreateController extends Controller
 
     public ?string $ends_at = null;
 
+    public bool $is_all_day = false;
+
     public ?string $location = null;
 
     public ?string $estate_id = null;
@@ -43,12 +45,20 @@ class AppointmentCreateController extends Controller
     public function post(): JsonResponse
     {
         try {
-            $this->validate([
+            $rules = [
                 'title' => 'required|string|max:255',
                 'type' => 'required|string|in:' . implode(',', self::VALID_TYPES),
-                'starts_at' => 'required|string',
-                'ends_at' => 'required|string',
-            ]);
+                'is_all_day' => 'boolean',
+            ];
+
+            if ($this->is_all_day) {
+                $rules['starts_at'] = 'required|string';
+            } else {
+                $rules['starts_at'] = 'required|string';
+                $rules['ends_at'] = 'required|string';
+            }
+
+            $this->validate($rules);
         } catch (ValidationException $validationException) {
             return JsonResponse::validationError($validationException->errors());
         }
@@ -65,8 +75,11 @@ class AppointmentCreateController extends Controller
         $appointment->title = $this->title;
         $appointment->description = $this->description;
         $appointment->type = $this->type;
+        $appointment->is_all_day = $this->is_all_day;
         $appointment->starts_at = $this->starts_at;
-        $appointment->ends_at = $this->ends_at;
+        $appointment->ends_at = $this->is_all_day && $this->ends_at === null
+            ? $this->starts_at
+            : $this->ends_at;
         $appointment->location = $this->location;
         $appointment->estate_id = $this->estate_id;
         $appointment->office_id = $officeId;
@@ -104,12 +117,16 @@ class AppointmentCreateController extends Controller
         );
 
         // Check for scheduling conflicts (warnings only — appointment already saved)
-        $conflicts = $appointmentService->findConflicts(
-            $attendeeIds,
-            $this->starts_at,
-            $this->ends_at,
-            $appointment->id,
-        );
+        // All-day appointments don't block time slots, so skip conflict detection
+        $conflicts = [];
+        if (!$this->is_all_day) {
+            $conflicts = $appointmentService->findConflicts(
+                $attendeeIds,
+                $this->starts_at,
+                $this->ends_at,
+                $appointment->id,
+            );
+        }
 
         $appointment = Appointment::with(['appointmentUsers', 'appointmentContacts', 'estate'])
             ->where('id', '=', $appointment->id)

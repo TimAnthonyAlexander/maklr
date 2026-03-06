@@ -1755,6 +1755,15 @@
             "table": "audit_log",
             "operation": "modify_column",
             "warning": null
+        },
+        {
+            "id": "mig_e27740a13ad9",
+            "sql": "ALTER TABLE `appointment` ADD COLUMN `is_all_day` TINYINT(1) NOT NULL DEFAULT 0",
+            "destructive": false,
+            "generated_at": "2026-03-06T11:24:24+00:00",
+            "table": "appointment",
+            "operation": "add_column",
+            "warning": null
         }
     ]
 }

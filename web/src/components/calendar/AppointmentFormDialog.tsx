@@ -7,12 +7,14 @@ import {
   Box,
   TextField,
   FormControl,
+  FormControlLabel,
   InputLabel,
   Select,
   MenuItem,
   Button,
   Alert,
   IconButton,
+  Switch,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import type {
@@ -25,7 +27,13 @@ import {
   usePostAppointmentCreate,
   usePatchAppointmentUpdateById,
 } from "../../api/hooks";
-import { toDatetimeLocal, toApiDatetime } from "../../utils/dateUtils";
+import {
+  toDatetimeLocal,
+  toApiDatetime,
+  toDateOnly,
+  toDateOnlyEnd,
+  toDateInput,
+} from "../../utils/dateUtils";
 import { useTranslation } from "../../contexts/LanguageContext";
 
 interface AppointmentFormDialogProps {
@@ -40,8 +48,10 @@ interface FormState {
   title: string;
   description: string;
   type: string;
+  is_all_day: boolean;
   starts_at: string;
   ends_at: string;
+  date: string;
   location: string;
   estate_id: string;
 }
@@ -64,16 +74,22 @@ function appointmentToFormState(
   initialDateTime?: Date | null,
 ): FormState {
   if (appointment) {
+    const isAllDay = appointment.is_all_day ?? false;
+    const startDate = appointment.starts_at
+      ? new Date(appointment.starts_at.replace(" ", "T"))
+      : new Date();
     return {
       title: appointment.title ?? "",
       description: appointment.description ?? "",
       type: appointment.type ?? "other",
+      is_all_day: isAllDay,
       starts_at: appointment.starts_at
-        ? toDatetimeLocal(new Date(appointment.starts_at.replace(" ", "T")))
+        ? toDatetimeLocal(startDate)
         : "",
       ends_at: appointment.ends_at
         ? toDatetimeLocal(new Date(appointment.ends_at.replace(" ", "T")))
         : "",
+      date: toDateInput(startDate),
       location: appointment.location ?? "",
       estate_id: appointment.estate_id ?? "",
     };
@@ -87,8 +103,10 @@ function appointmentToFormState(
     title: "",
     description: "",
     type: "meeting",
+    is_all_day: false,
     starts_at: toDatetimeLocal(start),
     ends_at: toDatetimeLocal(end),
+    date: toDateInput(start),
     location: "",
     estate_id: "",
   };
@@ -97,10 +115,25 @@ function appointmentToFormState(
 function formStateToBody(form: FormState): PostAppointmentCreateRequestBody {
   const strOrNull = (v: string) => (v === "" ? null : v);
 
+  if (form.is_all_day) {
+    const date = new Date(form.date + "T00:00:00");
+    return {
+      title: form.title,
+      description: strOrNull(form.description),
+      type: form.type,
+      is_all_day: true,
+      starts_at: toDateOnly(date),
+      ends_at: toDateOnlyEnd(date),
+      location: strOrNull(form.location),
+      estate_id: strOrNull(form.estate_id),
+    };
+  }
+
   return {
     title: form.title,
     description: strOrNull(form.description),
     type: form.type,
+    is_all_day: false,
     starts_at: toApiDatetime(new Date(form.starts_at)),
     ends_at: toApiDatetime(new Date(form.ends_at)),
     location: strOrNull(form.location),
@@ -287,26 +320,49 @@ export function AppointmentFormDialog({
             </Select>
           </FormControl>
 
-          <Box sx={{ display: "flex", gap: 2 }}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={form.is_all_day}
+                onChange={(e) => updateField("is_all_day", e.target.checked)}
+                size="small"
+              />
+            }
+            label={t("calendar.form.all_day")}
+          />
+
+          {form.is_all_day ? (
             <TextField
-              label={t("calendar.form.starts_at")}
+              label={t("calendar.form.date")}
               size="small"
-              type="datetime-local"
+              type="date"
               fullWidth
-              value={form.starts_at}
-              onChange={(e) => updateField("starts_at", e.target.value)}
+              value={form.date}
+              onChange={(e) => updateField("date", e.target.value)}
               slotProps={{ inputLabel: { shrink: true } }}
             />
-            <TextField
-              label={t("calendar.form.ends_at")}
-              size="small"
-              type="datetime-local"
-              fullWidth
-              value={form.ends_at}
-              onChange={(e) => updateField("ends_at", e.target.value)}
-              slotProps={{ inputLabel: { shrink: true } }}
-            />
-          </Box>
+          ) : (
+            <Box sx={{ display: "flex", gap: 2 }}>
+              <TextField
+                label={t("calendar.form.starts_at")}
+                size="small"
+                type="datetime-local"
+                fullWidth
+                value={form.starts_at}
+                onChange={(e) => updateField("starts_at", e.target.value)}
+                slotProps={{ inputLabel: { shrink: true } }}
+              />
+              <TextField
+                label={t("calendar.form.ends_at")}
+                size="small"
+                type="datetime-local"
+                fullWidth
+                value={form.ends_at}
+                onChange={(e) => updateField("ends_at", e.target.value)}
+                slotProps={{ inputLabel: { shrink: true } }}
+              />
+            </Box>
+          )}
 
           <TextField
             label={t("calendar.form.location")}
@@ -331,7 +387,9 @@ export function AppointmentFormDialog({
               variant="contained"
               onClick={handleSubmit}
               disabled={
-                loading || !form.title || !form.starts_at || !form.ends_at
+                loading ||
+                !form.title ||
+                (form.is_all_day ? !form.date : !form.starts_at || !form.ends_at)
               }
             >
               {loading

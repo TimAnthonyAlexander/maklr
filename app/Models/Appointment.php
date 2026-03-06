@@ -18,6 +18,8 @@ class Appointment extends BaseModel
 
     public ?string $ends_at = null;
 
+    public bool $is_all_day = false;
+
     public ?string $location = null;
 
     public ?string $estate_id = null;

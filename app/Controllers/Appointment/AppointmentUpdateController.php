@@ -44,9 +44,11 @@ class AppointmentUpdateController extends Controller
         'open_house', 'signing', 'valuation', 'photography', 'other',
     ];
 
+    public ?bool $is_all_day = null;
+
     private const array PATCHABLE_FIELDS = [
         'title', 'description', 'type', 'starts_at', 'ends_at',
-        'location', 'estate_id',
+        'location', 'estate_id', 'is_all_day',
     ];
 
     public function patch(): JsonResponse
@@ -138,7 +140,8 @@ class AppointmentUpdateController extends Controller
 
         $responseData = $appointment->toArray();
 
-        if ($timeChanged || $attendeesChanged) {
+        // All-day appointments don't block time slots, so skip conflict detection
+        if (!$appointment->is_all_day && ($timeChanged || $attendeesChanged)) {
             $currentUserIds = array_map(
                 fn ($au): string => $au->user_id,
                 AppointmentUser::where('appointment_id', '=', $appointment->id)->get(),

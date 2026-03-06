@@ -29,6 +29,7 @@ class AppointmentService
             . "FROM appointment "
             . "INNER JOIN appointment_user ON appointment.id = appointment_user.appointment_id "
             . sprintf('WHERE appointment_user.user_id IN (%s) ', $placeholders)
+            . "AND appointment.is_all_day = 0 "
             . "AND appointment.starts_at < ? "
             . "AND appointment.ends_at > ?";
 

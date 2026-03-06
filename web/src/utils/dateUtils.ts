@@ -222,6 +222,36 @@ export function computeOverlapLayout<T extends { starts_at?: string | null; ends
 }
 
 /**
+ * Format a Date to a date-only API string (YYYY-MM-DD 00:00:00).
+ */
+export function toDateOnly(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d} 00:00:00`;
+}
+
+/**
+ * Format a Date to a date-only end-of-day API string (YYYY-MM-DD 23:59:59).
+ */
+export function toDateOnlyEnd(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d} 23:59:59`;
+}
+
+/**
+ * Format a Date to a date input value (YYYY-MM-DD).
+ */
+export function toDateInput(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+/**
  * Format a time range for display (e.g., "09:00 – 10:00").
  */
 export function formatTimeRange(startsAt: string, endsAt: string): string {

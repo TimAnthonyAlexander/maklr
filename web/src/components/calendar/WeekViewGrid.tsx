@@ -8,6 +8,7 @@ import {
   computeOverlapLayout,
 } from "../../utils/dateUtils";
 import { WeekViewEvent } from "./WeekViewEvent";
+import { AllDayEvent } from "./AllDayEvent";
 
 interface WeekViewGridProps {
   weekDays: Date[];
@@ -50,24 +51,35 @@ export function WeekViewGrid({
     }
   }, [startHour]);
 
-  const appointmentsByDay = useMemo(() => {
-    const map = new Map<number, Appointment[]>();
+  const { timedByDay, allDayByDay, hasAllDay } = useMemo(() => {
+    const timed = new Map<number, Appointment[]>();
+    const allDay = new Map<number, Appointment[]>();
     for (let i = 0; i < 7; i++) {
-      map.set(i, []);
+      timed.set(i, []);
+      allDay.set(i, []);
     }
 
     for (const apt of appointments) {
       if (!apt.starts_at) continue;
       const start = fromApiDatetime(apt.starts_at);
+      const target = apt.is_all_day ? allDay : timed;
       for (let i = 0; i < 7; i++) {
         if (isSameDay(start, weekDays[i])) {
-          map.get(i)!.push(apt);
+          target.get(i)!.push(apt);
           break;
         }
       }
     }
 
-    return map;
+    let found = false;
+    for (let i = 0; i < 7; i++) {
+      if (allDay.get(i)!.length > 0) {
+        found = true;
+        break;
+      }
+    }
+
+    return { timedByDay: timed, allDayByDay: allDay, hasAllDay: found };
   }, [appointments, weekDays]);
 
   const handleCellClick = useCallback(
@@ -80,14 +92,51 @@ export function WeekViewGrid({
   );
 
   return (
-    <Box
-      ref={scrollRef}
-      sx={{
-        flex: 1,
-        overflow: "auto",
-        position: "relative",
-      }}
-    >
+    <Box sx={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+      {/* All-day header */}
+      {hasAllDay && (
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "56px repeat(7, 1fr)",
+            borderBottom: "1px solid",
+            borderColor: "divider",
+            flexShrink: 0,
+          }}
+        >
+          <Box />
+          {weekDays.map((_, dayIdx) => (
+            <Box
+              key={dayIdx}
+              sx={{
+                borderLeft: "1px solid",
+                borderColor: "divider",
+                px: 0.5,
+                py: 0.5,
+                minHeight: 28,
+              }}
+            >
+              {(allDayByDay.get(dayIdx) ?? []).map((apt) => (
+                <AllDayEvent
+                  key={apt.id}
+                  appointment={apt}
+                  onClick={onEventClick}
+                />
+              ))}
+            </Box>
+          ))}
+        </Box>
+      )}
+
+      {/* Scrollable time grid */}
+      <Box
+        ref={scrollRef}
+        sx={{
+          flex: 1,
+          overflow: "auto",
+          position: "relative",
+        }}
+      >
       <Box
         sx={{
           display: "grid",
@@ -154,7 +203,7 @@ export function WeekViewGrid({
 
             {/* Events overlay */}
             {(() => {
-              const dayAppts = appointmentsByDay.get(dayIdx) ?? [];
+              const dayAppts = timedByDay.get(dayIdx) ?? [];
               const layout = computeOverlapLayout(dayAppts);
               return dayAppts.map((apt, aptIdx) => {
                 if (!apt.starts_at || !apt.ends_at) return null;
@@ -217,6 +266,7 @@ export function WeekViewGrid({
               )}
           </Box>
         ))}
+      </Box>
       </Box>
     </Box>
   );

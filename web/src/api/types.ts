@@ -678,6 +678,7 @@ export interface Appointment {
   title?: string;
   description?: string | null;
   type?: string;
+  is_all_day?: boolean;
   starts_at?: string | null;
   ends_at?: string | null;
   location?: string | null;
@@ -733,8 +734,9 @@ export interface PostAppointmentCreateRequestBody {
   title: string;
   description?: string | null;
   type?: string;
+  is_all_day?: boolean;
   starts_at: string;
-  ends_at: string;
+  ends_at?: string;
   location?: string | null;
   estate_id?: string | null;
   user_ids?: string[];
