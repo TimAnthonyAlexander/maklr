@@ -7,6 +7,7 @@ use App\Services\ActivityService;
 use App\Services\AuditLogService;
 use App\Services\CacheHelper;
 use App\Services\CustomFieldValidationService;
+use App\Services\ProcessTriggerService;
 use BaseApi\Controllers\Controller;
 use BaseApi\Http\JsonResponse;
 use BaseApi\Http\Validation\ValidationException;
@@ -213,6 +214,23 @@ class EstateUpdateController extends Controller
         }
 
         CacheHelper::forget('dashboard', $officeId ?? 'none');
+
+        // Check process triggers for field changes
+        if ($changes !== []) {
+            try {
+                /** @var ProcessTriggerService $triggerService */
+                $triggerService = $this->make(ProcessTriggerService::class);
+                $triggerService->checkTriggers(
+                    'estate',
+                    $estate->id,
+                    $officeId ?? '',
+                    $changes,
+                    $this->request->user['id'],
+                );
+            } catch (\Throwable) {
+                // Non-critical: don't fail the estate update
+            }
+        }
 
         return JsonResponse::ok($estate->toArray());
     }

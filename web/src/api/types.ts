@@ -1829,3 +1829,187 @@ export interface FeedbackImportResponse {
   imported: number;
   errors: string[];
 }
+
+// ================================
+// Process Automation Types
+// ================================
+
+export type ProcessEntityType = 'estate' | 'contact';
+export type ProcessTriggerType = 'manual' | 'status_change' | 'field_change' | 'date_field';
+export type ProcessInstanceStatus = 'running' | 'paused' | 'completed' | 'cancelled' | 'failed';
+export type ProcessStepStatus = 'pending' | 'active' | 'completed' | 'skipped' | 'failed';
+export type ProcessStepType = 'start' | 'end' | 'create_task' | 'send_email' | 'change_field' | 'wait_days' | 'decision' | 'create_appointment';
+
+export interface ProcessStep {
+  key: string;
+  type: ProcessStepType;
+  label: string;
+  config?: Record<string, unknown>;
+  deadline_days?: number;
+  responsible?: string;
+  next?: string;
+  next_yes?: string;
+  next_no?: string;
+  position?: { x: number; y: number };
+}
+
+export interface ProcessTemplate {
+  id?: string;
+  name?: string;
+  description?: string | null;
+  entity_type?: ProcessEntityType;
+  trigger_type?: ProcessTriggerType;
+  trigger_config?: Record<string, unknown>;
+  steps?: ProcessStep[];
+  active?: boolean;
+  office_id?: string | null;
+  created_by_user_id?: string | null;
+  running_instances_count?: number;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+
+export interface ProcessInstance {
+  id?: string;
+  process_template_id?: string | null;
+  entity_type?: ProcessEntityType;
+  entity_id?: string | null;
+  status?: ProcessInstanceStatus;
+  current_step_key?: string | null;
+  started_at?: string | null;
+  completed_at?: string | null;
+  started_by_user_id?: string | null;
+  office_id?: string | null;
+  context_data?: Record<string, unknown>;
+  template?: ProcessTemplate | null;
+  step_instances?: ProcessStepInstance[];
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+
+export interface ProcessStepInstance {
+  id?: string;
+  process_instance_id?: string | null;
+  step_key?: string;
+  step_type?: ProcessStepType;
+  status?: ProcessStepStatus;
+  result?: Record<string, unknown>;
+  assigned_user_id?: string | null;
+  activated_at?: string | null;
+  completed_at?: string | null;
+  due_date?: string | null;
+  office_id?: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+
+// Process Template endpoints
+export interface ProcessTemplateListQueryParams {
+  entity_type?: string;
+  trigger_type?: string;
+  active?: string;
+  q?: string;
+  page?: number;
+  per_page?: number;
+  sort?: string;
+  order?: string;
+}
+
+export interface ProcessTemplateListResponse {
+  items: ProcessTemplate[];
+  pagination: PaginationMeta;
+}
+
+export interface ProcessTemplateByIdPathParams {
+  id: string;
+  [key: string]: string | number | null;
+}
+
+export type GetProcessTemplateShowByIdResponse = ProcessTemplate;
+
+export interface PostProcessTemplateCreateRequestBody {
+  name: string;
+  description?: string | null;
+  entity_type: ProcessEntityType;
+  trigger_type: ProcessTriggerType;
+  trigger_config?: Record<string, unknown>;
+  steps?: ProcessStep[];
+  active?: boolean;
+}
+
+export type PostProcessTemplateCreateResponse = Envelope<ProcessTemplate>;
+
+export interface PatchProcessTemplateUpdateRequestBody {
+  name?: string;
+  description?: string | null;
+  entity_type?: ProcessEntityType;
+  trigger_type?: ProcessTriggerType;
+  trigger_config?: Record<string, unknown>;
+  steps?: ProcessStep[];
+  active?: boolean;
+}
+
+export type PatchProcessTemplateUpdateResponse = Envelope<ProcessTemplate>;
+
+// Process Instance endpoints
+export interface ProcessInstanceListQueryParams {
+  status?: string;
+  entity_type?: string;
+  entity_id?: string;
+  process_template_id?: string;
+  page?: number;
+  per_page?: number;
+  sort?: string;
+  order?: string;
+}
+
+export interface ProcessInstanceListResponse {
+  items: ProcessInstance[];
+  pagination: PaginationMeta;
+}
+
+export interface ProcessInstanceByIdPathParams {
+  id: string;
+  [key: string]: string | number | null;
+}
+
+export type GetProcessInstanceShowByIdResponse = ProcessInstance;
+
+export interface PostProcessInstanceCreateRequestBody {
+  process_template_id: string;
+  entity_id: string;
+}
+
+export type PostProcessInstanceCreateResponse = Envelope<ProcessInstance>;
+
+export interface PatchProcessInstanceUpdateRequestBody {
+  status?: 'paused' | 'running' | 'cancelled';
+}
+
+export type PatchProcessInstanceUpdateResponse = Envelope<ProcessInstance>;
+
+// Step complete
+export interface ProcessStepCompletePathParams {
+  id: string;
+  stepKey: string;
+  [key: string]: string | number | null;
+}
+
+export type PostProcessStepCompleteResponse = Envelope<ProcessInstance>;
+
+// Entity process list
+export interface EntityProcessListPathParams {
+  id: string;
+  [key: string]: string | number | null;
+}
+
+export interface EntityProcessListQueryParams {
+  status?: string;
+  page?: number;
+  per_page?: number;
+}
+
+export interface EntityProcessListResponse {
+  items: ProcessInstance[];
+  pagination: PaginationMeta;
+}

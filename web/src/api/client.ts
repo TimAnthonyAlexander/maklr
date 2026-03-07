@@ -1851,3 +1851,193 @@ export async function postEstateSyndicationBulk(
   const url = buildPath("PostEstateSyndicationBulk", path);
   return http.post(url, body, options);
 }
+
+// ================================
+// Process Automation
+// ================================
+
+/**
+ * GET /process-templates
+ * @tags Process
+ */
+export async function getProcessTemplateList(
+  query?: Types.ProcessTemplateListQueryParams,
+  options?: HttpOptions,
+): Promise<Types.ProcessTemplateListResponse> {
+  const url = "/process-templates";
+  const searchParams = new URLSearchParams();
+  if (query) {
+    for (const [key, value] of Object.entries(query)) {
+      if (value !== undefined && value !== null && value !== "") {
+        searchParams.append(key, String(value));
+      }
+    }
+  }
+  const fullUrl = searchParams.toString() ? `${url}?${searchParams}` : url;
+  return http.get(fullUrl, options);
+}
+
+/**
+ * GET /process-templates/{id}
+ * @tags Process
+ */
+export async function getProcessTemplateShowById(
+  path: Types.ProcessTemplateByIdPathParams,
+  options?: HttpOptions,
+): Promise<Types.GetProcessTemplateShowByIdResponse> {
+  const url = buildPath("GetProcessTemplateShowById", path);
+  return http.get(url, options);
+}
+
+/**
+ * POST /process-templates
+ * @tags Process
+ */
+export async function postProcessTemplateCreate(
+  body: Types.PostProcessTemplateCreateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.PostProcessTemplateCreateResponse> {
+  return http.post("/process-templates", body, options);
+}
+
+/**
+ * PATCH /process-templates/{id}
+ * @tags Process
+ */
+export async function patchProcessTemplateUpdateById(
+  path: Types.ProcessTemplateByIdPathParams,
+  body: Types.PatchProcessTemplateUpdateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.PatchProcessTemplateUpdateResponse> {
+  const url = buildPath("PatchProcessTemplateUpdateById", path);
+  return http.patch(url, body, options);
+}
+
+/**
+ * DELETE /process-templates/{id}
+ * @tags Process
+ */
+export async function deleteProcessTemplateById(
+  path: Types.ProcessTemplateByIdPathParams,
+  options?: HttpOptions,
+): Promise<void> {
+  const url = buildPath("DeleteProcessTemplateById", path);
+  return http.delete(url, options);
+}
+
+/**
+ * GET /process-instances
+ * @tags Process
+ */
+export async function getProcessInstanceList(
+  query?: Types.ProcessInstanceListQueryParams,
+  options?: HttpOptions,
+): Promise<Types.ProcessInstanceListResponse> {
+  const url = "/process-instances";
+  const searchParams = new URLSearchParams();
+  if (query) {
+    for (const [key, value] of Object.entries(query)) {
+      if (value !== undefined && value !== null && value !== "") {
+        searchParams.append(key, String(value));
+      }
+    }
+  }
+  const fullUrl = searchParams.toString() ? `${url}?${searchParams}` : url;
+  return http.get(fullUrl, options);
+}
+
+/**
+ * GET /process-instances/{id}
+ * @tags Process
+ */
+export async function getProcessInstanceShowById(
+  path: Types.ProcessInstanceByIdPathParams,
+  options?: HttpOptions,
+): Promise<Types.GetProcessInstanceShowByIdResponse> {
+  const url = buildPath("GetProcessInstanceShowById", path);
+  return http.get(url, options);
+}
+
+/**
+ * POST /process-instances
+ * @tags Process
+ */
+export async function postProcessInstanceCreate(
+  body: Types.PostProcessInstanceCreateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.PostProcessInstanceCreateResponse> {
+  return http.post("/process-instances", body, options);
+}
+
+/**
+ * PATCH /process-instances/{id}
+ * @tags Process
+ */
+export async function patchProcessInstanceUpdateById(
+  path: Types.ProcessInstanceByIdPathParams,
+  body: Types.PatchProcessInstanceUpdateRequestBody,
+  options?: HttpOptions,
+): Promise<Types.PatchProcessInstanceUpdateResponse> {
+  const url = buildPath("PatchProcessInstanceUpdateById", path);
+  return http.patch(url, body, options);
+}
+
+/**
+ * POST /process-instances/{id}/steps/{stepKey}/complete
+ * @tags Process
+ */
+export async function postProcessStepComplete(
+  path: Types.ProcessStepCompletePathParams,
+  options?: HttpOptions,
+): Promise<Types.PostProcessStepCompleteResponse> {
+  const url = buildPath("PostProcessStepComplete", path);
+  return http.post(url, {}, options);
+}
+
+/**
+ * GET /estates/{id}/processes
+ * @tags Process
+ */
+export async function getEstateProcesses(
+  path: Types.EntityProcessListPathParams,
+  query?: Types.EntityProcessListQueryParams,
+  options?: HttpOptions,
+): Promise<Types.EntityProcessListResponse> {
+  const baseUrl = buildPath("GetEstateProcesses", path);
+  const searchParams = new URLSearchParams();
+  if (query) {
+    for (const [key, value] of Object.entries(query)) {
+      if (value !== undefined && value !== null && value !== "") {
+        searchParams.append(key, String(value));
+      }
+    }
+  }
+  const fullUrl = searchParams.toString()
+    ? `${baseUrl}?${searchParams}`
+    : baseUrl;
+  return http.get(fullUrl, options);
+}
+
+/**
+ * GET /contacts/{id}/processes
+ * @tags Process
+ */
+export async function getContactProcesses(
+  path: Types.EntityProcessListPathParams,
+  query?: Types.EntityProcessListQueryParams,
+  options?: HttpOptions,
+): Promise<Types.EntityProcessListResponse> {
+  const baseUrl = buildPath("GetContactProcesses", path);
+  const searchParams = new URLSearchParams();
+  if (query) {
+    for (const [key, value] of Object.entries(query)) {
+      if (value !== undefined && value !== null && value !== "") {
+        searchParams.append(key, String(value));
+      }
+    }
+  }
+  const fullUrl = searchParams.toString()
+    ? `${baseUrl}?${searchParams}`
+    : baseUrl;
+  return http.get(fullUrl, options);
+}

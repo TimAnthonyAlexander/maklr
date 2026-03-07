@@ -28,6 +28,10 @@ import { WebsitesPage } from "./pages/WebsitesPage";
 import { WebsiteEditorPage } from "./pages/WebsiteEditorPage";
 import { PortalsPage } from "./pages/PortalsPage";
 import { PortalDetailPage } from "./pages/PortalDetailPage";
+import { ProcessTemplatesPage } from "./pages/ProcessTemplatesPage";
+import { ProcessTemplateBuilderPage } from "./pages/ProcessTemplateBuilderPage";
+import { ProcessInstancesPage } from "./pages/ProcessInstancesPage";
+import { ProcessInstanceDetailPage } from "./pages/ProcessInstanceDetailPage";
 
 export default function App() {
   return (
@@ -73,6 +77,11 @@ export default function App() {
           <Route path="/websites/:id" element={<WebsiteEditorPage />} />
           <Route path="/portals" element={<PortalsPage />} />
           <Route path="/portals/:id" element={<PortalDetailPage />} />
+          <Route path="/processes" element={<ProcessTemplatesPage />} />
+          <Route path="/processes/new" element={<ProcessTemplateBuilderPage />} />
+          <Route path="/processes/:id/edit" element={<ProcessTemplateBuilderPage />} />
+          <Route path="/process-instances" element={<ProcessInstancesPage />} />
+          <Route path="/process-instances/:id" element={<ProcessInstanceDetailPage />} />
           <Route path="/users" element={<UsersPage />} />
           <Route path="/users/:id" element={<UserDetailPage />} />
         </Route>

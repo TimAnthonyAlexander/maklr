@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Services\ActivityService;
 use App\Services\AuditLogService;
 use App\Services\CacheHelper;
+use App\Services\ProcessExecutionService;
 use BaseApi\Controllers\Controller;
 use BaseApi\Http\JsonResponse;
 use BaseApi\Http\Validation\ValidationException;
@@ -133,6 +134,19 @@ class TaskUpdateController extends Controller
                 oldValue: (string) $changes['status']['old'],
                 newValue: (string) $changes['status']['new'],
             );
+        }
+
+        // Advance process if this task is linked to a workflow step
+        if (isset($changes['status']) && in_array($task->status, ['done', 'cancelled'], true)) {
+            if ($task->process_step_instance_id !== null) {
+                try {
+                    /** @var ProcessExecutionService $processService */
+                    $processService = $this->make(ProcessExecutionService::class);
+                    $processService->onTaskCompleted($task);
+                } catch (\Throwable) {
+                    // Non-critical: don't fail the task update
+                }
+            }
         }
 
         CacheHelper::forget('task', $this->id);

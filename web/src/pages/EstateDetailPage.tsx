@@ -38,6 +38,7 @@ import { EntityActivityTimeline } from "../components/activity/ActivityTimeline"
 import { EstateContactsTab } from "../components/estates/EstateContactsTab";
 import { EstateMatchesTab } from "../components/estates/EstateMatchesTab";
 import { EstateSyndicationsTab } from "../components/estates/EstateSyndicationsTab";
+import { EntityProcessesTab } from "../components/processes/EntityProcessesTab";
 import { EstateImageGallery } from "../components/estates/EstateImageGallery";
 import { EstateDescriptionCard } from "../components/estates/EstateDescriptionCard";
 import { EstateKeyMetricsCard } from "../components/estates/EstateKeyMetricsCard";
@@ -47,7 +48,7 @@ import { CustomFieldsCard } from "../components/custom-fields/CustomFieldsCard";
 
 const STATUSES = ["draft", "active", "reserved", "sold", "rented", "archived"];
 
-const ESTATE_TABS = ["images", "documents", "matches", "syndication"] as const;
+const ESTATE_TABS = ["images", "documents", "matches", "syndication", "processes"] as const;
 
 export function EstateDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -248,6 +249,7 @@ export function EstateDetailPage() {
                 <Tab label={t("estate.tab_documents")} />
                 <Tab label={t("estate.tab_matches")} />
                 <Tab label={t("estate.tab_syndication")} />
+                <Tab label={t("processes.page_title")} />
               </Tabs>
 
               {tab === 0 && (
@@ -276,6 +278,11 @@ export function EstateDetailPage() {
               {tab === 3 && (
                 <Box sx={{ pt: 3, pb: 3 }}>
                   {id && <EstateSyndicationsTab estateId={id} />}
+                </Box>
+              )}
+              {tab === 4 && (
+                <Box sx={{ pt: 3, pb: 3 }}>
+                  {id && <EntityProcessesTab entityType="estate" entityId={id} />}
                 </Box>
               )}
             </Paper>

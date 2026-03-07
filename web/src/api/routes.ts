@@ -113,6 +113,18 @@ export const Routes = {
   GetEstateSyndications: "/estates/{id}/syndications",
   PatchEstateSyndicationUpdate: "/estates/{id}/syndications/{syndicationId}",
   PostEstateSyndicationBulk: "/estates/{id}/syndications/bulk",
+  GetProcessTemplateList: "/process-templates",
+  PostProcessTemplateCreate: "/process-templates",
+  GetProcessTemplateShowById: "/process-templates/{id}",
+  PatchProcessTemplateUpdateById: "/process-templates/{id}",
+  DeleteProcessTemplateById: "/process-templates/{id}",
+  GetProcessInstanceList: "/process-instances",
+  PostProcessInstanceCreate: "/process-instances",
+  GetProcessInstanceShowById: "/process-instances/{id}",
+  PatchProcessInstanceUpdateById: "/process-instances/{id}",
+  PostProcessStepComplete: "/process-instances/{id}/steps/{stepKey}/complete",
+  GetEstateProcesses: "/estates/{id}/processes",
+  GetContactProcesses: "/contacts/{id}/processes",
 } as const;
 
 export type RouteKey = keyof typeof Routes;

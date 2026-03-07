@@ -22,6 +22,8 @@ use App\Services\CustomFieldValidationService;
 use App\Services\EmailDraftService;
 use App\Services\HtmlSanitizerService;
 use App\Services\OpenAIService;
+use App\Services\ProcessExecutionService;
+use App\Services\ProcessTriggerService;
 use App\Services\OpenImmo\FeedbackImportService;
 use App\Services\OpenImmo\FtpSyncService;
 use App\Services\OpenImmo\OpenImmoExportService;
@@ -81,6 +83,10 @@ class AppServiceProvider extends ServiceProvider
         $container->singleton(FtpSyncService::class);
         $container->singleton(SyndicationService::class);
         $container->singleton(FeedbackImportService::class);
+
+        // Process automation services
+        $container->singleton(ProcessExecutionService::class);
+        $container->singleton(ProcessTriggerService::class);
 
         // Example: Register a custom service with manual configuration
         // $container->singleton(SomeService::class, function (ContainerInterface $c) {

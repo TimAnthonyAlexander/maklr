@@ -2232,6 +2232,231 @@
             "table": "sync_log",
             "operation": "add_fk",
             "warning": null
+        },
+        {
+            "id": "mig_9979b376253c",
+            "sql": "CREATE TABLE `process_instance` (\n  `process_template_id` VARCHAR(36),\n  `entity_type` VARCHAR(20) NOT NULL DEFAULT 'estate',\n  `entity_id` VARCHAR(36),\n  `status` VARCHAR(20) NOT NULL DEFAULT 'running',\n  `current_step_key` VARCHAR(100),\n  `started_at` DATETIME,\n  `completed_at` DATETIME,\n  `started_by_user_id` VARCHAR(36),\n  `office_id` VARCHAR(36),\n  `context_data` JSON,\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_instance",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_bca5515a6203",
+            "sql": "CREATE TABLE `process_step_instance` (\n  `process_instance_id` VARCHAR(36),\n  `step_key` VARCHAR(100) NOT NULL DEFAULT '',\n  `step_type` VARCHAR(30) NOT NULL DEFAULT '',\n  `status` VARCHAR(20) NOT NULL DEFAULT 'pending',\n  `result` JSON,\n  `assigned_user_id` VARCHAR(36),\n  `activated_at` DATETIME,\n  `completed_at` DATETIME,\n  `due_date` DATETIME,\n  `office_id` VARCHAR(36),\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_step_instance",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_c8a6cce4fa1e",
+            "sql": "CREATE TABLE `process_template` (\n  `name` VARCHAR(255) NOT NULL DEFAULT '',\n  `description` TEXT,\n  `entity_type` VARCHAR(20) NOT NULL DEFAULT 'estate',\n  `trigger_type` VARCHAR(30) NOT NULL DEFAULT 'manual',\n  `trigger_config` JSON,\n  `steps` JSON,\n  `active` TINYINT(1) NOT NULL DEFAULT 1,\n  `office_id` VARCHAR(36),\n  `created_by_user_id` VARCHAR(36),\n  `id` VARCHAR(36) NOT NULL DEFAULT '',\n  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_template",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_1e269d5424e6",
+            "sql": "ALTER TABLE `task` ADD COLUMN `process_step_instance_id` VARCHAR(36)",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "task",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_2eb6c50adf43",
+            "sql": "ALTER TABLE `process_instance` ADD INDEX `idx_process_instance_process_template_id` (`process_template_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_instance",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_669764571306",
+            "sql": "ALTER TABLE `process_instance` ADD INDEX `idx_process_instance_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_instance",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_b29e1f26acf2",
+            "sql": "ALTER TABLE `process_instance` ADD INDEX `idx_process_instance_started_by_user_id` (`started_by_user_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_instance",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_985e34925046",
+            "sql": "ALTER TABLE `process_instance` ADD INDEX `idx_process_instance_office_id_status` (`office_id`, `status`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_instance",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_7073a1238cba",
+            "sql": "ALTER TABLE `process_instance` ADD INDEX `idx_process_instance_entity_type_entity_id` (`entity_type`, `entity_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_instance",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_7f8ba38523d0",
+            "sql": "ALTER TABLE `process_step_instance` ADD INDEX `idx_process_step_instance_process_instance_id` (`process_instance_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_step_instance",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_78005504ca0e",
+            "sql": "ALTER TABLE `process_step_instance` ADD INDEX `idx_process_step_instance_assigned_user_id` (`assigned_user_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_step_instance",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_3c55838bc2c6",
+            "sql": "ALTER TABLE `process_step_instance` ADD INDEX `idx_process_step_instance_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_step_instance",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_513de46a9b72",
+            "sql": "ALTER TABLE `process_step_instance` ADD UNIQUE KEY `uniq_process_step_instance_process_instance_id_step_key` (`process_instance_id`, `step_key`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_step_instance",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_c3e5eed5e4d3",
+            "sql": "ALTER TABLE `process_step_instance` ADD INDEX `idx_process_step_instance_status_due_date` (`status`, `due_date`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_step_instance",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_17d664bc4513",
+            "sql": "ALTER TABLE `process_template` ADD INDEX `idx_process_template_office_id` (`office_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_template",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_9c9ca94e249d",
+            "sql": "ALTER TABLE `process_template` ADD INDEX `idx_process_template_created_by_user_id` (`created_by_user_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_template",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_bffe5527435c",
+            "sql": "ALTER TABLE `process_template` ADD INDEX `idx_process_template_office_id_active` (`office_id`, `active`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_template",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_fb5852c1d5da",
+            "sql": "ALTER TABLE `process_template` ADD INDEX `idx_process_template_office_id_entity_type_trigger_type` (`office_id`, `entity_type`, `trigger_type`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_template",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_da39f06cb0c3",
+            "sql": "ALTER TABLE `task` ADD INDEX `idx_task_process_step_instance_id` (`process_step_instance_id`)",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "task",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_802cae47b189",
+            "sql": "ALTER TABLE `process_instance` ADD CONSTRAINT `fk_process_instance_process_template_id` FOREIGN KEY (`process_template_id`) REFERENCES `process_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_instance",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_09a593256024",
+            "sql": "ALTER TABLE `process_instance` ADD CONSTRAINT `fk_process_instance_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_instance",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_af99654fedf9",
+            "sql": "ALTER TABLE `process_step_instance` ADD CONSTRAINT `fk_process_step_instance_process_instance_id` FOREIGN KEY (`process_instance_id`) REFERENCES `process_instance` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_step_instance",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_219f77555531",
+            "sql": "ALTER TABLE `process_step_instance` ADD CONSTRAINT `fk_process_step_instance_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_step_instance",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_2861f8e46e24",
+            "sql": "ALTER TABLE `process_template` ADD CONSTRAINT `fk_process_template_office_id` FOREIGN KEY (`office_id`) REFERENCES `office` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "process_template",
+            "operation": "add_fk",
+            "warning": null
+        },
+        {
+            "id": "mig_98d5067e4b77",
+            "sql": "ALTER TABLE `task` ADD CONSTRAINT `fk_task_process_step_instance_id` FOREIGN KEY (`process_step_instance_id`) REFERENCES `process_step_instance` (`id`) ON DELETE CASCADE ON UPDATE CASCADE",
+            "destructive": false,
+            "generated_at": "2026-03-06T23:42:38+00:00",
+            "table": "task",
+            "operation": "add_fk",
+            "warning": null
         }
     ]
 }

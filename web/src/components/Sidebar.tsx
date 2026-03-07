@@ -12,6 +12,7 @@ import {
   FileText,
   Globe,
   Radio,
+  Workflow,
   LayoutTemplate,
   ShieldCheck,
   ClipboardList,
@@ -67,6 +68,11 @@ const organizeItems: NavItem[] = [
     translationKey: "sidebar.nav.portals",
     path: "/portals",
     icon: Radio,
+  },
+  {
+    translationKey: "sidebar.nav.processes",
+    path: "/processes",
+    icon: Workflow,
   },
 ];
 

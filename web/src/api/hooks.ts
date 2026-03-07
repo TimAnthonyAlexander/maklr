@@ -4296,3 +4296,311 @@ export function usePostEstateSyndicationBulk(
 
   return { data, loading, error, mutate, reset };
 }
+
+// ---------------------------------------------------------------------------
+// Process Templates
+// ---------------------------------------------------------------------------
+
+export function useGetProcessTemplateList(
+  query?: Types.ProcessTemplateListQuery,
+  options?: QueryOptions<Types.PaginatedResponse<Types.ProcessTemplate>>,
+  deps?: DependencyList,
+): QueryResult<Types.PaginatedResponse<Types.ProcessTemplate>> {
+  return useQuery(
+    () => Api.getProcessTemplateList(query, options),
+    options,
+    deps ?? [JSON.stringify(query)],
+  );
+}
+
+export function useGetProcessTemplateById(
+  id: string | null,
+  options?: QueryOptions<Types.ProcessTemplate>,
+  deps?: DependencyList,
+): QueryResult<Types.ProcessTemplate> {
+  return useQuery(
+    () => (id ? Api.getProcessTemplateShowById(id, options) : Promise.reject()),
+    { ...options, enabled: id !== null && (options?.enabled ?? true) },
+    deps ?? [id],
+  );
+}
+
+export function usePostProcessTemplateCreate(
+  options?: QueryOptions<Types.ProcessTemplate>,
+): MutationResult<Types.ProcessTemplate, { body: Types.ProcessTemplateCreateRequest }> {
+  const [data, setData] = useState<Types.ProcessTemplate | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const mutate = useCallback(
+    async (variables: { body: Types.ProcessTemplateCreateRequest }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.postProcessTemplateCreate(variables.body, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+    setLoading(false);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+export function usePatchProcessTemplateUpdateById(
+  options?: QueryOptions<Types.ProcessTemplate>,
+): MutationResult<Types.ProcessTemplate, { id: string; body: Types.ProcessTemplateUpdateRequest }> {
+  const [data, setData] = useState<Types.ProcessTemplate | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const mutate = useCallback(
+    async (variables: { id: string; body: Types.ProcessTemplateUpdateRequest }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.patchProcessTemplateUpdateById(variables.id, variables.body, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+    setLoading(false);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+export function useDeleteProcessTemplateById(
+  options?: QueryOptions<void>,
+): MutationResult<void, { id: string }> {
+  const [data, setData] = useState<void | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const mutate = useCallback(
+    async (variables: { id: string }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.deleteProcessTemplateById(variables.id, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+    setLoading(false);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+// ---------------------------------------------------------------------------
+// Process Instances
+// ---------------------------------------------------------------------------
+
+export function useGetProcessInstanceList(
+  query?: Types.ProcessInstanceListQuery,
+  options?: QueryOptions<Types.PaginatedResponse<Types.ProcessInstance>>,
+  deps?: DependencyList,
+): QueryResult<Types.PaginatedResponse<Types.ProcessInstance>> {
+  return useQuery(
+    () => Api.getProcessInstanceList(query, options),
+    options,
+    deps ?? [JSON.stringify(query)],
+  );
+}
+
+export function useGetProcessInstanceById(
+  id: string | null,
+  options?: QueryOptions<Types.ProcessInstance>,
+  deps?: DependencyList,
+): QueryResult<Types.ProcessInstance> {
+  return useQuery(
+    () => (id ? Api.getProcessInstanceShowById(id, options) : Promise.reject()),
+    { ...options, enabled: id !== null && (options?.enabled ?? true) },
+    deps ?? [id],
+  );
+}
+
+export function usePostProcessInstanceCreate(
+  options?: QueryOptions<Types.ProcessInstance>,
+): MutationResult<Types.ProcessInstance, { body: Types.ProcessInstanceCreateRequest }> {
+  const [data, setData] = useState<Types.ProcessInstance | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const mutate = useCallback(
+    async (variables: { body: Types.ProcessInstanceCreateRequest }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.postProcessInstanceCreate(variables.body, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+    setLoading(false);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+export function usePatchProcessInstanceUpdateById(
+  options?: QueryOptions<Types.ProcessInstance>,
+): MutationResult<Types.ProcessInstance, { id: string; body: Types.ProcessInstanceUpdateRequest }> {
+  const [data, setData] = useState<Types.ProcessInstance | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const mutate = useCallback(
+    async (variables: { id: string; body: Types.ProcessInstanceUpdateRequest }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.patchProcessInstanceUpdateById(variables.id, variables.body, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+    setLoading(false);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+export function usePostProcessStepComplete(
+  options?: QueryOptions<Types.ProcessInstance>,
+): MutationResult<Types.ProcessInstance, { id: string; stepKey: string }> {
+  const [data, setData] = useState<Types.ProcessInstance | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const mutate = useCallback(
+    async (variables: { id: string; stepKey: string }) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = await Api.postProcessStepComplete(variables.id, variables.stepKey, options);
+        setData(result);
+        options?.onSuccess?.(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        options?.onError?.(error);
+        throw error;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [options],
+  );
+
+  const reset = useCallback(() => {
+    setData(null);
+    setError(null);
+    setLoading(false);
+  }, []);
+
+  return { data, loading, error, mutate, reset };
+}
+
+// ---------------------------------------------------------------------------
+// Entity Processes
+// ---------------------------------------------------------------------------
+
+export function useGetEstateProcesses(
+  estateId: string | null,
+  query?: Types.ProcessInstanceListQuery,
+  options?: QueryOptions<Types.PaginatedResponse<Types.ProcessInstance>>,
+  deps?: DependencyList,
+): QueryResult<Types.PaginatedResponse<Types.ProcessInstance>> {
+  return useQuery(
+    () => (estateId ? Api.getEstateProcesses(estateId, query, options) : Promise.reject()),
+    { ...options, enabled: estateId !== null && (options?.enabled ?? true) },
+    deps ?? [estateId, JSON.stringify(query)],
+  );
+}
+
+export function useGetContactProcesses(
+  contactId: string | null,
+  query?: Types.ProcessInstanceListQuery,
+  options?: QueryOptions<Types.PaginatedResponse<Types.ProcessInstance>>,
+  deps?: DependencyList,
+): QueryResult<Types.PaginatedResponse<Types.ProcessInstance>> {
+  return useQuery(
+    () => (contactId ? Api.getContactProcesses(contactId, query, options) : Promise.reject()),
+    { ...options, enabled: contactId !== null && (options?.enabled ?? true) },
+    deps ?? [contactId, JSON.stringify(query)],
+  );
+}

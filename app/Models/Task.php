@@ -34,6 +34,8 @@ class Task extends BaseModel
 
     public ?string $created_by_user_id = null;
 
+    public ?string $process_step_instance_id = null;
+
     /** @var array<string, array<string, mixed>> */
     public static array $columns = [
         'description' => ['type' => 'TEXT', 'nullable' => true],
@@ -54,6 +56,7 @@ class Task extends BaseModel
         'estate_id' => 'index',
         'contact_id' => 'index',
         'created_by_user_id' => 'index',
+        'process_step_instance_id' => 'index',
         ['office_id', 'task_number', 'type' => 'unique'],
     ];
 
@@ -75,6 +78,11 @@ class Task extends BaseModel
     public function createdByUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by_user_id');
+    }
+
+    public function processStepInstance(): BelongsTo
+    {
+        return $this->belongsTo(ProcessStepInstance::class);
     }
 
     public function taskUsers(): HasMany

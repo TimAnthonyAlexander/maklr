@@ -29,6 +29,7 @@ import { getContactDisplayName } from "../utils/contactHelpers";
 import { SearchProfilesTab } from "../components/contacts/SearchProfilesTab";
 import { ContactMatchesTab } from "../components/contacts/ContactMatchesTab";
 import { ContactRelationshipsTab } from "../components/contacts/ContactRelationshipsTab";
+import { EntityProcessesTab } from "../components/processes/EntityProcessesTab";
 import { CustomFieldsCard } from "../components/custom-fields/CustomFieldsCard";
 
 const dateFormatter = new Intl.DateTimeFormat("de-DE", {
@@ -179,6 +180,7 @@ const CONTACT_TABS = [
   "documents",
   "search-profiles",
   "matches",
+  "processes",
 ] as const;
 
 export function ContactDetailPage() {
@@ -346,6 +348,7 @@ export function ContactDetailPage() {
                 <Tab label="Documents" />
                 <Tab label="Search Profiles" />
                 <Tab label="Matches" />
+                <Tab label="Processes" />
               </Tabs>
 
               {tab === 0 && (
@@ -387,6 +390,11 @@ export function ContactDetailPage() {
                       }
                     />
                   )}
+                </Box>
+              )}
+              {tab === 4 && (
+                <Box sx={{ pt: 3, pb: 3 }}>
+                  {id && <EntityProcessesTab entityType="contact" entityId={id} />}
                 </Box>
               )}
             </Paper>

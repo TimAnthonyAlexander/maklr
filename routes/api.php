@@ -130,6 +130,17 @@ use App\Controllers\WebsitePage\WebsitePageUpdateController;
 use App\Controllers\WebsitePage\WebsitePageDeleteController;
 use App\Controllers\WebsitePage\WebsitePageVersionListController;
 use App\Controllers\WebsitePage\WebsitePageVersionRestoreController;
+use App\Controllers\Process\ProcessTemplateListController;
+use App\Controllers\Process\ProcessTemplateCreateController;
+use App\Controllers\Process\ProcessTemplateShowController;
+use App\Controllers\Process\ProcessTemplateUpdateController;
+use App\Controllers\Process\ProcessTemplateDeleteController;
+use App\Controllers\Process\ProcessInstanceListController;
+use App\Controllers\Process\ProcessInstanceCreateController;
+use App\Controllers\Process\ProcessInstanceShowController;
+use App\Controllers\Process\ProcessInstanceUpdateController;
+use App\Controllers\Process\ProcessStepCompleteController;
+use App\Controllers\Process\EntityProcessListController;
 use App\Middleware\CombinedAuthMiddleware;
 use App\Middleware\RoleMiddleware;
 use BaseApi\Http\Middleware\RateLimitMiddleware;
@@ -1143,6 +1154,95 @@ $router->post('/estates/{id}/syndications/bulk', [
     CombinedAuthMiddleware::class,
     RoleMiddleware::class => ['roles' => ['agent']],
     EstateSyndicationBulkController::class,
+]);
+
+// ================================
+// Process Automation Endpoints
+// ================================
+
+// Process Templates
+$router->get('/process-templates', [
+    RateLimitMiddleware::class => ['limit' => '60/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    ProcessTemplateListController::class,
+]);
+
+$router->post('/process-templates', [
+    RateLimitMiddleware::class => ['limit' => '20/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['manager']],
+    ProcessTemplateCreateController::class,
+]);
+
+$router->get('/process-templates/{id}', [
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    ProcessTemplateShowController::class,
+]);
+
+$router->patch('/process-templates/{id}', [
+    RateLimitMiddleware::class => ['limit' => '20/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['manager']],
+    ProcessTemplateUpdateController::class,
+]);
+
+$router->delete('/process-templates/{id}', [
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['manager']],
+    ProcessTemplateDeleteController::class,
+]);
+
+// Process Instances
+$router->get('/process-instances', [
+    RateLimitMiddleware::class => ['limit' => '60/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    ProcessInstanceListController::class,
+]);
+
+$router->post('/process-instances', [
+    RateLimitMiddleware::class => ['limit' => '20/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    ProcessInstanceCreateController::class,
+]);
+
+$router->get('/process-instances/{id}', [
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    ProcessInstanceShowController::class,
+]);
+
+$router->patch('/process-instances/{id}', [
+    RateLimitMiddleware::class => ['limit' => '20/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    ProcessInstanceUpdateController::class,
+]);
+
+// Process Step Actions
+$router->post('/process-instances/{id}/steps/{stepKey}/complete', [
+    RateLimitMiddleware::class => ['limit' => '30/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    ProcessStepCompleteController::class,
+]);
+
+// Entity-scoped process lists
+$router->get('/estates/{id}/processes', [
+    RateLimitMiddleware::class => ['limit' => '60/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    EntityProcessListController::class,
+]);
+
+$router->get('/contacts/{id}/processes', [
+    RateLimitMiddleware::class => ['limit' => '60/1m'],
+    CombinedAuthMiddleware::class,
+    RoleMiddleware::class => ['roles' => ['agent']],
+    EntityProcessListController::class,
 ]);
 
 // ================================
