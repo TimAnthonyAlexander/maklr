@@ -4308,8 +4308,9 @@ export function useGetProcessTemplateList(
 ): QueryResult<Types.PaginatedResponse<Types.ProcessTemplate>> {
   return useQueryHook(
     () => Api.getProcessTemplateList(query, options),
+    options?.enabled ?? true,
+    [JSON.stringify(query), ...(deps || [])],
     options,
-    deps ?? [JSON.stringify(query)],
   );
 }
 
@@ -4320,8 +4321,9 @@ export function useGetProcessTemplateById(
 ): QueryResult<Types.ProcessTemplate> {
   return useQueryHook(
     () => (id ? Api.getProcessTemplateShowById(id, options) : Promise.reject()),
-    { ...options, enabled: id !== null && (options?.enabled ?? true) },
-    deps ?? [id],
+    id !== null && (options?.enabled ?? true),
+    [id, ...(deps || [])],
+    options,
   );
 }
 
@@ -4447,8 +4449,9 @@ export function useGetProcessInstanceList(
 ): QueryResult<Types.PaginatedResponse<Types.ProcessInstance>> {
   return useQueryHook(
     () => Api.getProcessInstanceList(query, options),
+    options?.enabled ?? true,
+    [JSON.stringify(query), ...(deps || [])],
     options,
-    deps ?? [JSON.stringify(query)],
   );
 }
 
@@ -4459,8 +4462,9 @@ export function useGetProcessInstanceById(
 ): QueryResult<Types.ProcessInstance> {
   return useQueryHook(
     () => (id ? Api.getProcessInstanceShowById(id, options) : Promise.reject()),
-    { ...options, enabled: id !== null && (options?.enabled ?? true) },
-    deps ?? [id],
+    id !== null && (options?.enabled ?? true),
+    [id, ...(deps || [])],
+    options,
   );
 }
 
@@ -4587,8 +4591,9 @@ export function useGetEstateProcesses(
 ): QueryResult<Types.PaginatedResponse<Types.ProcessInstance>> {
   return useQueryHook(
     () => (estateId ? Api.getEstateProcesses(estateId, query, options) : Promise.reject()),
-    { ...options, enabled: estateId !== null && (options?.enabled ?? true) },
-    deps ?? [estateId, JSON.stringify(query)],
+    estateId !== null && (options?.enabled ?? true),
+    [estateId, JSON.stringify(query), ...(deps || [])],
+    options,
   );
 }
 
@@ -4600,7 +4605,8 @@ export function useGetContactProcesses(
 ): QueryResult<Types.PaginatedResponse<Types.ProcessInstance>> {
   return useQueryHook(
     () => (contactId ? Api.getContactProcesses(contactId, query, options) : Promise.reject()),
-    { ...options, enabled: contactId !== null && (options?.enabled ?? true) },
-    deps ?? [contactId, JSON.stringify(query)],
+    contactId !== null && (options?.enabled ?? true),
+    [contactId, JSON.stringify(query), ...(deps || [])],
+    options,
   );
 }
