@@ -4306,7 +4306,7 @@ export function useGetProcessTemplateList(
   options?: QueryOptions<Types.PaginatedResponse<Types.ProcessTemplate>>,
   deps?: DependencyList,
 ): QueryResult<Types.PaginatedResponse<Types.ProcessTemplate>> {
-  return useQuery(
+  return useQueryHook(
     () => Api.getProcessTemplateList(query, options),
     options,
     deps ?? [JSON.stringify(query)],
@@ -4318,7 +4318,7 @@ export function useGetProcessTemplateById(
   options?: QueryOptions<Types.ProcessTemplate>,
   deps?: DependencyList,
 ): QueryResult<Types.ProcessTemplate> {
-  return useQuery(
+  return useQueryHook(
     () => (id ? Api.getProcessTemplateShowById(id, options) : Promise.reject()),
     { ...options, enabled: id !== null && (options?.enabled ?? true) },
     deps ?? [id],
@@ -4445,7 +4445,7 @@ export function useGetProcessInstanceList(
   options?: QueryOptions<Types.PaginatedResponse<Types.ProcessInstance>>,
   deps?: DependencyList,
 ): QueryResult<Types.PaginatedResponse<Types.ProcessInstance>> {
-  return useQuery(
+  return useQueryHook(
     () => Api.getProcessInstanceList(query, options),
     options,
     deps ?? [JSON.stringify(query)],
@@ -4457,7 +4457,7 @@ export function useGetProcessInstanceById(
   options?: QueryOptions<Types.ProcessInstance>,
   deps?: DependencyList,
 ): QueryResult<Types.ProcessInstance> {
-  return useQuery(
+  return useQueryHook(
     () => (id ? Api.getProcessInstanceShowById(id, options) : Promise.reject()),
     { ...options, enabled: id !== null && (options?.enabled ?? true) },
     deps ?? [id],
@@ -4585,7 +4585,7 @@ export function useGetEstateProcesses(
   options?: QueryOptions<Types.PaginatedResponse<Types.ProcessInstance>>,
   deps?: DependencyList,
 ): QueryResult<Types.PaginatedResponse<Types.ProcessInstance>> {
-  return useQuery(
+  return useQueryHook(
     () => (estateId ? Api.getEstateProcesses(estateId, query, options) : Promise.reject()),
     { ...options, enabled: estateId !== null && (options?.enabled ?? true) },
     deps ?? [estateId, JSON.stringify(query)],
@@ -4598,7 +4598,7 @@ export function useGetContactProcesses(
   options?: QueryOptions<Types.PaginatedResponse<Types.ProcessInstance>>,
   deps?: DependencyList,
 ): QueryResult<Types.PaginatedResponse<Types.ProcessInstance>> {
-  return useQuery(
+  return useQueryHook(
     () => (contactId ? Api.getContactProcesses(contactId, query, options) : Promise.reject()),
     { ...options, enabled: contactId !== null && (options?.enabled ?? true) },
     deps ?? [contactId, JSON.stringify(query)],
