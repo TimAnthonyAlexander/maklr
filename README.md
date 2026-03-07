@@ -48,7 +48,13 @@ Commercial real estate CRMs are expensive, closed-source, and lock you in. Maklr
   <img src="ai-websites.png" alt="AI Website Builder" width="800" />
 </p>
 
+<p align="center">
+  <img src="processes.png" alt="Process Automation Builder" width="800" />
+</p>
+
 **AI Website Builder** — Create and manage public-facing websites directly from the CRM. Each website consists of pages with AI-generated HTML content powered by an integrated LLM chat interface. Describe what you want in natural language, and the AI generates responsive, Tailwind-styled pages following a clean minimalist design. Edit iteratively through conversation — the chat history provides context for follow-up changes. Includes daily rate limiting per office and HTML sanitization for safe output.
+
+**Process Automation** — Visual workflow builder for automating multi-step business processes. Design flows with a drag-and-drop node editor — chain together tasks, emails, field changes, wait periods, appointments, and decision branches. Bind processes to estates or contacts with manual or event-driven triggers. The execution engine handles step sequencing, branching logic with conditional evaluation, placeholder resolution, and automatic advancement. Pause, resume, or cancel running instances at any time.
 
 ---
 
@@ -118,6 +124,9 @@ Master properties with child units for complexes and new builds.
 
 **Portal Syndication** `[x]`
 OpenImmo XML export to German real estate portals (ImmobilienScout24, Immowelt, etc.). Portal management with encrypted FTP/API credentials, per-estate publish toggles with sync status tracking, bulk enable/disable, sync logs, and feedback XML import for lead enquiries. Full frontend with portal list/detail pages, estate syndication tab, and sidebar navigation.
+
+**Process Automation** `[x]`
+Visual workflow builder with drag-and-drop node editor. Step types: create task, send email, change field, wait days, decision (auto/manual), and create appointment. Supports estate and contact entity binding, manual and event-driven triggers, conditional branching with field evaluation, placeholder resolution, and full instance lifecycle management (pause, resume, cancel).
 
 **Workflow Automation** `[ ]`
 Step-based workflow builder with triggers, conditions, and actions. Automate acquisition, lead nurturing, and after-sales sequences.
