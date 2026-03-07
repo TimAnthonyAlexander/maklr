@@ -52,6 +52,16 @@ Commercial real estate CRMs are expensive, closed-source, and lock you in. Maklr
   <img src="processes.png" alt="Process Automation Builder" width="800" />
 </p>
 
+**Landing Page** — Clean, modern homepage introducing Maklr as an open-source real estate CRM. Highlights the core value proposition — self-hosted property management, contact matching, activity tracking, and email integration — without vendor lock-in.
+
+**Dashboard** — At-a-glance overview of your brokerage. Displays estate counts by status, property type, and marketing type alongside task stats (open, overdue, due soon), contact breakdowns by type and pipeline stage, email metrics (total, unread, sent), and top property-to-contact matches. All stats are office-scoped and cached for fast loading.
+
+**Estate Detail** — Comprehensive property view with image gallery, description, key metrics, location, and features. Tabbed sections for image management, documents, contact matching, portal syndication, and process automation. Sidebar shows linked contacts and a full activity timeline. Inline status changes, brochure generation, and edit/delete actions.
+
+**Tasks** — Task management with list and kanban views. Filter by status, priority, and type. Create tasks with title, description, due date, priority, and assignees linked to estates or contacts. Kanban board supports drag-and-drop status changes. Click any task for a full detail modal with comments.
+
+**Email** — Built-in email client connected to external mailboxes via IMAP/SMTP. Three-pane layout with folder navigation, message list, and reading pane. Compose and reply inline, sync on demand, filter by account or unread status, and search across all messages. Emails auto-match to contacts and archive to the activity log.
+
 **AI Website Builder** — Create and manage public-facing websites directly from the CRM. Each website consists of pages with AI-generated HTML content powered by an integrated LLM chat interface. Describe what you want in natural language, and the AI generates responsive, Tailwind-styled pages following a clean minimalist design. Edit iteratively through conversation — the chat history provides context for follow-up changes. Includes daily rate limiting per office and HTML sanitization for safe output.
 
 **Process Automation** — Visual workflow builder for automating multi-step business processes. Design flows with a drag-and-drop node editor — chain together tasks, emails, field changes, wait periods, appointments, and decision branches. Bind processes to estates or contacts with manual or event-driven triggers. The execution engine handles step sequencing, branching logic with conditional evaluation, placeholder resolution, and automatic advancement. Pause, resume, or cancel running instances at any time.
